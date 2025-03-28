@@ -2,11 +2,11 @@
 
 
     <header >
-        <h2 class="text-lg font-medium dark:text-gray-100" style="color: #3b1e54">
+        <h2 class="text-lg font-medium " style="color: #3b1e54">
             {{ __('Profile Information') }}
         </h2>
 
-        <p class="mt-1 text-sm dark:text-gray-400" style="color: #9b7ebd">
+        <p class="mt-1 text-sm " style="color: #9b7ebd">
             {{ __("Update your account's profile information and email address.") }}
         </p>
     </header>
@@ -35,7 +35,7 @@
                     <p class="text-sm mt-2 dark:text-gray-200" style="color: #9b7ebd">
                         {{ __('Your email address is unverified.') }}
 
-                        <button form="send-verification" class="underline text-sm dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                        <button form="send-verification" class="underline text-sm  hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
                             {{ __('Click here to re-send the verification email.') }}
                         </button>
                     </p>
@@ -58,7 +58,7 @@
                     x-show="show"
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm dark:text-gray-400" style="color: #9b7ebd"
+                    class="text-sm " style="color: #9b7ebd"
                 >{{ __('Saved.') }}</p>
             @endif
         </div>

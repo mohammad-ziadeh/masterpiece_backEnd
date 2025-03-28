@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -42,5 +43,25 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    
+
+    public function hasRole(string $role)
+    {
+        return strtolower($this->role) === strtolower($role);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isTrainer()
+    {
+        return $this->role === 'trainer';
+    }
+
+
+    public function isTrainerOrAdmin()
+    {
+        return $this->isTrainer() || $this->isAdmin();
+    }
 }
