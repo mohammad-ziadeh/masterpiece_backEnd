@@ -39,6 +39,7 @@
                     <div class="card">
                         <div class="card-body">
 
+                            {{-- Start Filters --}}
                             <form method="GET" action="{{ route('tasks.index') }}" class="mb-3">
                                 <div class="row">
 
@@ -47,8 +48,6 @@
                                             style="border-radius: 5px" placeholder="Search Task"
                                             value="{{ request('name') }}">
                                     </div>
-
-
 
                                     <div class="col-md-2">
                                         <select name="deleted" class="form-control">
@@ -66,8 +65,9 @@
                                     </div>
                                 </div>
                             </form>
+                            {{-- End Filters --}}
 
-
+                            {{-- Create trigger --}}
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <button type="button" class="btn btn-success mb-3" data-toggle="modal"
                                     data-target="#createTaskModal">
@@ -81,12 +81,11 @@
                                         <button type="button" class="btn btn-danger">Delete All</button>
                                     </form>
                                 @endif
-
                             </div>
+                            {{-- End Create trigger --}}
 
 
                             <div class="table-responsive">
-
                                 <table class="table table-bordered border-primary">
                                     <thead>
                                         <tr>
@@ -103,66 +102,71 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($tasks as $task)
-                                        <tr >
-                                            <td> {{ $task->id }}</td>
-                                            <td>{{ $task->name }}</td>
-                                            <td>
-                                                @if ($task->pdf_path)
-                                                    <a href="{{ asset('storage/' . $task->pdf_path) }}"
-                                                        download="{{ basename($task->name) }}" target="_blank">Open
-                                                        <i class="fas fa-download"></i></a>
-                                                @else
-                                                    No file available
-                                                @endif
-                                            </td>
-                                           <td  class="task-row" data-id="{{ $task->id }}"><i style="margin-left:40%" class="fa-solid fa-chevron-down"></i></i></td>
-                                            <td>{{ $task->due_date }}</td>
-                                            <td>{{ $task->created_at->format('Y-m-d') }}</td>
-                                            <td>
-                                                {{-- Soft del And edit --}}
-                                                @if (!$task->trashed())
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                        data-target="#editTaskModal{{ $task->id }}">
-                                                        Edit
-                                                    </button>
-                                                    <form id="delete-form-{{ $task->id }}"
-                                                        action="{{ route('tasks.destroy', $task->id) }}" method="POST"
-                                                        style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" class="btn btn-danger"
-                                                            onclick="confirmDelete({{ $task->id }})"
-                                                            title="Temporarily Remove">
-                                                            Delete
+                                            <tr>
+                                                <td> {{ $task->id }}</td>
+                                                <td>{{ $task->name }}</td>
+                                                <td>
+                                                    @if ($task->pdf_path)
+                                                        <a href="{{ asset('storage/' . $task->pdf_path) }}"
+                                                            download="{{ basename($task->name) }}" target="_blank">Open
+                                                            <i class="fas fa-download"></i></a>
+                                                    @else
+                                                        No file available
+                                                    @endif
+                                                </td>
+                                                <td class="task-row" data-id="{{ $task->id }}"><i
+                                                        style="margin-left:40%"
+                                                        class="fa-solid fa-chevron-down"></i></i></td>
+                                                <td>{{ $task->due_date }}</td>
+                                                <td>{{ $task->created_at->format('Y-m-d') }}</td>
+                                                <td>
+                                                    {{-- Soft del And edit --}}
+                                                    @if (!$task->trashed())
+                                                        <button type="button" class="btn btn-primary"
+                                                            data-toggle="modal"
+                                                            data-target="#editTaskModal{{ $task->id }}">
+                                                            Edit
                                                         </button>
-                                                    </form>
-                                                @endif
-                                                {{-- end Soft del And edit --}}
+                                                        <form id="delete-form-{{ $task->id }}"
+                                                            action="{{ route('tasks.destroy', $task->id) }}"
+                                                            method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="btn btn-danger"
+                                                                onclick="confirmDelete({{ $task->id }})"
+                                                                title="Temporarily Remove">
+                                                                Delete
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                    {{-- end Soft del And edit --}}
 
-                                                {{-- Restore and delete permanently --}}
-                                                @if ($task->trashed())
-                                                    <form action="{{ route('tasks.restore', $task->id) }}"
-                                                        method="POST" style="display:inline;">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-warning"
-                                                            title="Restore the Task">Restore</button>
-                                                    </form>
-                                                    <form action="{{ route('tasks.deletePermanently', $task->id) }}"
-                                                        method="POST" style="display:inline;"
-                                                        id="perDelete-form-{{ $task->id }}">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" class="btn btn-danger"
-                                                            title="Delete Permanently"
-                                                            onclick="confirmPerDelete({{ $task->id }})">Delete
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                                {{-- end Restore and delete permanently --}}
-                                            </td>
-                                        </tr>
+                                                    {{-- Restore and delete permanently --}}
+                                                    @if ($task->trashed())
+                                                        <form action="{{ route('tasks.restore', $task->id) }}"
+                                                            method="POST" style="display:inline;">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-warning"
+                                                                title="Restore the Task">Restore</button>
+                                                        </form>
+                                                        <form
+                                                            action="{{ route('tasks.deletePermanently', $task->id) }}"
+                                                            method="POST" style="display:inline;"
+                                                            id="perDelete-form-{{ $task->id }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="btn btn-danger"
+                                                                title="Delete Permanently"
+                                                                onclick="confirmPerDelete({{ $task->id }})">Delete
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                    {{-- end Restore and delete permanently --}}
+                                                </td>
+                                            </tr>
 
-
+                                            
+                                            {{-- Task Description --}}
                                             <tr class="task-details" id="task-details-{{ $task->id }}"
                                                 style="display:none;">
                                                 <td colspan="7">
@@ -170,6 +174,7 @@
                                                     <p>{{ $task->description }}</p>
                                                 </td>
                                             </tr>
+                                            {{-- End Task Description --}}
 
 
                                             {{-- Edit Task   --}}
@@ -221,6 +226,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            {{-- End Edit Task   --}}
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -273,9 +279,10 @@
             </div>
         </div>
     </div>
+     {{-- End Create Task Modal  --}}
 
-    {{-- Style --}}
 
+    {{-- Styles --}}
     <style>
         #sortButton:focus {
             outline: none;
@@ -296,6 +303,8 @@
             window.location.href = "{{ route('tasks.index') }}?sort=desc";
         });
 
+
+        // Confirm delete SweetAlerts
         function confirmDelete(taskId) {
             Swal.fire({
                 title: "Are you sure?",
@@ -344,6 +353,8 @@
             });
         }
 
+
+        // Success and error message up under nav
         setTimeout(function() {
             $('#successMessage').fadeOut('slow');
             $('#errorMessage').fadeOut('slow');
@@ -352,8 +363,6 @@
 
 
         // Expanded row js 
-
-
         $(document).ready(function() {
             $('.task-row').on('click', function() {
                 var taskId = $(this).data('id');
@@ -366,7 +375,7 @@
 
 
 
-   
+
 
 
 
