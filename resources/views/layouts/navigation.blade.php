@@ -22,12 +22,10 @@
                     <x-nav-link style="color: #eeeeee;" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link style="color: #eeeeee;" href="{{ route('dashboard') }}" :active="request()->routeIs('')">
+                    <x-nav-link style="color: #eeeeee;" href="{{ route('tables') }}" :active="request()->routeIs('tables')">
                         {{ __('Tables') }}
                     </x-nav-link>
-                    <x-nav-link style="color: #eeeeee;" href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
-                        {{ __('users') }}
-                    </x-nav-link>
+                    
                 </div>
             </div>
 

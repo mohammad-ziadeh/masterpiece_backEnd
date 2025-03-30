@@ -1,22 +1,51 @@
+@php
+    $breadcrumbs = \App\Helpers\BreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
+@endphp
 <x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl " style="color: #3b1e54; margin-bottom: 20px;">
+            {{ __('Users') }}
+        </h2>
+        <ul class="breadcrumbs">
+            @foreach ($breadcrumbs as $breadcrumb)
+                <li>
+                    <a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
+                </li>
+            @endforeach
+        </ul>
+    </x-slot>
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert" id="successMessage">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="errorMessage">
+            {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6" style="overflow: hidden;">
         <div class="p-4 sm:p-8 bg-white" style="margin-top: 20px; ">
+
             <div class="row">
                 <div class="col grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <x-slot name="header">
-                                <h2 class="font-semibold text-xl " style="color: #3b1e54;">
-                                    {{ __('Users') }}
-                                </h2>
 
-                            </x-slot>
                             <form method="GET" action="{{ route('users.index') }}" class="mb-3">
                                 <div class="row">
 
-                                    <div class="col-md-2" >
-                                        <input type="text" name="name" class="form-control" style="border-radius: 5px"
-                                            placeholder="Search Name" value="{{ request('name') }}">
+                                    <div class="col-md-2">
+                                        <input type="text" name="name" class="form-control"
+                                            style="border-radius: 5px" placeholder="Search Name"
+                                            value="{{ request('name') }}">
                                     </div>
 
                                     <div class="col-md-2">
@@ -35,9 +64,11 @@
                                     <div class="col-md-2">
                                         <select name="deleted" class="form-control">
                                             <option value="">Active Users</option>
-                                            <option value="only" {{ request('deleted') == 'only' ? 'selected' : '' }}>
+                                            <option value="only"
+                                                {{ request('deleted') == 'only' ? 'selected' : '' }}>
                                                 Deleted Users</option>
-                                            <option value="with" {{ request('deleted') == 'with' ? 'selected' : '' }}>
+                                            <option value="with"
+                                                {{ request('deleted') == 'with' ? 'selected' : '' }}>
                                                 All Users</option>
                                         </select>
                                     </div>
@@ -68,7 +99,7 @@
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Role</th>
-                                            <th>Creation Date</th>
+                                            <th>Joining Date</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -94,7 +125,8 @@
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="button" class="btn btn-danger"
-                                                                onclick="confirmDelete({{ $user->id }})" title="Temporarily Remove"  >
+                                                                onclick="confirmDelete({{ $user->id }})"
+                                                                title="Temporarily Remove">
                                                                 Delete
                                                             </button>
                                                         </form>
@@ -106,8 +138,8 @@
                                                         <form action="{{ route('users.restore', $user->id) }}"
                                                             method="POST" style="display:inline;">
                                                             @csrf
-                                                            <button type="submit"
-                                                                class="btn btn-warning" title="Restore the User" >Restore</button>
+                                                            <button type="submit" class="btn btn-warning"
+                                                                title="Restore the User">Restore</button>
                                                         </form>
                                                         <form
                                                             action="{{ route('users.deletePermanently', $user->id) }}"
@@ -115,8 +147,9 @@
                                                             id="perDelete-form-{{ $user->id }}">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="button" class="btn btn-danger" title="Delete Permanently" 
-                                                                onclick="confirmPerDelete({{ $user->id }})">Delete Perm</button>
+                                                            <button type="button" class="btn btn-danger"
+                                                                title="Delete Permanently"
+                                                                onclick="confirmPerDelete({{ $user->id }})">Delete</button>
                                                         </form>
                                                     @endif
                                                     {{-- End Restore and permanently del --}}
@@ -274,5 +307,10 @@
                 }
             });
         }
+
+        setTimeout(function() {
+            $('#successMessage').fadeOut('slow');
+            $('#errorMessage').fadeOut('slow');
+        }, 3000);
     </script>
 </x-app-layout>

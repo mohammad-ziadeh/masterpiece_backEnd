@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TasksController;
 
 /*
 |--------------------------------------------------------------------------- 
@@ -28,12 +29,16 @@ Route::middleware(['auth', 'verified', 'role:trainer'])->group(function () {
 
     // -------{Tables}---------- //
     Route::resource('users', UserController::class);
+    Route::resource('tasks', TasksController::class);
     // -------{Tables}---------- //
 
     // -------{ Actions }---------- //
     Route::post('/users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('users/{user}/delete-permanently', [UserController::class, 'deletePermanently'])->name('users.deletePermanently');
-    //!!!!!!!!
+    // tasks
+    Route::post('/tasks/{task}/restore', [TasksController::class, 'restore'])->name('tasks.restore');
+    Route::delete('tasks/{task}/delete-permanently', [TasksController::class, 'deletePermanently'])->name('tasks.deletePermanently');
+    Route::delete('/tasks/deleted/empty', [TasksController::class, 'emptyDeleted'])->name('tasks.emptyDeleted');
 
     // -------{ Actions }---------- //
 
@@ -60,12 +65,17 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
 
     // -------{Tables}---------- //
     Route::resource('users', UserController::class);
+    Route::resource('tasks', TasksController::class);
     // -------{Tables}---------- //
 
     // -------{ Actions }---------- //
     Route::post('/users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('users/{user}/delete-permanently', [UserController::class, 'deletePermanently'])->name('users.deletePermanently');
-    //!!!!!!!!
+
+    // tasks
+    Route::post('/tasks/{task}/restore', [TasksController::class, 'restore'])->name('tasks.restore');
+    Route::delete('tasks/{task}/delete-permanently', [TasksController::class, 'deletePermanently'])->name('tasks.deletePermanently');
+    Route::delete('/tasks/deleted/empty', [TasksController::class, 'emptyDeleted'])->name('tasks.emptyDeleted');
 
     // -------{ Actions }---------- //
 

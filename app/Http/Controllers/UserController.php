@@ -68,7 +68,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
-        return redirect('users');
+        return redirect('users')->with('success', 'user stored successfully.');
     }
 
     /**
@@ -100,7 +100,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
-        return redirect('users');
+        return redirect('users')->with('success', 'user updated successfully.');
     }
 
     /**
@@ -110,7 +110,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect('users');
+        return redirect('users')->with('success', 'User deleted successfully.');
     }
 
     public function restore($id)
