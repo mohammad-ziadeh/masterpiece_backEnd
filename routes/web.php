@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TasksController;
+use App\Models\Attendance;
 
 /*
 |--------------------------------------------------------------------------- 
@@ -30,7 +32,12 @@ Route::middleware(['auth', 'verified', 'role:trainer'])->group(function () {
     // -------{Tables}---------- //
     Route::resource('users', UserController::class);
     Route::resource('tasks', TasksController::class);
-    // -------{Tables}---------- //
+    //----------------------------
+    Route::resource('attendance', AttendanceController::class);
+    Route::post('attendance/lock-today', [AttendanceController::class, 'lockToday'])->name('attendance.lock');
+    Route::post('attendance/unlock-today', [AttendanceController::class, 'unlockToday'])->name('attendance.unlock');
+    Route::get('attendance/{userId}/history', [AttendanceController::class, 'showHistory'])->name('attendance.history');
+
 
     // -------{ Actions }---------- //
     Route::post('/users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
@@ -66,7 +73,12 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     // -------{Tables}---------- //
     Route::resource('users', UserController::class);
     Route::resource('tasks', TasksController::class);
-    // -------{Tables}---------- //
+    //-------------------------------
+    Route::resource('attendance', AttendanceController::class);
+    Route::post('attendance/lock-today', [AttendanceController::class, 'lockToday'])->name('attendance.lock');
+    Route::post('attendance/unlock-today', [AttendanceController::class, 'unlockToday'])->name('attendance.unlock');
+    Route::get('attendance/{userId}/history', [AttendanceController::class, 'showHistory'])->name('attendance.history');
+
 
     // -------{ Actions }---------- //
     Route::post('/users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
@@ -76,6 +88,7 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     Route::post('/tasks/{task}/restore', [TasksController::class, 'restore'])->name('tasks.restore');
     Route::delete('tasks/{task}/delete-permanently', [TasksController::class, 'deletePermanently'])->name('tasks.deletePermanently');
     Route::delete('/tasks/deleted/empty', [TasksController::class, 'emptyDeleted'])->name('tasks.emptyDeleted');
+
 
     // -------{ Actions }---------- //
 

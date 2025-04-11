@@ -2,65 +2,76 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Attendance;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class AttendanceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $users = User::paginate(10);
+        $date = today();
+
+        $attendances = Attendance::whereDate('date', $date)->get()->keyBy('user_id');
+
+        return view('tables.attendance.attendance', compact('users', 'attendances', 'date'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        foreach ($request->attendances as $userId => $status) {
+            $attendance = Attendance::firstOrNew([
+                'user_id' => $userId,
+                'date' => today(),
+            ]);
+
+            if ($attendance->locked) {
+                continue;
+            }
+
+            $attendance->status = $status;
+            $attendance->submitted_by = auth()->id();
+            $attendance->submitted_at = now();
+            $attendance->save();
+        }
+
+        return redirect()->back()->with('success', 'Attendance saved!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Attendance $attendance)
+    public function lockToday()
     {
-        //
-    }
+        Attendance::whereDate('date', today())->update(['locked' => true]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Attendance $attendance)
-    {
-        //
+        return redirect()->back()->with('success', 'Today\'s attendance locked!');
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Attendance $attendance)
+    public function unlockToday()
     {
-        //
+        Attendance::whereDate('date', today())->update(['locked' => false]);
+
+        return redirect()->back()->with('success', 'Today\'s attendance has been unlocked.');
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Attendance $attendance)
+    public function showHistory($userId, Request $request)
     {
-        //
+        $user = User::findOrFail($userId);
+
+        $query = $user->attendances();
+
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('from_date') && $request->from_date) {
+            $query->where('date', '>=', $request->from_date);
+        }
+
+        if ($request->has('to_date') && $request->to_date) {
+            $query->where('date', '<=', $request->to_date);
+        }
+
+        $attendanceHistory = $query->orderBy('date', 'desc')->get();
+
+        return view('tables.attendance.attendancehistory', compact('user', 'attendanceHistory'));
     }
 }

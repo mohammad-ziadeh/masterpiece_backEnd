@@ -17,7 +17,7 @@ class UserController extends Controller
 
 
 
-        //  -------{{ Filters }}------- //
+        //  -------{{ Start Filters }}------- //
 
         if ($request->has('name') && !empty($request->name)) {
             $query->where('name', 'like', '%' . $request->name . '%');
@@ -41,7 +41,7 @@ class UserController extends Controller
         } else {
             $query->orderBy('created_at', 'asc');
         }
-        //  -------{{ Filters }}------- //
+        // -------{{ End Filters }}------- //
 
         $users = $query->paginate(10);
 

@@ -56,7 +56,7 @@
 
 
           <div class="ag-courses_item">
-            <a href="#" class="ag-courses-item_link">
+            <a href="{{ route('attendance.index') }}" class="ag-courses-item_link">
               <div class="ag-courses-item_bg"></div>
       
               <div class="ag-courses-item_title">

@@ -89,7 +89,7 @@
                                 <table class="table table-bordered border-primary">
                                     <thead>
                                         <tr>
-                                            <th><button type="button"
+                                            <th title="Press reset to reset "><button type="button"
                                                     style="border: 0px; background-color: transparent; margin-left: 5px;"
                                                     id="sortButton"># ↓</button></th>
                                             <th>Task Name</th>
@@ -107,16 +107,19 @@
                                                 <td>{{ $task->name }}</td>
                                                 <td>
                                                     @if ($task->pdf_path)
-                                                        <a href="{{ asset('storage/' . $task->pdf_path) }}"
-                                                            download="{{ basename($task->name) }}" target="_blank">Open
-                                                            <i class="fas fa-download"></i></a>
+                                                        <button title="See the PDF"
+                                                            style="margin-left:35%; border:0px;background-color:transparent"
+                                                            data-toggle="modal"
+                                                            data-target="#showPdf{{ $task->id }}">
+                                                            <i style="font-size: large;" class="fa fa-eye"></i>
+                                                        </button>
                                                     @else
                                                         No file available
                                                     @endif
                                                 </td>
-                                                <td class="task-row" data-id="{{ $task->id }}"><i
-                                                        style="margin-left:40%"
-                                                        class="fa-solid fa-chevron-down"></i></i></td>
+                                                <td title="See the description" class="task-row" data-id="{{ $task->id }}"><i
+                                                        style="margin-left:40%" class="fa-solid fa-chevron-down"></i>
+                                                </td>
                                                 <td>{{ $task->due_date }}</td>
                                                 <td>{{ $task->created_at->format('Y-m-d') }}</td>
                                                 <td>
@@ -165,7 +168,7 @@
                                                 </td>
                                             </tr>
 
-                                            
+
                                             {{-- Task Description --}}
                                             <tr class="task-details" id="task-details-{{ $task->id }}"
                                                 style="display:none;">
@@ -176,8 +179,7 @@
                                             </tr>
                                             {{-- End Task Description --}}
 
-
-                                            {{-- Edit Task   --}}
+                                            {{-- Edit Task --}}
                                             <div class="modal fade" id="editTaskModal{{ $task->id }}"
                                                 tabindex="-1" role="dialog"
                                                 aria-labelledby="editTaskModalLabel{{ $task->id }}"
@@ -191,15 +193,17 @@
                                                                 @method('PUT')
                                                                 <div class="form-group">
                                                                     <label for="name">Name</label>
-                                                                    <input type="text" class="form-control"
-                                                                        name="name" value="{{ $task->name }}"
-                                                                        required>
+                                                                    <input type="text" id="name"
+                                                                        class="form-control" name="name"
+                                                                        value="{{ $task->name }}" required>
                                                                 </div>
 
                                                                 <div class="form-group">
-                                                                    <label for="pdf">Choose a file</label>
-                                                                    <input type="file" name="pdf"
-                                                                        id="pdf" class="form-control">
+                                                                    <label for="pdf">Choose a file (should be
+                                                                        pdf)</label>
+                                                                    <input type="file" accept=".pdf"
+                                                                        name="pdf" id="pdf"
+                                                                        class="form-control">
                                                                 </div>
 
                                                                 <div class="form-group">
@@ -208,7 +212,6 @@
                                                                         name="due_date" id="taskDueDate" required
                                                                         value="{{ $task->due_date }}">
                                                                 </div>
-
 
                                                                 <label for="taskDescription">Description</label>
                                                                 <textarea class="form-control " name="description" id="taskDescription" rows="3">
@@ -227,15 +230,36 @@
                                                 </div>
                                             </div>
                                             {{-- End Edit Task   --}}
+                                            
+                                            {{-- Show PDF Modal --}}
+                                            @if ($task->pdf_path)
+                                                <div class="modal fade" id="showPdf{{ $task->id }}"
+                                                    tabindex="-1" role="dialog"
+                                                    aria-labelledby="showPdfLabel{{ $task->id }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body p-0">
+                                                                <iframe
+                                                                id="pdfIframe"
+                                                                    src="{{ asset('storage/' . $task->pdf_path) }}"
+                                                                    width="100%" height="500px"
+                                                                    style="border: none;"></iframe>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                            {{-- End Show PDF Modal --}}
                                         @endforeach
                                     </tbody>
                                 </table>
-
                             </div>
-
+                            
                             <div class="d-flex justify-content-center mt-3">
                                 {{ $tasks->links('pagination::bootstrap-4') }}
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -262,8 +286,9 @@
                             <textarea class="form-control" name="description" id="taskDescription" required></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="pdf">Choose a file</label>
-                            <input type="file" name="pdf" id="pdf" class="form-control">
+                            <label for="pdf">Choose a file (should be pdf)</label>
+                            <input type="file" accept=".pdf" name="pdf" id="pdf"
+                                class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="taskDueDate">Due Date</label>
@@ -279,18 +304,13 @@
             </div>
         </div>
     </div>
-     {{-- End Create Task Modal  --}}
+    {{-- End Create Task Modal  --}}
 
 
     {{-- Styles --}}
     <style>
-        #sortButton:focus {
-            outline: none;
-        }
-
         #sortButton:hover {
             color: #b775f0;
-
         }
     </style>
     {{-- Style --}}
@@ -371,6 +391,8 @@
                 detailsRow.stop(true, true).slideToggle(10);
             });
         });
+
+      
     </script>
 
 

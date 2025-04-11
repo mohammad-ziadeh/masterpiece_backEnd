@@ -1,0 +1,21 @@
+.movingBackground {
+    font-family: "Tajawal", sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background-image: url(./White_and_Gold_Modern_Ramadan_Banner_3.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    animation: waves 4s forwards;
+    background-size: 100% 450%; 
+  }
+  
+  @keyframes waves {
+    0% {
+      background-position: 0% 10%;
+    }
+    100% {
+      background-position: 100% 90%;
+    }
+  }

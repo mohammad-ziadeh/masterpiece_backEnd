@@ -12,7 +12,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable 
 {
     use HasApiTokens, HasFactory, Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -68,4 +67,9 @@ class User extends Authenticatable
     {
         return $this->isTrainer() || $this->isAdmin();
     }
+
+    public function attendances()
+{
+    return $this->hasMany(Attendance::class);
+}
 }

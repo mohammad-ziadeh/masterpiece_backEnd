@@ -13,11 +13,16 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->date('attending_date');
-            $table->softDeletes();
-            $table->enum('attending_status', ['present', 'absent'])->default('present');
-            $table->enum('attending_type', ['justify','nonjustify'])->default('nonjustify');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->date('date');
+            $table->enum('status', ['present', 'absent', 'late', 'excused'])->default('present');
+            $table->timestamp('submitted_at')->nullable();
+            $table->foreignId('submitted_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->boolean('locked')->default(false);
             $table->timestamps();
+    
+            $table->unique(['user_id', 'date']);
+
         });
     }
 

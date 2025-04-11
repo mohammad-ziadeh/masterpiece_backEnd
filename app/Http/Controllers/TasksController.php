@@ -16,7 +16,7 @@ class TasksController extends Controller
     {
         $query = Tasks::query();
 
-        // -------{{ Filters }}------- //
+        // -------{{ Start Filters }}------- //
         if ($request->has('name') && !empty($request->name)) {
             $query->where('name', 'like', '%' . $request->name . '%');
         }
@@ -38,7 +38,7 @@ class TasksController extends Controller
         }
 
        
-        // -------{{ Filters }}------- //
+        // -------{{ End Filters }}------- //
 
         $tasks = $query->paginate(10);
 
