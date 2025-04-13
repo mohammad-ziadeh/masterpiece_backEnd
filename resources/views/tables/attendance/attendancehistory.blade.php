@@ -58,6 +58,8 @@
                                             <th>Name</th>
                                             <th>Date</th>
                                             <th>Status</th>
+                                            <th>Tardiness time</th>
+                                            <th>Note</th>
                                             <th>Submitted By</th>
                                             <th>Submitted At</th>
                                         </tr>
@@ -68,6 +70,22 @@
                                                 <td>{{ $attendance->user->name }}</td>
                                                 <td>{{ $attendance->date }}</td>
                                                 <td>{{ ucfirst($attendance->status) }}</td>
+                                                <td>
+                                                    @if ($attendance->status == 'late')
+                                                        {{ $attendance->tardiness_minutes }} minutes
+                                                    @elseif ($attendance->status == 'absent')
+                                                        Absent
+                                                    @else
+                                                        On Time
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($attendance->description)
+                                                        {{ $attendance->description }}
+                                                    @else
+                                                        No note
+                                                    @endif
+                                                </td>
                                                 <td>{{ $attendance->submittedBy->name }}</td>
                                                 <td>{{ $attendance->submitted_at }}</td>
                                             </tr>
@@ -85,19 +103,19 @@
             <a href="{{ route('attendance.index') }}" class="btn btn-primary">Back to Attendance</a>
         </div>
     </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const fromDate = document.getElementById('from_date');
-        const toDate = document.getElementById('to_date');
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const fromDate = document.getElementById('from_date');
+            const toDate = document.getElementById('to_date');
 
-        fromDate.addEventListener('change', function () {
-            toDate.min = fromDate.value;
-        });
+            fromDate.addEventListener('change', function() {
+                toDate.min = fromDate.value;
+            });
 
-        toDate.addEventListener('change', function () {
-            fromDate.max = toDate.value;
+            toDate.addEventListener('change', function() {
+                fromDate.max = toDate.value;
+            });
         });
-    });
-</script>
+    </script>
 
 </x-app-layout>

@@ -16,7 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->date('date');
             $table->enum('status', ['present', 'absent', 'late', 'excused'])->default('present');
+            $table->integer('tardiness_minutes')->nullable();
             $table->timestamp('submitted_at')->nullable();
+            $table->tinyText('description')->nullable();
             $table->foreignId('submitted_by')->nullable()->constrained('users')->nullOnDelete();
             $table->boolean('locked')->default(false);
             $table->timestamps();
