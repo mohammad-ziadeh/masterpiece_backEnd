@@ -11,17 +11,37 @@ class AttendanceController extends Controller
 {
     public function index(Request $request)
     {
+
+
+
+        $query = User::query();
+
+        if ($request->has('name') && !empty($request->name)) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        if ($request->has('role') && $request->role != 'all') {
+            $query->where('role', $request->role);
+        }
         $time = now();
 
-        $startTime = now()->setTime(23, 55);
-        $endTime = now()->addDay()->setTime(0, 15);
+        $startTime = $time->copy()->setTime(0, 05);
+        $endTime = $time->copy()->setTime(0, 30);
 
 
         if ($time->between($startTime, $endTime)) {
-            $users = User::all();
+            $users = $query->get();
         } else {
-            $users = User::paginate(10);
+            $users = $query->paginate(10);
         }
+
+        $saveStartTime = $time->copy()->setTime(0, 10);
+
+        if ($time->between($saveStartTime, $endTime)) {
+            $this->autoSaveAttendance();
+        }
+
+
 
         $date = today();
         $pastDate = today()->subDay();
@@ -60,9 +80,7 @@ class AttendanceController extends Controller
                 'date' => today(),
             ]);
 
-            if ($attendance->locked) {
-                continue;
-            }
+
 
             $attendance->status = $status;
             $attendance->submitted_by = auth()->id();
@@ -74,6 +92,47 @@ class AttendanceController extends Controller
                 $attendance->tardiness_minutes = null;
             }
 
+            $user = User::find($userId);
+
+            // ############# {{ Points Depending on attendance status }} ############# //
+
+            if ($status === 'absent' && $user) {
+                $existingAttendance = Attendance::where('user_id', $userId)
+                    ->whereDate('date', today())
+                    ->where('status', 'absent')
+                    ->first();
+
+                if (!$existingAttendance) {
+                    $user->decrement('weekly_points', 100);
+                    $user->save();
+                }
+            } elseif ($status === 'present' && $user) {
+                $existingAttendance = Attendance::where('user_id', $userId)
+                    ->whereDate('date', today())
+                    ->where('status', 'present')
+                    ->first();
+
+                if (!$existingAttendance) {
+                    $user->increment('weekly_points', 100);
+                    $user->save();
+                }
+            } elseif ($status === 'late' && $user) {
+                $tardiness = $attendance->tardiness_minutes;
+                $thePoints = $tardiness * 5;
+
+                if ($thePoints > 0) {
+                    $user->weekly_points -= $thePoints;
+                    $user->weekly_points = max(0, $user->weekly_points);
+                    $user->save();
+                }
+            }
+
+
+
+
+            // ############# {{ End Points Depending on attendance status }} ############# //
+
+
             if (isset($request->description[$userId])) {
                 $attendance->description = $request->description[$userId];
             }
@@ -84,24 +143,40 @@ class AttendanceController extends Controller
         return redirect()->back()->with('success', 'Attendance saved!');
     }
 
-    // ###### {{locking the ability to change the status of attendance}} ###### //
-    public function lockToday()
-    {
-        Attendance::whereDate('date', today())->update(['locked' => true]);
 
-        return redirect()->back()->with('success', 'Today\'s attendance locked!');
-    }
+
+
+
+
+
+    // ###### {{locking the ability to change the status of attendance}} ###### //
+    // public function lockToday()
+    // {
+    //     Attendance::whereDate('date', today())->update(['locked' => true]);
+
+    //     return redirect()->back()->with('success', 'Today\'s attendance locked!');
+    // }
     // ###### {{ end locking the ability to change the status of attendance}} ###### //
 
 
-    // ###### {{unlocking the ability to change the status of attendance}} ###### //
-    public function unlockToday()
-    {
-        Attendance::whereDate('date', today())->update(['locked' => false]);
 
-        return redirect()->back()->with('success', 'Today\'s attendance has been unlocked.');
-    }
+
+
+
+
+    // ###### {{unlocking the ability to change the status of attendance}} ###### //
+    // public function unlockToday()
+    // {
+    //     Attendance::whereDate('date', today())->update(['locked' => false]);
+
+    //     return redirect()->back()->with('success', 'Today\'s attendance has been unlocked.');
+    // }
     // ###### {{ end unlocking the ability to change the status of attendance}} ###### //
+
+
+
+
+
 
 
     // ###### {{showing the attendance history of a user}} ###### //
@@ -130,4 +205,38 @@ class AttendanceController extends Controller
         return view('tables.attendance.attendancehistory', compact('user', 'attendanceHistory'));
     }
     // ###### {{ end showing the attendance history of a user}} ###### //
+
+
+    public function autoSaveAttendance()
+    {
+        $users = User::all();
+
+        foreach ($users as $user) {
+            $attendance = Attendance::where('user_id', $user->id)
+                ->whereDate('date', today())
+                ->first();
+
+            if ($attendance && $attendance->submitted_at) {
+                continue;
+            }
+
+            $attendance = Attendance::firstOrNew([
+                'user_id' => $user->id,
+                'date' => today(),
+            ]);
+
+
+
+            $attendance->status = 'present';
+            $attendance->submitted_by = auth()->id();
+            $attendance->submitted_at = now();
+            $attendance->description = null;
+
+
+
+            $attendance->save();
+        }
+
+        return redirect()->back()->with('success', 'Attendance has been auto-saved at 12:05 AM.');
+    }
 }

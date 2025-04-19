@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Attendance extends Model
 {
@@ -23,4 +24,26 @@ class Attendance extends Model
     {
         return $this->belongsTo(User::class, 'submitted_by');
     }
+
+
+    // ########## {{Auto save every day}} ########## //
+    // public static function autoSaveForAllUsers()
+    // {
+    //     $users = User::all();
+
+    //     foreach ($users as $user) {
+    //         $attendance = self::firstOrNew([
+    //             'user_id' => $user->id,
+    //             'date' => today(),
+    //         ]);
+
+    //         $attendance->status = 'present';
+    //         $attendance->submitted_by = null;
+    //         $attendance->submitted_at = now();
+    //         $attendance->tardiness_minutes = null;
+    //         $attendance->description = null;
+    //         $attendance->save();
+
+    //     }
+    // }
 }

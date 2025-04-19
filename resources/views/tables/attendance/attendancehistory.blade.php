@@ -92,6 +92,11 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+
+                                <div class="mt-4">
+                                    <a href="{{ route('attendance.index') }}" class="btn btn-primary">Back to
+                                        Attendance</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -99,9 +104,6 @@
             </div>
         </div>
 
-        <div class="mt-4">
-            <a href="{{ route('attendance.index') }}" class="btn btn-primary">Back to Attendance</a>
-        </div>
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {

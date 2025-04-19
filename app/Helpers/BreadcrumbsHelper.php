@@ -28,6 +28,11 @@ class BreadcrumbsHelper
             $breadcrumbs[] = ['label' => 'Dashboard', 'url' => route('dashboard')];
             $breadcrumbs[] = ['label'=> 'Tables','url'=> route('tables')];
             $breadcrumbs[] = ['label'=> 'Attendance','url'=> route('attendance.index')];
+        }elseif ($routeName === 'attendanceHistory.index') {
+            $breadcrumbs[] = ['label' => 'Dashboard', 'url' => route('dashboard')];
+            $breadcrumbs[] = ['label'=> 'Tables','url'=> route('tables')];
+            $breadcrumbs[] = ['label'=> 'Attendance','url'=> route('attendance.index')];
+            $breadcrumbs[] = ['label'=> 'Yesterday Attendance','url'=> route('attendanceHistory.index')];
         }
 
         return $breadcrumbs;

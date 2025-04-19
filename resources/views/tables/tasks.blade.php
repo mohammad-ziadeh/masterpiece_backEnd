@@ -67,7 +67,7 @@
                             </form>
                             {{-- End Filters --}}
 
-                            {{-- Create trigger --}}
+                            {{-- Create button --}}
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <button type="button" class="btn btn-success mb-3" data-toggle="modal"
                                     data-target="#createTaskModal">
@@ -82,7 +82,7 @@
                                     </form>
                                 @endif
                             </div>
-                            {{-- End Create trigger --}}
+                            {{-- End Create button --}}
 
 
                             <div class="table-responsive">
@@ -117,8 +117,9 @@
                                                         No file available
                                                     @endif
                                                 </td>
-                                                <td title="See the description" class="task-row" data-id="{{ $task->id }}"><i
-                                                        style="margin-left:40%" class="fa-solid fa-chevron-down"></i>
+                                                <td title="See the description" class="task-row"
+                                                    data-id="{{ $task->id }}"><i style="margin-left:40%"
+                                                        class="fa-solid fa-chevron-down"></i>
                                                 </td>
                                                 <td>{{ $task->due_date }}</td>
                                                 <td>{{ $task->created_at->format('Y-m-d') }}</td>
@@ -214,9 +215,15 @@
                                                                 </div>
 
                                                                 <label for="taskDescription">Description</label>
-                                                                <textarea class="form-control " name="description" id="taskDescription" rows="3">
+                                                                @php $inputId = 'desc_' . $task->id; @endphp
+                                                                <textarea class="form-control " name="description" maxlength="1000" oninput="updateCounter(this)"
+                                                                    id="{{ $inputId }}" id="taskDescription" rows="3">
                                                                             {{ $task->description }}
-                                                                        </textarea>
+                                                                </textarea>
+                                                                <small id="{{ $inputId }}-counter"
+                                                                    style="text-align: right; color: gray;">
+                                                                    {{ strlen($task->description ?? '') }} / 1000
+                                                                </small>
 
                                                                 <div class="modal-footer">
                                                                     <button type="submit"
@@ -230,7 +237,7 @@
                                                 </div>
                                             </div>
                                             {{-- End Edit Task   --}}
-                                            
+
                                             {{-- Show PDF Modal --}}
                                             @if ($task->pdf_path)
                                                 <div class="modal fade" id="showPdf{{ $task->id }}"
@@ -240,8 +247,7 @@
                                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                                         <div class="modal-content">
                                                             <div class="modal-body p-0">
-                                                                <iframe
-                                                                id="pdfIframe"
+                                                                <iframe id="pdfIframe"
                                                                     src="{{ asset('storage/' . $task->pdf_path) }}"
                                                                     width="100%" height="500px"
                                                                     style="border: none;"></iframe>
@@ -255,11 +261,11 @@
                                     </tbody>
                                 </table>
                             </div>
-                            
+
                             <div class="d-flex justify-content-center mt-3">
                                 {{ $tasks->links('pagination::bootstrap-4') }}
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -283,7 +289,12 @@
 
                         <div class="form-group">
                             <label for="taskDescription">Description</label>
-                            <textarea class="form-control" name="description" id="taskDescription" required></textarea>
+                            @php $inputId = 'desc_' . $task->id; @endphp
+                            <textarea class="form-control" maxlength="1000" oninput="updateCounter2(this)"
+                            id="{{ $inputId }}" name="description" id="taskDescription" required></textarea>
+                            <small id="{{ $inputId }}-2counter" style="text-align: right; color: gray;">
+                                {{ strlen($task->description ?? '') }} / 1000
+                            </small>
                         </div>
                         <div class="form-group">
                             <label for="pdf">Choose a file (should be pdf)</label>
@@ -391,14 +402,21 @@
                 detailsRow.stop(true, true).slideToggle(10);
             });
         });
-
-      
     </script>
 
 
 
 
-
+    <script>
+        function updateCounter(input) {
+            const counter = document.getElementById(input.id + '-counter');
+            counter.textContent = `${input.value.length} / ${input.maxLength}`;
+        }
+        function updateCounter2(input) {
+            const counter = document.getElementById(input.id + '-2counter');
+            counter.textContent = `${input.value.length} / ${input.maxLength}`;
+        }
+    </script>
 
 
 </x-app-layout>

@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\AttendanceHistoryStatus;
+use App\Models\Attendance;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TasksController;
-use App\Models\Attendance;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AttendanceHistoryStatus;
+use App\Http\Controllers\AttendanceHistoryController;
+use App\Http\Controllers\LeaderBoardController;
 
 /*
 |--------------------------------------------------------------------------- 
@@ -33,11 +35,19 @@ Route::middleware(['auth', 'verified', 'role:trainer'])->group(function () {
     // -------{Tables}---------- //
     Route::resource('users', UserController::class);
     Route::resource('tasks', TasksController::class);
+    Route::get('/lead', function () {
+        return view('tables.leaderBoard');
+    })->name('lead');
     //----------------------------
     Route::resource('attendance', AttendanceController::class);
     Route::post('attendance/lock-today', [AttendanceController::class, 'lockToday'])->name('attendance.lock');
     Route::post('attendance/unlock-today', [AttendanceController::class, 'unlockToday'])->name('attendance.unlock');
-    Route::get('attendance/{userId}/history', [AttendanceController::class, 'showHistory'])->name('attendance.history');
+    Route::resource('attendance', AttendanceController::class);
+    // -------{{ All Attendance History }}------- //
+    Route::resource('attendanceHistory', AttendanceHistoryController::class);
+    Route::post('attendanceHistory/lock-today', [AttendanceHistoryController::class, 'lockToday'])->name('attendance.lock');
+    Route::post('attendanceHistory/unlock-today', [AttendanceHistoryController::class, 'unlockToday'])->name('attendance.unlock');
+    Route::get('attendanceHistory/{userId}/history', [AttendanceHistoryController::class, 'showHistory'])->name('attendance.history');
 
 
     // -------{ Actions }---------- //
@@ -74,12 +84,20 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
     // -------{Tables}---------- //
     Route::resource('users', UserController::class);
     Route::resource('tasks', TasksController::class);
+    Route::resource('leaderBoard', LeaderBoardController::class);
+    Route::get('/users/{userId}/points', [UserController::class, 'showUserPoints'])->name('tables.points');
+
+    
     //-------------------------------
     Route::resource('attendance', AttendanceController::class);
     Route::post('attendance/lock-today', [AttendanceController::class, 'lockToday'])->name('attendance.lock');
     Route::post('attendance/unlock-today', [AttendanceController::class, 'unlockToday'])->name('attendance.unlock');
     Route::get('attendance/{userId}/history', [AttendanceController::class, 'showHistory'])->name('attendance.history');
-
+    // -------{{ All Attendance History }}------- //
+    Route::resource('attendanceHistory', AttendanceHistoryController::class);
+    Route::post('attendanceHistory/lock-today', [AttendanceHistoryController::class, 'lockToday'])->name('attendance.lock');
+    Route::post('attendanceHistory/unlock-today', [AttendanceHistoryController::class, 'unlockToday'])->name('attendance.unlock');
+    Route::get('attendanceHistory/{userId}/history', [AttendanceHistoryController::class, 'showHistory'])->name('attendance.history');
 
     // -------{ Actions }---------- //
     Route::post('/users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');

@@ -100,6 +100,7 @@
                                             <th>Email</th>
                                             <th>Role</th>
                                             <th>Joining Date</th>
+                                            <th>Points</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -111,6 +112,10 @@
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ ucfirst($user->role) }}</td>
                                                 <td>{{ $user->created_at->format('Y-m-d') }}</td>
+                                                <td>
+                                                    <a href="{{ route('tables.points', $user->id) }}"
+                                                        class="btn btn-info">View Points</a>
+                                                </td>
                                                 <td>
                                                     {{-- Soft del And edit --}}
                                                     @if (!$user->trashed())

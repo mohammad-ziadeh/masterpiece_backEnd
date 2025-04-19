@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->enum('role',['trainer','admin','student'])->default('student');
+            $table->enum('role', ['trainer', 'admin', 'student'])->default('student');
             $table->index('role');
+            $table->integer('weekly_points')->default(1000);
+            $table->date('last_reset_at')->nullable();
             $table->softDeletes();
             $table->string('password');
             $table->rememberToken();

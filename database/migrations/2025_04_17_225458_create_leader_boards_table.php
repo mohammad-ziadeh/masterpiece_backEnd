@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('submissions', function (Blueprint $table) {
+        Schema::create('leader_boards', function (Blueprint $table) {
             $table->id();
-            $table->string('pdf_path')->nullable();
-            $table->string('image_path')->nullable();
-            $table->string('link')->nullable();
-            $table->string('grade')->nullable();
-            $table->softDeletes();
-            $table->text('feedback')->nullable();
+            $table->integer('Rank');
+            $table->integer('Score');
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('submissions');
+        Schema::dropIfExists('leader_boards');
     }
 };
