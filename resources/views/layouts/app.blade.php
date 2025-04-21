@@ -16,6 +16,7 @@
         integrity="sha384-KyZXEJ6uS+YbU6jYd42e29+bT5YrD1orY73Sg/4bPv6c7l9FzvkcHYOoHkaM2s+V" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/breadcrumbs.css') }}">
     <link rel="stylesheet" href="{{ asset('css/mainTablesCards.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
     {{-- <link rel="stylesheet" href="{{ asset('css/leadBoard.css') }}"> --}}
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -50,6 +51,7 @@
         </main>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
 </body>
 
 </html>
