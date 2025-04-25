@@ -3,13 +3,13 @@
 @endphp
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl" style="color: #3b1e54; margin-bottom: 20px;">Yesterday Attendance &nbsp;&nbsp;
-            {{ $pastDate->format('Y-m-d') }}
+        <h2 class="font-semibold text-xl" style="color: #3b1e54; margin-bottom: 20px;">Daily Attendance &nbsp;&nbsp;
+            {{ $date->format('Y-m-d') }}
         </h2>
         <ul class="breadcrumbs">
             @foreach ($breadcrumbs as $breadcrumb)
                 <li>
-                    <a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
+                    <a style="color: #3b1e54;" href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
                 </li>
             @endforeach
         </ul>
@@ -18,7 +18,6 @@
     @if (session('success'))
         <div class="alert alert-success mt-4">{{ session('success') }}</div>
     @endif
-
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6" style="overflow: hidden;">
         <div class="p-4 sm:p-8 bg-white" style="margin-top: 20px;">
             <div class="row">
@@ -26,20 +25,13 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <div class="mb-4">
-                                @if (request('view') === 'all')
-                                    <a href="{{ route('attendanceHistory.index', request()->except('view')) }}" class="btn btn-primary">
-                                        Show Paginated
-                                    </a>
-                                @else
-                                    <a href="{{ route('attendanceHistory.index', array_merge(request()->all(), ['view' => 'all'])) }}" class="btn btn-primary">
-                                        Show All
-                                    </a>
-                                @endif
+                            <div style="display: flex; justify-content:space-around; font-size: x-large">
+                                <div>Today Absences: {{ $totalAbsent }}</div>
+                                <div>Today Tardiness: {{ $totalLate }}</div>
                             </div>
 
 
-                            <form method="GET" action="{{ route('attendanceHistory.index') }}" class="mb-3 mt-4">
+                            <form method="GET" action="{{ route('attendance.index') }}" class="mb-3 mt-4">
                                 <div class="row">
 
                                     <div class="col-md-2">
@@ -64,13 +56,14 @@
 
                                     <div class="col-md-3 ">
                                         <button type="submit" class="btn btn-primary">Filter</button>
-                                        <a href="{{ route('attendanceHistory.index') }}" class="btn btn-secondary">Reset</a>
+                                        <a href="{{ route('attendance.index') }}" class="btn btn-secondary">Reset</a>
                                     </div>
                                 </div>
                             </form>
 
+                            <a href="{{ route('attendanceHistory.index') }}">Yesterday Attendance</a>
 
-                            <form method="POST" action="{{ route('attendanceHistory.store') }}" class="p-6">
+                            <form method="POST" action="{{ route('attendance.store') }}" class="p-6">
                                 @csrf
                                 <table class="table table-bordered">
                                     <thead>
@@ -85,14 +78,14 @@
                                     <tbody>
                                         @foreach ($users as $user)
                                             @php
-                                                $attendance = $yesterdayAttendances->get($user->id);
+                                                $attendance = $attendances->get($user->id);
                                                 $locked = $attendance && $attendance->locked;
                                                 $currentStatus = $attendance->status ?? 'present';
                                             @endphp
                                             <tr>
                                                 <td>{{ $user->name }}</td>
                                                 <td>
-                                                    <select name="yesterdayAttendances[{{ $user->id }}]"
+                                                    <select name="attendances[{{ $user->id }}]"
                                                         class="form-control" {{ $locked ? 'disabled' : '' }}>
                                                         @foreach (['present', 'absent', 'late', 'excused'] as $status)
                                                             <option value="{{ $status }}"
@@ -107,7 +100,7 @@
                                                     <td>
                                                         <input type="number" name="tardiness[{{ $user->id }}]"
                                                             class="form-control" style="border-radius: 5px;"
-                                                            placeholder="Minutes late" min="1"
+                                                            placeholder="Minutes late" min="1"                                        
                                                             value="{{ $attendance->tardiness_minutes ?? '' }}"
                                                             {{ $locked ? 'disabled' : '' }}>
                                                     </td>
@@ -121,7 +114,7 @@
                                                     </td>
                                                 @endif
                                                 <td style="display: grid">
-                                                    @php $inputId = 'desc_' . $user->id; @endphp
+                                                   @php $inputId = 'desc_' . $user->id; @endphp
                                                     <input type="text" style="border-radius: 5px;"
                                                         id="{{ $inputId }}"
                                                         name="description[{{ $user->id }}]"
@@ -141,7 +134,6 @@
                                                         <i class="fa-regular fa-calendar-days"
                                                             style="font-size: xx-large"></i></a>
                                                 </td>
-                                             
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -164,11 +156,11 @@
         </div>
         {{-- @if (auth()->user()->role === 'admin')
             <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px;">
-                <form method="POST" action="{{ route('attendanceHistory.lockToday') }}">
+                <form method="POST" action="{{ route('attendance.lock') }}">
                     @csrf
                     <button class="btn btn-danger" type="submit">Lock Today's Attendance</button>
                 </form>
-                <form method="POST" action="{{ route('attendanceHistory.unlockToday') }}">
+                <form method="POST" action="{{ route('attendance.unlock') }}">
                     @csrf
                     <button class="btn btn-warning" type="submit">Unlock Today's Attendance</button>
                 </form>

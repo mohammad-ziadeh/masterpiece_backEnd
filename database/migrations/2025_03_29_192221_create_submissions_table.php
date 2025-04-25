@@ -14,10 +14,7 @@ return new class extends Migration
         Schema::create('submissions', function (Blueprint $table) {
             $table->id();
             $table->string('pdf_path')->nullable();
-            $table->string('image_path')->nullable();
-            $table->string('link')->nullable();
-            $table->string('grade')->nullable();
-            $table->softDeletes();
+            $table->enum('grade', ['failed', 'passed', 'pending'])->default('pending');
             $table->text('feedback')->nullable();
             $table->timestamps();
         });

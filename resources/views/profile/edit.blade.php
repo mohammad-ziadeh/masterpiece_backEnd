@@ -10,7 +10,7 @@
         <ul class="breadcrumbs">
             @foreach ($breadcrumbs as $breadcrumb)
                 <li>
-                    <a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
+                    <a style="color: #3b1e54;" href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
                 </li>
             @endforeach
         </ul>

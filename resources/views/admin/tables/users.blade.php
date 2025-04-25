@@ -10,7 +10,7 @@
             <ul class="breadcrumbs">
                 @foreach ($breadcrumbs as $breadcrumb)
                     <li>
-                        <a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
+                        <a style="color: #3b1e54;" href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
                     </li>
                 @endforeach
             </ul>
@@ -204,19 +204,22 @@
                                                                         name="email" value="{{ $user->email }}"
                                                                         required>
                                                                 </div>
+
                                                                 <div class="form-group">
                                                                     <label for="role">Role</label>
                                                                     <select class="form-control" name="role"
                                                                         required>
+                                                                        @if (auth()->check() && auth()->user()->role === 'admin')
                                                                         <option value="admin"
-                                                                            {{ $user->role == 'admin' ? 'selected' : '' }}>
-                                                                            Admin</option>
+                                                                        {{ $user->role == 'admin' ? 'selected' : '' }}>
+                                                                        Admin</option>
+                                                                        <option value="trainer"
+                                                                        {{ $user->role == 'trainer' ? 'selected' : '' }}>
+                                                                        Trainer</option>
+                                                                        @endif
                                                                         <option value="student"
                                                                             {{ $user->role == 'student' ? 'selected' : '' }}>
                                                                             Student</option>
-                                                                        <option value="trainer"
-                                                                            {{ $user->role == 'trainer' ? 'selected' : '' }}>
-                                                                            Trainer</option>
                                                                     </select>
                                                                 </div>
                                                                 <div class="modal-footer">
@@ -261,14 +264,18 @@
                             <label for="email">Email</label>
                             <input type="email" class="form-control" name="email" required>
                         </div>
+                      
                         <div class="form-group">
                             <label for="role">Role</label>
                             <select class="form-control" name="role" required>
                                 <option value="student">Student</option>
+                                @if (auth()->check() && auth()->user()->role === 'admin')
                                 <option value="admin">Admin</option>
                                 <option value="trainer">Trainer</option>
+                                @endif
                             </select>
                         </div>
+                    
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-success">Create</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

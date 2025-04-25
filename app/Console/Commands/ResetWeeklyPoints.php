@@ -25,12 +25,12 @@ class ResetWeeklyPoints extends Command
      * Execute the console command.
      */
     public function handle()
-{
-    User::query()->update([
-        'weekly_points' => 1000,
-        'last_reset_at' => now()->startOfWeek(),
-    ]);
-
-    $this->info('Weekly points reset successfully!');
-}
+    {
+        User::query()->update([
+            'weekly_points' => 1000,
+            'last_reset_at' => now()->startOfWeek(),
+        ]);
+        // each monday
+        $this->info('weekly points reset successfully!');
+    }
 }

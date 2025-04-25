@@ -20,7 +20,7 @@ class LeaderBoardController extends Controller
         $topUsers = $query->orderBy('weekly_points', 'desc')->take(5)->get();
 
 
-        return view('tables.leaderBoard', compact('topUsers'));
+        return view('admin.tables.leaderBoard', compact('topUsers'));
     }
 
     /**

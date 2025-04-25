@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-         //   $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
             $table->string('name');
             $table->string('pdf_path')->nullable();
-      //      $table->string('image_path')->nullable();
-        //    $table->string('link')->nullable();
+            //      $table->string('image_path')->nullable();
+            //    $table->string('link')->nullable();
             $table->softDeletes();
             $table->text('description')->nullable();
-            $table->date('due_date')->nullable();
+            $table->timestamp('due_date')->nullable();
             $table->timestamps();
         });
     }

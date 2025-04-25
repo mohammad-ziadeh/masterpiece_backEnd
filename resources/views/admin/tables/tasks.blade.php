@@ -10,7 +10,7 @@
             <ul class="breadcrumbs">
                 @foreach ($breadcrumbs as $breadcrumb)
                     <li>
-                        <a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
+                        <a style="color: #3b1e54;" href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
                     </li>
                 @endforeach
             </ul>
@@ -226,7 +226,7 @@
 
                                                                 <div class="form-group">
                                                                     <label for="taskDueDate">Due Date</label>
-                                                                    <input type="date" class="form-control"
+                                                                    <input type="datetime-local" class="form-control" min="{{date('Y-m-d\TH:i') }}"
                                                                         name="due_date" id="taskDueDate" required
                                                                         value="{{ $task->due_date }}">
                                                                 </div>
@@ -321,7 +321,7 @@
                         </div>
                         <div class="form-group">
                             <label for="taskDueDate">Due Date</label>
-                            <input type="date" class="form-control" name="due_date" id="taskDueDate" required>
+                            <input type="datetime-local" class="form-control" min="{{date('Y-m-d\TH:i') }}"  name="due_date" id="taskDueDate" required>
                         </div>
 
                         <div class="modal-footer">

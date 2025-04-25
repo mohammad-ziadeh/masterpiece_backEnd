@@ -51,7 +51,7 @@ class AttendanceHistoryController extends Controller
 
 
 
-        return view('tables.attendance.allAtendanceHistroy', compact('users',   'yesterdayAttendances', 'pastDate'));
+        return view('admin.tables.attendance.allAtendanceHistroy', compact('users',   'yesterdayAttendances', 'pastDate'));
     }
 
     public function store(Request $request)

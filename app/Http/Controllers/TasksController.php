@@ -36,13 +36,13 @@ class TasksController extends Controller
         } else {
             $query->orderBy('id', 'asc');
         }
+        $date = today();
 
-       
         // -------{{ End Filters }}------- //
 
         $tasks = $query->paginate(10);
 
-        return view('tables.tasks', compact('tasks'));
+        return view('admin.tables.tasks', compact('tasks', 'date'));
     }
 
     /**
@@ -62,14 +62,15 @@ class TasksController extends Controller
             $fileExtension = null;
         }
 
-        return view('tables.tasks', compact('task', 'fileUrl', 'fileExtension'));
+        return view('admin.tables.tasks', compact('task', 'fileUrl', 'fileExtension'));
     }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view("tables.tasks");
+        $date = today();
+        return view("admin.tables.tasks", compact('date'));
     }
 
     /**
@@ -79,7 +80,7 @@ class TasksController extends Controller
     {
         // Handle file uploads
         $pdfPath = null;
-        
+
 
 
         if ($request->hasFile('pdf')) {
@@ -90,7 +91,6 @@ class TasksController extends Controller
 
         Tasks::create([
             'name' => $request->name,
-            //    'status' => $request->status,
             'pdf_path' => $pdfPath,
             'description' => $request->description,
             'due_date' => $request->due_date,
@@ -105,7 +105,7 @@ class TasksController extends Controller
     public function edit($id)
     {
         $task = Tasks::findOrFail($id);
-        return view("tables.tasks", compact("task"));
+        return view("admin.tables.tasks", compact("task"));
     }
 
     /**
@@ -129,7 +129,6 @@ class TasksController extends Controller
 
         $task->update([
             'name' => $request->name,
-            //     'status' => $request->status,
             'pdf_path' => $pdfPath,
             'description' => $request->description,
             'due_date' => $request->due_date,

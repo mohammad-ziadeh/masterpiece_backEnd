@@ -45,7 +45,7 @@ class UserController extends Controller
 
         $users = $query->paginate(10);
 
-        return view('tables.users', compact('users'));
+        return view('admin.tables.users', compact('users'));
     }
 
     /**
@@ -53,7 +53,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view("tables.users");
+        return view("admin.tables.users");
     }
 
     /**
@@ -85,7 +85,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $users = User::findOrFail($id);
-        return view("tables.users", compact("users"));
+        return view("admin.tables.users", compact("users"));
     }
 
     /**

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable 
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
     /**
@@ -25,7 +25,7 @@ class User extends Authenticatable
         'deleted_at'
     ];
 
-    use SoftDeletes; 
+    use SoftDeletes;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -69,7 +69,7 @@ class User extends Authenticatable
     }
 
     public function attendances()
-{
-    return $this->hasMany(Attendance::class);
-}
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }

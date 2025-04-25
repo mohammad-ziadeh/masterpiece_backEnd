@@ -62,7 +62,7 @@ class AttendanceController extends Controller
 
 
 
-        return view('tables.attendance.attendance', compact('users', 'attendances', 'date', 'totalAbsent', 'totalLate', 'yesterdayAttendances', 'pastDate'));
+        return view('admin.tables.attendance.attendance', compact('users', 'attendances', 'date', 'totalAbsent', 'totalLate', 'yesterdayAttendances', 'pastDate'));
     }
 
     public function store(Request $request)
@@ -125,7 +125,7 @@ class AttendanceController extends Controller
                     $user->weekly_points = max(0, $user->weekly_points);
                     $user->save();
                 }
-            }
+            } 
 
 
 
@@ -202,7 +202,7 @@ class AttendanceController extends Controller
         $attendanceHistory = $query->orderBy('date', 'desc')->paginate(10);;
         // ########## {{ end filters }} ########## //
 
-        return view('tables.attendance.attendancehistory', compact('user', 'attendanceHistory'));
+        return view('admin.tables.attendance.attendancehistory', compact('user', 'attendanceHistory'));
     }
     // ###### {{ end showing the attendance history of a user}} ###### //
 
