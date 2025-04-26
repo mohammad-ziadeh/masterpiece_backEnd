@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('submitted_at')->nullable();
             $table->tinyText('description')->nullable();
             $table->foreignId('submitted_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->boolean('locked')->default(false);
+           // $table->boolean('locked')->default(false);
             $table->timestamps();
     
             $table->unique(['user_id', 'date']);

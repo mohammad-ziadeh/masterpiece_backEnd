@@ -32,7 +32,10 @@ class AttendanceController extends Controller
         if ($time->between($startTime, $endTime)) {
             $users = $query->get();
         } else {
-            $users = $query->paginate(10);
+            $users = $query->whereIn('role', ['student', 'trainer'])
+                ->orderBy('role')
+                ->paginate(10);
+            $students = User::where('role', 'student')->paginate(10);
         }
 
         $saveStartTime = $time->copy()->setTime(0, 10);
@@ -55,6 +58,7 @@ class AttendanceController extends Controller
 
 
 
+
         // ########## {{ filters }} ########## //
 
         $totalAbsent = (clone $todayQuery)->where('status', 'absent')->count();
@@ -62,7 +66,7 @@ class AttendanceController extends Controller
 
 
 
-        return view('admin.tables.attendance.attendance', compact('users', 'attendances', 'date', 'totalAbsent', 'totalLate', 'yesterdayAttendances', 'pastDate'));
+        return view('admin.tables.attendance.attendance', compact('users', 'attendances', 'date', 'totalAbsent', 'totalLate', 'yesterdayAttendances', 'pastDate', 'students'));
     }
 
     public function store(Request $request)
@@ -125,7 +129,7 @@ class AttendanceController extends Controller
                     $user->weekly_points = max(0, $user->weekly_points);
                     $user->save();
                 }
-            } 
+            }
 
 
 

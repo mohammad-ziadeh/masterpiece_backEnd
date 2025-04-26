@@ -100,12 +100,10 @@
                                                     style="border: 0px; background-color: transparent; margin-left: 5px;"
                                                     id="sortButton"># ↓</button></th>
                                             <th>Task Name</th>
-                                            <th data-intro="Here u can check the tasks pdf and view it by clicking on the eye icon"
-                                                data-step="5">Task file</th>
-                                            <th data-intro="Here u can see the full description of the task by clicking on the down arrow icon"
-                                                data-step="6">Description</th>
                                             <th>Due Date</th>
                                             <th>Created At</th>
+                                            <th data-intro="Here u can see the full description of the task from the file it self to all the assigned students"
+                                                data-step="5">Details</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -114,31 +112,21 @@
                                             <tr>
                                                 <td> {{ $task->id }}</td>
                                                 <td>{{ $task->name }}</td>
-                                                <td>
-                                                    @if ($task->pdf_path)
-                                                        <button title="See the PDF"
-                                                            style="margin-left:35%; border:0px;background-color:transparent"
-                                                            data-toggle="modal"
-                                                            data-target="#showPdf{{ $task->id }}">
-                                                            <i style="font-size: large;" class="fa fa-eye"></i>
-                                                        </button>
-                                                    @else
-                                                        No file available
-                                                    @endif
-                                                </td>
-                                                <td title="See the description" class="task-row"
-                                                    data-id="{{ $task->id }}"><i style="margin-left:40%"
-                                                        class="fa-solid fa-chevron-down"></i>
-                                                </td>
                                                 <td>{{ $task->due_date }}</td>
                                                 <td>{{ $task->created_at->format('Y-m-d') }}</td>
+                                                <td>
+                                                    <a href="{{ route('tasks.show', $task->id) }}"
+                                                        class="btn btn-secondary">
+                                                        View
+                                                    </a>
+                                                </td>
                                                 <td>
 
                                                     {{-- Soft del And edit --}}
 
                                                     @if (!$task->trashed())
                                                         <div data-intro="Here u can Edit the tasks information or Delete the tasks (Deleting here will not be permanent here)"
-                                                            data-step="7">
+                                                            data-step="6">
                                                             <button type="button" class="btn btn-primary"
                                                                 data-toggle="modal"
                                                                 data-target="#editTaskModal{{ $task->id }}">
@@ -185,18 +173,6 @@
                                                     {{-- end Restore and delete permanently --}}
                                                 </td>
                                             </tr>
-
-
-                                            {{-- Task Description --}}
-                                            <tr class="task-details" id="task-details-{{ $task->id }}"
-                                                style="display:none;">
-                                                <td colspan="7">
-                                                    <strong>Task Description:</strong>
-                                                    <p>{{ $task->description }}</p>
-                                                </td>
-                                            </tr>
-                                            {{-- End Task Description --}}
-
                                             {{-- Edit Task --}}
                                             <div class="modal fade" id="editTaskModal{{ $task->id }}"
                                                 tabindex="-1" role="dialog"
@@ -226,7 +202,8 @@
 
                                                                 <div class="form-group">
                                                                     <label for="taskDueDate">Due Date</label>
-                                                                    <input type="datetime-local" class="form-control" min="{{date('Y-m-d\TH:i') }}"
+                                                                    <input type="datetime-local" class="form-control"
+                                                                        min="{{ date('Y-m-d\TH:i') }}"
                                                                         name="due_date" id="taskDueDate" required
                                                                         value="{{ $task->due_date }}">
                                                                 </div>
@@ -242,6 +219,35 @@
                                                                     {{ strlen($task->description ?? '') }} / 1000
                                                                 </small>
 
+
+
+                                                                <div class="form-group">
+                                                                    <label for="assigned_to">Assign to Students</label>
+                                                                    <div class="checkbox-list" id="checkboxList_{{ $task->id }}"
+                                                                        style="max-height: 200px; overflow-y: auto; padding-right: 10px;">
+                                                                        <button type="button" class="btn btn-primary" id="selectAllBtn_{{ $task->id }}">Select All</button>
+
+                                                                        @foreach ($students as $student)
+                                                                            <div class="form-check">
+                                                                                <input type="checkbox"
+                                                                                    name="assigned_to[]"
+                                                                                    id="assigned_to_{{ $student->id }}"
+                                                                                    value="{{ $student->id }}"
+                                                                                    class="form-check-input"
+                                                                                    @if ($task->students->contains('id', $student->id)) checked @endif>
+                                                                                <label
+                                                                                    for="assigned_to_{{ $student->id }}"
+                                                                                    class="form-check-label">
+                                                                                    {{ $student->name }}
+                                                                                </label>
+                                                                            </div>
+                                                                        @endforeach
+                                                                    </div>
+
+                                                                </div>
+
+
+
                                                                 <div class="modal-footer">
                                                                     <button type="submit"
                                                                         class="btn btn-primary">Update</button>
@@ -254,26 +260,6 @@
                                                 </div>
                                             </div>
                                             {{-- End Edit Task   --}}
-
-                                            {{-- Show PDF Modal --}}
-                                            @if ($task->pdf_path)
-                                                <div class="modal fade" id="showPdf{{ $task->id }}"
-                                                    tabindex="-1" role="dialog"
-                                                    aria-labelledby="showPdfLabel{{ $task->id }}"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                        <div class="modal-content">
-                                                            <div class="modal-body p-0">
-                                                                <iframe id="pdfIframe"
-                                                                    src="{{ asset('storage/' . $task->pdf_path) }}"
-                                                                    width="100%" height="500px"
-                                                                    style="border: none;"></iframe>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                            {{-- End Show PDF Modal --}}
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -307,32 +293,55 @@
                         <div class="form-group">
                             <label for="taskDescription">Description</label>
                             @php $inputId = 'desc_new'; @endphp
-
                             <textarea class="form-control" maxlength="1000" oninput="updateCounter2(this)" id="{{ $inputId }}"
-                                name="description" id="taskDescription" required></textarea>
-                            <small id="{{ $inputId }}-2counter" style="text-align: right; color: gray;">
-                                0 / 1000
-                            </small>
+                                name="description" required></textarea>
+                            <small id="{{ $inputId }}-2counter" style="text-align: right; color: gray;">0 /
+                                1000</small>
                         </div>
+
                         <div class="form-group">
-                            <label for="pdf">Choose a file (should be pdf)</label>
+                            <label for="pdf">Choose a file (should be PDF)</label>
                             <input type="file" accept=".pdf" name="pdf" id="pdf"
                                 class="form-control">
                         </div>
+
                         <div class="form-group">
                             <label for="taskDueDate">Due Date</label>
-                            <input type="datetime-local" class="form-control" min="{{date('Y-m-d\TH:i') }}"  name="due_date" id="taskDueDate" required>
+                            <input type="datetime-local" class="form-control" min="{{ date('Y-m-d\TH:i') }}"
+                                name="due_date" id="taskDueDate" required>
                         </div>
+
+                        <div class="form-group">
+                            <label for="assigned_to">Assign to Students</label>
+                            <div class="checkbox-list2"
+                                style="max-height: 200px; overflow-y: auto; padding-right: 10px;">
+                                <button type="button" class="btn btn-primary" id="selectAllBtn2">Select All</button>
+
+                                @foreach ($students as $student)
+                                    <div class="form-check">
+                                        <input type="checkbox" name="assigned_to[]"
+                                            id="assigned_to_{{ $student->id }}" value="{{ $student->id }}"
+                                            class="form-check-input" @if ($task->students->contains('id', $student->id)) checked @endif>
+                                        <label for="assigned_to_{{ $student->id }}" class="form-check-label">
+                                            {{ $student->name }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-success">Create</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
     {{-- End Create Task Modal  --}}
 
 
@@ -408,21 +417,49 @@
             $('#successMessage').fadeOut('slow');
             $('#errorMessage').fadeOut('slow');
         }, 3000);
-
-
-
-        // Expanded row js 
-        $(document).ready(function() {
-            $('.task-row').on('click', function() {
-                var taskId = $(this).data('id');
-                var detailsRow = $('#task-details-' + taskId);
-
-                detailsRow.stop(true, true).slideToggle(10);
-            });
-        });
     </script>
 
-
+    {{-- select all checkboxes --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // edit select all
+            const selectAllButtons = document.querySelectorAll('button[id^="selectAllBtn_"]');
+        
+            selectAllButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const taskId = button.id.split('_')[1]; // get the task ID part
+                    const checkboxContainer = document.getElementById('checkboxList_' + taskId);
+                    const checkboxes = checkboxContainer.querySelectorAll('input[type="checkbox"]');
+        
+                    let allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+        
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = !allChecked;
+                    });
+        
+                    button.textContent = allChecked ? 'Select All' : 'Deselect All';
+                });
+            });
+        
+            // Create page select all
+            const selectAllBtnCreate = document.getElementById('selectAllBtn2');
+            const checkboxesCreate = document.querySelectorAll('.checkbox-list2 input[type="checkbox"]');
+        
+            if (selectAllBtnCreate) {
+                selectAllBtnCreate.addEventListener('click', function() {
+                    let allChecked = Array.from(checkboxesCreate).every(checkbox => checkbox.checked);
+        
+                    checkboxesCreate.forEach(checkbox => {
+                        checkbox.checked = !allChecked;
+                    });
+        
+                    selectAllBtnCreate.textContent = allChecked ? 'Select All' : 'Deselect All';
+                });
+            }
+        });
+        </script>
+        
+    {{-- end select all checkboxes--}}
 
 
     <script>

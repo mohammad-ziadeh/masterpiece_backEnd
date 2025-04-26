@@ -104,7 +104,7 @@
                     <div class="ag-courses-item_bg"></div>
 
                     <div class="ag-courses-item_title">
-                        Motion Design
+                        Submissions
                     </div>
 
                     <div class="ag-courses-item_date-box">

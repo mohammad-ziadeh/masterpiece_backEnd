@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('pdf_path')->nullable();
             //      $table->string('image_path')->nullable();
             //    $table->string('link')->nullable();
+           // $table->foreignId('assigned_to')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('submitted_by')->nullable()->constrained('users')->nullOnDelete();
             $table->softDeletes();
             $table->text('description')->nullable();
             $table->timestamp('due_date')->nullable();

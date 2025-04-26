@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('pdf_path')->nullable();
             $table->enum('grade', ['failed', 'passed', 'pending'])->default('pending');
             $table->text('feedback')->nullable();
+            $table->foreignId('task_id')->nullable()->constrained('tasks')->nullOnDelete();
+            $table->foreignId('submitted_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

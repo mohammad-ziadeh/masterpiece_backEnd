@@ -76,66 +76,134 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($users as $user)
-                                            @php
-                                                $attendance = $attendances->get($user->id);
-                                                $locked = $attendance && $attendance->locked;
-                                                $currentStatus = $attendance->status ?? 'present';
-                                            @endphp
-                                            <tr>
-                                                <td>{{ $user->name }}</td>
-                                                <td>
-                                                    <select name="attendances[{{ $user->id }}]"
-                                                        class="form-control" {{ $locked ? 'disabled' : '' }}>
-                                                        @foreach (['present', 'absent', 'late', 'excused'] as $status)
-                                                            <option value="{{ $status }}"
-                                                                {{ $currentStatus == $status ? 'selected' : '' }}>
-                                                                {{ ucfirst($status) }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                        @if (auth()->user()->role === 'admin')
+                                            @foreach ($users as $user)
+                                                @php
+                                                    $attendance = $attendances->get($user->id);
+                                                    $locked = $attendance && $attendance->locked;
+                                                    $currentStatus = $attendance->status ?? 'present';
+                                                @endphp
+                                                <tr>
+                                                    @if ($user->role === 'trainer')
+                                                        <td style="background-color: #D4BEE4">
+                                                            {{ $user->name }} (Trainer)</td>
+                                                    @elseif ($user->role === 'student')
+                                                        <td style="background-color:#EEEEEE">
+                                                            {{ $user->name }} (Student)</td>
+                                                    @endif
+                                                    <td>
+                                                        <select name="attendances[{{ $user->id }}]"
+                                                            class="form-control" {{ $locked ? 'disabled' : '' }}>
+                                                            @foreach (['present', 'absent', 'late', 'excused'] as $status)
+                                                                <option value="{{ $status }}"
+                                                                    {{ $currentStatus == $status ? 'selected' : '' }}>
+                                                                    {{ ucfirst($status) }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
 
-                                                </td>
-                                                @if ($currentStatus === 'late')
-                                                    <td>
-                                                        <input type="number" name="tardiness[{{ $user->id }}]"
-                                                            class="form-control" style="border-radius: 5px;"
-                                                            placeholder="Minutes late" min="1"                                        
-                                                            value="{{ $attendance->tardiness_minutes ?? '' }}"
+                                                    </td>
+                                                    @if ($currentStatus === 'late')
+                                                        <td style="color: orange">
+                                                            <input type="number" name="tardiness[{{ $user->id }}]"
+                                                                class="form-control" style="border-radius: 5px;"
+                                                                placeholder="Minutes late" min="1"
+                                                                value="{{ $attendance->tardiness_minutes ?? '' }}"
+                                                                {{ $locked ? 'disabled' : '' }}>
+                                                        </td>
+                                                    @elseif ($currentStatus === 'absent')
+                                                        <td style="color: red">
+                                                            Absent
+                                                        </td>
+                                                    @else
+                                                        <td style="color: green">
+                                                            On Time
+                                                        </td>
+                                                    @endif
+                                                    <td style="display: grid">
+                                                        @php $inputId = 'desc_' . $user->id; @endphp
+                                                        <input type="text" style="border-radius: 5px;"
+                                                            id="{{ $inputId }}"
+                                                            name="description[{{ $user->id }}]"
+                                                            class="form-control" placeholder="Optional note"
+                                                            maxlength="1000" oninput="updateCounter(this)"
+                                                            value="{{ $attendance->description ?? '' }}"
                                                             {{ $locked ? 'disabled' : '' }}>
+                                                        <small id="{{ $inputId }}-counter"
+                                                            style="text-align: right; color: gray;">
+                                                            {{ strlen($attendance->description ?? '') }} / 1000
+                                                        </small>
                                                     </td>
-                                                @elseif ($currentStatus === 'absent')
+                                                    </td>
+                                                    <td> <a style="display: grid; justify-content: center;"
+                                                            href="{{ route('attendance.history', $user->id) }}">
+                                                            <i class="fa-regular fa-calendar-days"
+                                                                style="font-size: xx-large"></i></a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            @foreach ($students as $user)
+                                                @php
+                                                    $attendance = $attendances->get($user->id);
+                                                    $locked = $attendance && $attendance->locked;
+                                                    $currentStatus = $attendance->status ?? 'present';
+                                                @endphp
+                                                <tr>
+                                                    <td style="background-color:#EEEEEE">
+                                                        {{ $user->name }} (Student)</td>
                                                     <td>
-                                                        Absent
+                                                        <select name="attendances[{{ $user->id }}]"
+                                                            class="form-control" {{ $locked ? 'disabled' : '' }}>
+                                                            @foreach (['present', 'absent', 'late', 'excused'] as $status)
+                                                                <option value="{{ $status }}"
+                                                                    {{ $currentStatus == $status ? 'selected' : '' }}>
+                                                                    {{ ucfirst($status) }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+
                                                     </td>
-                                                @else
-                                                    <td>
-                                                        On Time
+                                                    @if ($currentStatus === 'late')
+                                                        <td style="color: orange">
+                                                            <input type="number" name="tardiness[{{ $user->id }}]"
+                                                                class="form-control" style="border-radius: 5px;"
+                                                                placeholder="Minutes late" min="1"
+                                                                value="{{ $attendance->tardiness_minutes ?? '' }}"
+                                                                {{ $locked ? 'disabled' : '' }}>
+                                                        </td>
+                                                    @elseif ($currentStatus === 'absent')
+                                                        <td style="color: red">
+                                                            Absent
+                                                        </td>
+                                                    @else
+                                                        <td style="color: green">
+                                                            On Time
+                                                        </td>
+                                                    @endif
+                                                    <td style="display: grid">
+                                                        @php $inputId = 'desc_' . $user->id; @endphp
+                                                        <input type="text" style="border-radius: 5px;"
+                                                            id="{{ $inputId }}"
+                                                            name="description[{{ $user->id }}]"
+                                                            class="form-control" placeholder="Optional note"
+                                                            maxlength="1000" oninput="updateCounter(this)"
+                                                            value="{{ $attendance->description ?? '' }}"
+                                                            {{ $locked ? 'disabled' : '' }}>
+                                                        <small id="{{ $inputId }}-counter"
+                                                            style="text-align: right; color: gray;">
+                                                            {{ strlen($attendance->description ?? '') }} / 1000
+                                                        </small>
                                                     </td>
-                                                @endif
-                                                <td style="display: grid">
-                                                   @php $inputId = 'desc_' . $user->id; @endphp
-                                                    <input type="text" style="border-radius: 5px;"
-                                                        id="{{ $inputId }}"
-                                                        name="description[{{ $user->id }}]"
-                                                        class="form-control"
-                                                        placeholder="Optional note"
-                                                        maxlength="1000"
-                                                        oninput="updateCounter(this)"
-                                                        value="{{ $attendance->description ?? '' }}"
-                                                        {{ $locked ? 'disabled' : '' }}>
-                                                    <small id="{{ $inputId }}-counter" style="text-align: right; color: gray;">
-                                                        {{ strlen($attendance->description ?? '') }} / 1000
-                                                    </small>
-                                                </td>
-                                                </td>
-                                                <td> <a style="display: grid; justify-content: center;"
-                                                        href="{{ route('attendance.history', $user->id) }}">
-                                                        <i class="fa-regular fa-calendar-days"
-                                                            style="font-size: xx-large"></i></a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                                    </td>
+                                                    <td> <a style="display: grid; justify-content: center;"
+                                                            href="{{ route('attendance.history', $user->id) }}">
+                                                            <i class="fa-regular fa-calendar-days"
+                                                                style="font-size: xx-large"></i></a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                                 @if ($users instanceof \Illuminate\Pagination\LengthAwarePaginator)

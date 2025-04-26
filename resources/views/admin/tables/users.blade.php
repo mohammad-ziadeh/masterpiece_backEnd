@@ -119,7 +119,13 @@
                                                 <td>{{ $user->id }}</td>
                                                 <td>{{ $user->name }}</td>
                                                 <td>{{ $user->email }}</td>
-                                                <td>{{ ucfirst($user->role) }}</td>
+                                                @if ($user->role == 'admin')
+                                                    <td style="background-color: #3b1e54; color: #EEEEEE;">{{ ucfirst($user->role) }}</td>
+                                                    @elseif ($user->role == 'trainer')
+                                                        <td style="background-color: #D4BEE4;">{{ ucfirst($user->role) }}</td>
+                                                        @else
+                                                        <td style="background-color: #EEEEEE;">{{ ucfirst($user->role) }}</td>
+                                                @endif
                                                 <td>{{ $user->created_at->format('Y-m-d') }}</td>
                                                 <td data-intro="Here u can see the students points that they have earned for the last week"
                                                     data-step="6">

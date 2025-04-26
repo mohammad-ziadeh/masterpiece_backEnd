@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Tasks;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
 class TasksController extends Controller
@@ -41,8 +42,9 @@ class TasksController extends Controller
         // -------{{ End Filters }}------- //
 
         $tasks = $query->paginate(10);
+        $students = User::where('role', 'student')->get(); 
 
-        return view('admin.tables.tasks', compact('tasks', 'date'));
+        return view('admin.tables.tasks.tasks', compact('tasks', 'date', 'students'));
     }
 
     /**
@@ -53,6 +55,9 @@ class TasksController extends Controller
     {
         $task = Tasks::findOrFail($id);
 
+
+
+
         if ($task->pdf_path) {
             $filePath = storage_path('app/public/' . $task->pdf_path);
             $fileUrl = asset('storage/' . $task->pdf_path);
@@ -62,7 +67,7 @@ class TasksController extends Controller
             $fileExtension = null;
         }
 
-        return view('admin.tables.tasks', compact('task', 'fileUrl', 'fileExtension'));
+        return view('admin.tables.tasks.taskDescription', compact('task', 'fileUrl', 'fileExtension'));
     }
     /**
      * Show the form for creating a new resource.
@@ -70,7 +75,8 @@ class TasksController extends Controller
     public function create()
     {
         $date = today();
-        return view("admin.tables.tasks", compact('date'));
+        $students = User::where('role', 'student')->get();
+        return view("admin.tables.tasks.tasks", compact('date','students'));
     }
 
     /**
@@ -89,13 +95,16 @@ class TasksController extends Controller
 
 
 
-        Tasks::create([
+        $task = Tasks::create([
             'name' => $request->name,
             'pdf_path' => $pdfPath,
             'description' => $request->description,
+            'submitted_by' => auth()->id(),
             'due_date' => $request->due_date,
         ]);
 
+
+        $task->students()->attach($request->assigned_to);
         return redirect('tasks')->with('success', 'Task stored successfully.');
     }
 
@@ -105,7 +114,7 @@ class TasksController extends Controller
     public function edit($id)
     {
         $task = Tasks::findOrFail($id);
-        return view("admin.tables.tasks", compact("task"));
+        return view("admin.tables.tasks.tasks", compact("task"));
     }
 
     /**
@@ -131,8 +140,11 @@ class TasksController extends Controller
             'name' => $request->name,
             'pdf_path' => $pdfPath,
             'description' => $request->description,
+            'submitted_by' =>auth()->id(),
             'due_date' => $request->due_date,
         ]);
+        
+        $task->students()->sync($request->assigned_to);
 
         return redirect('tasks')->with('success', 'Task updated successfully.');
     }

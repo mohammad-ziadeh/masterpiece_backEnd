@@ -27,7 +27,10 @@ class AttendanceHistoryController extends Controller
         if ( $viewType === 'all') {
             $users = $query->get();
         } else {
-            $users = $query->paginate(10);
+            $users = $query->whereIn('role', ['student', 'trainer'])
+                ->orderBy('role')
+                ->paginate(10);
+            $students = User::where('role', 'student')->paginate(10);
         }
 
 
@@ -51,7 +54,7 @@ class AttendanceHistoryController extends Controller
 
 
 
-        return view('admin.tables.attendance.allAtendanceHistroy', compact('users',   'yesterdayAttendances', 'pastDate'));
+        return view('admin.tables.attendance.allAtendanceHistroy', compact('users',   'yesterdayAttendances', 'pastDate', 'students'));
     }
 
     public function store(Request $request)

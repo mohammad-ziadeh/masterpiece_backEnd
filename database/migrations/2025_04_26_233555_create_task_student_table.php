@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('leader_boards', function (Blueprint $table) {
+        Schema::create('task_student', function (Blueprint $table) {
             $table->id();
-            $table->integer('Rank');
-        //    $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->integer('Score');
+            $table->foreignId('task_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('leader_boards');
+        Schema::dropIfExists('task_student');
     }
 };

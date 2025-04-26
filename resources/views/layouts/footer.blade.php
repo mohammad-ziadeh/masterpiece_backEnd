@@ -46,7 +46,7 @@
                     <li><a href="#">Privacy Policy</a></li>
                     <li> 
                         <a href="https://wa.me/+962791318735" target="_blank" class="whatsapp-button">
-                            Contact US
+                            Contact US &nbsp;  <i class="fa-brands fa-whatsapp" style="font-size: large"></i>
                         </a>
                     </li>
                 </ul>

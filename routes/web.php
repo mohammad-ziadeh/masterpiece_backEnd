@@ -83,20 +83,20 @@ Route::middleware(['auth', 'role:admin,trainer', 'verified'])->group(function ()
 
     // -------{Tables}---------- //
     Route::resource('users', UserController::class);
-    Route::resource('tasks', TasksController::class);
     Route::resource('leaderBoard', LeaderBoardController::class);
     Route::get('/users/{userId}/points', [UserController::class, 'showUserPoints'])->name('tables.points');
 
 
+
+      //------------ {{ Tasks }} --------------
+    Route::resource('tasks', TasksController::class);
     //-------------------------------
+
+
     Route::resource('attendance', AttendanceController::class);
-    Route::post('attendance/lock-today', [AttendanceController::class, 'lockToday'])->name('attendance.lock');
-    Route::post('attendance/unlock-today', [AttendanceController::class, 'unlockToday'])->name('attendance.unlock');
     Route::get('attendance/{userId}/history', [AttendanceController::class, 'showHistory'])->name('attendance.history');
     // -------{{ All Attendance History }}------- //
     Route::resource('attendanceHistory', AttendanceHistoryController::class);
-    Route::post('attendanceHistory/lock-today', [AttendanceHistoryController::class, 'lockToday'])->name('attendance.lock');
-    Route::post('attendanceHistory/unlock-today', [AttendanceHistoryController::class, 'unlockToday'])->name('attendance.unlock');
     Route::get('attendanceHistory/{userId}/history', [AttendanceController::class, 'showHistory'])->name('attendance.history');
 
     // -------{ Actions }---------- //
@@ -122,3 +122,9 @@ Route::middleware(['auth', 'role:admin,trainer', 'verified'])->group(function ()
 
 
 require __DIR__ . '/auth.php';
+
+
+  //  Route::post('attendanceHistory/lock-today', [AttendanceHistoryController::class, 'lockToday'])->name('attendance.lock');
+ //   Route::post('attendanceHistory/unlock-today', [AttendanceHistoryController::class, 'unlockToday'])->name('attendance.unlock');
+   //  Route::post('attendance/lock-today', [AttendanceController::class, 'lockToday'])->name('attendance.lock');
+ //   Route::post('attendance/unlock-today', [AttendanceController::class, 'unlockToday'])->name('attendance.unlock');
