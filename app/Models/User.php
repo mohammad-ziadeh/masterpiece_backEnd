@@ -13,6 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+   
     /**
      * The attributes that are mass assignable.
      *
@@ -48,9 +49,9 @@ class User extends Authenticatable
     ];
 
     public function tasks()
-{
-    return $this->belongsToMany(Task::class, 'task_student', 'user_id', 'task_id');
-}
+    {
+        return $this->belongsToMany(Task::class, 'task_student', 'user_id', 'task_id');
+    }
 
 
     public function hasRole(string $role)

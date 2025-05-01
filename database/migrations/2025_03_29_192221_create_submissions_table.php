@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('submissions', function (Blueprint $table) {
             $table->id();
             $table->string('pdf_path')->nullable();
+            $table->string('answer')->nullable();
             $table->enum('grade', ['failed', 'passed', 'pending'])->default('pending');
             $table->text('feedback')->nullable();
             $table->foreignId('task_id')->nullable()->constrained('tasks')->nullOnDelete();
             $table->foreignId('submitted_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

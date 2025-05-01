@@ -89,8 +89,7 @@
                                                             {{ $user->name }} (Trainer)</td>
                                                     @elseif ($user->role === 'student')
                                                         <td style="background-color:#EEEEEE">
-                                                            {{ $user->name }} (Student)</td>
-                                                    @endif
+                                                            {{ $user->name }} (Student)</td>                                                    @endif
                                                     <td>
                                                         <select name="attendances[{{ $user->id }}]"
                                                             class="form-control" {{ $locked ? 'disabled' : '' }}>
@@ -104,7 +103,7 @@
 
                                                     </td>
                                                     @if ($currentStatus === 'late')
-                                                        <td style="color: orange">
+                                                        <td style="color: orange;">
                                                             <input type="number" name="tardiness[{{ $user->id }}]"
                                                                 class="form-control" style="border-radius: 5px;"
                                                                 placeholder="Minutes late" min="1"

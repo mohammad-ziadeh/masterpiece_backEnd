@@ -318,14 +318,20 @@
                                 <button type="button" class="btn btn-primary" id="selectAllBtn2">Select All</button>
 
                                 @foreach ($students as $student)
-                                    <div class="form-check">
-                                        <input type="checkbox" name="assigned_to[]"
-                                            id="assigned_to_{{ $student->id }}" value="{{ $student->id }}"
-                                            class="form-check-input" @if ($task->students->contains('id', $student->id)) checked @endif>
-                                        <label for="assigned_to_{{ $student->id }}" class="form-check-label">
-                                            {{ $student->name }}
-                                        </label>
-                                    </div>
+                                @if ($tasks->isNotEmpty())
+                                <div class="form-check">
+                                        
+                                    <input type="checkbox" name="assigned_to[]"
+                                        id="assigned_to_{{ $student->id }}" value="{{ $student->id }}"
+                                        class="form-check-input" @if ($task->students->contains('id', $student->id)) checked @endif>
+                                    <label for="assigned_to_{{ $student->id }}" class="form-check-label">
+                                        {{ $student->name }}
+                                    </label>
+                                </div>
+                                @else
+                                <h3>no data</h3>
+                                @endif
+                                  
                                 @endforeach
                             </div>
                         </div>
@@ -427,7 +433,7 @@
         
             selectAllButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    const taskId = button.id.split('_')[1]; // get the task ID part
+                    const taskId = button.id.split('_')[1]; 
                     const checkboxContainer = document.getElementById('checkboxList_' + taskId);
                     const checkboxes = checkboxContainer.querySelectorAll('input[type="checkbox"]');
         

@@ -2,18 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Tasks;
 use App\Models\Submission;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class SubmissionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($request)
     {
-        //
+        $query = Submission::query();
+
+        if ($request->has('name') && !empty($request->name)) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+
+
+        if ($request->has('sort') && $request->sort == 'desc') {
+            $query->orderBy('id', 'desc');
+        } else {
+            $query->orderBy('id', 'asc');
+        }
+
+
+        $submissions = $query->paginate(10);
+        $users = User::all();
+        $tasks = Tasks::all();
+
+        return view('submissions.index', compact('submissions', 'users', 'tasks'));
+        
     }
 
     /**
@@ -29,7 +51,7 @@ class SubmissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
