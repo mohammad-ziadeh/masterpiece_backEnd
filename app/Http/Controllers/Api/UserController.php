@@ -10,7 +10,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        return response()->json(User::all()->where('role', 'student'));
+
+        
+        return response()->json(User::all()->where('role', 'student'),);
     }
 
     public function store(Request $request)

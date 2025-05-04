@@ -87,7 +87,11 @@
                                                         No note
                                                     @endif
                                                 </td>
+                                                @if ($attendance->submittedBy != null)
                                                 <td>{{ $attendance->submittedBy->name }}</td>
+                                                @else
+                                                <td>Submitted by phone</td>
+                                                @endif
                                                 <td>{{ $attendance->submitted_at }}</td>
                                             </tr>
                                         @endforeach

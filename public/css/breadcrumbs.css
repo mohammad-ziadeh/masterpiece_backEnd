@@ -56,3 +56,13 @@
 .breadcrumbs a:hover::before {
     width: 100%;
 }
+
+@media (max-width: 768px) {
+    .breadcrumbs li a {
+        font-size: 14px;
+    }
+
+    .breadcrumbs li::after {
+        content: none;
+    }
+}

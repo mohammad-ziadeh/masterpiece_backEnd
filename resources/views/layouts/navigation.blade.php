@@ -25,6 +25,9 @@
                     <x-nav-link style="color: #eeeeee;" href="{{ route('tables') }}" :active="request()->routeIs('tables')">
                         {{ __('Tables') }}
                     </x-nav-link>
+                    <x-nav-link style="color: #eeeeee;" href="{{ route('spinner') }}" :active="request()->routeIs('spinner')">
+                        {{ __('Spinner') }}
+                    </x-nav-link>
                     
                 </div>
             </div>
@@ -91,6 +94,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('tables')" :active="request()->routeIs('tables')" style="color: #D4BEE4" >
                 {{ __('Tables') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('spinner')" :active="request()->routeIs('spinner')" style="color: #D4BEE4" >
+                {{ __('Spinner') }}
             </x-responsive-nav-link>
         </div>
 

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\StatisticsController;
 
 /*
@@ -27,3 +28,7 @@ Route::post('/students', [UserController::class, 'store']);
 
 Route::get('/statistics', [StatisticsController::class, 'statistic']);
 Route::post('/login', [LoginController::class, 'login']);
+
+
+Route::get('/attendance', [AttendanceController::class, 'index']);
+Route::post('/attendance/store', [AttendanceController::class, 'store']);
