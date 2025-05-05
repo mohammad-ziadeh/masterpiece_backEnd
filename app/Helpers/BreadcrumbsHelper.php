@@ -40,6 +40,10 @@ class BreadcrumbsHelper
             $breadcrumbs[] = ['label' => 'Dashboard', 'url' => route('dashboard')];
             $breadcrumbs[] = ['label'=> 'Tables','url'=> route('tables')];
             $breadcrumbs[] = ['label'=> 'Leaderboard','url'=> route('leaderBoard.index')];
+        }elseif ($routeName === 'submissions.index') {
+            $breadcrumbs[] = ['label' => 'Dashboard', 'url' => route('dashboard')];
+            $breadcrumbs[] = ['label'=> 'Tables','url'=> route('tables')];
+            $breadcrumbs[] = ['label'=> 'Submissions','url'=> route('submissions.index')];
         }
 
         return $breadcrumbs;

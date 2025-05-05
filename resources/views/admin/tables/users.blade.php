@@ -130,7 +130,7 @@
                                                 <td data-intro="Here u can see the students points that they have earned for the last week"
                                                     data-step="6">
                                                     @if ($user->role == 'student')
-                                                        <a href="{{ route('tables.points', $user->id) }}"
+                                                        <a href="{{ route('points', $user->id) }}"
                                                             class="btn btn-info">View Points</a>
                                                     @else
                                                     Excluded from points

@@ -32,4 +32,9 @@ class Tasks extends Model
     {
         return $this->belongsTo(User::class, 'submitted_by');
     }
+
+    public function submissions()
+{
+    return $this->hasMany(Submission::class);
+}
 }

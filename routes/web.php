@@ -9,6 +9,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceHistoryStatus;
 use App\Http\Controllers\AttendanceHistoryController;
 use App\Http\Controllers\LeaderBoardController;
+use App\Http\Controllers\SubmissionController;
 
 /*
 |--------------------------------------------------------------------------- 
@@ -43,12 +44,17 @@ Route::middleware(['auth', 'role:admin,trainer', 'verified'])->group(function ()
     // -------{Tables}---------- //
     Route::resource('users', UserController::class);
     Route::resource('leaderBoard', LeaderBoardController::class);
-    Route::get('/users/{userId}/points', [UserController::class, 'showUserPoints'])->name('tables.points');
+    Route::get('/users/{userId}/points', [UserController::class, 'showUserPoints'])->name('points');
 
 
 
       //------------ {{ Tasks }} --------------
     Route::resource('tasks', TasksController::class);
+    //-------------------------------
+
+      //------------ {{ Submissions }} --------------
+    Route::resource('submissions', SubmissionController::class);
+    Route::post('/submissions/update-grade', [SubmissionController::class, 'updateGrade'])->name('submissions.update.grade');
     //-------------------------------
 
 

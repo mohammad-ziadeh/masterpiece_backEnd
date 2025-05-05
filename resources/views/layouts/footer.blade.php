@@ -1,4 +1,4 @@
-<section class="mainBody">
+<section class="mainBody" style="margin-top: 20px">
     <br>
     <br>
     <footer class="footer">
@@ -16,6 +16,7 @@
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li><a href="{{ route('tables') }}">Tables</a></li>
+                    <li><a href="/spinner">Spinner</a></li>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
 

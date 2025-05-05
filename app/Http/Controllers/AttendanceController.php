@@ -134,6 +134,7 @@ class AttendanceController extends Controller
 
 
 
+
             // ############# {{ End Points Depending on attendance status }} ############# //
 
 

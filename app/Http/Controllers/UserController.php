@@ -141,6 +141,6 @@ class UserController extends Controller
             return redirect()->route('users.index')->with('error', 'User not found.');
         }
 
-        return view('tables.points', ['user' => $user]);
+        return view('admin.tables.points', ['user' => $user]);
     }
 }

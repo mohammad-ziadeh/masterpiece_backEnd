@@ -22,29 +22,37 @@
 
     <div class="spinning-wheel-container">
 
-        <div class="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center mb-6 px-4">
+        <div class="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center mb-6 px-20">
             <input id="nameInput" type="text" placeholder="Enter participant name"
                 class="flex-1 p-3 rounded-lg text-black border focus:ring-2 focus:ring-indigo-400 outline-none w-full sm:w-auto">
             <button onclick="addName()"
-                class="btn btn-success font-bold px-4 py-2 rounded-lg transition w-full sm:w-auto">
+                class="btn font-bold px-4 py-2 rounded-lg transition w-full sm:w-auto text-white"
+                style="background-color: #3b1e54">
                 Add
             </button>
-            <button onclick="spinWheel()"
-                class="btn btn-warning font-bold text-white px-4 py-2 rounded-lg transition w-full sm:w-auto">
-                Spin
-            </button>
+
         </div>
 
         <div class="flex flex-col sm:flex-row gap-8 sm:gap-16 items-center justify-center px-4">
 
-            <div class="relative w-full sm:w-[450px] mx-auto mb-8 sm:mb-0">
-                <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 z-20">
-                    <div
-                        class="w-0 h-0 border-l-[30px] border-r-[30px] border-t-[40px] border-l-transparent border-r-transparent border-b-red-400 drop-shadow-xl">
+            <div class="relative w-full sm:w-[465px] mx-auto mb-8 sm:mb-0">
+                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
+                    <div style="border-top-color: #3b1e54"
+                        class="w-0 h-0 
+                           border-l-[30px] border-r-[30px] border-t-[40px] 
+                           border-l-transparent border-r-transparent 
+                           drop-shadow-xl">
                     </div>
                 </div>
                 <canvas id="wheel" width="450" height="450"
                     class="shadow-lg shadow-black border-8 border-indigo-500 rounded-full mx-auto"></canvas>
+                <div style="display: flex; justify-content: center; margin-top: 30px;">
+                    <button onclick="spinWheel()" style="background-color: #9b7ebd; "
+                        class="btn font-bold text-white px-4 py-2 rounded-lg transition w-full sm:w-auto">
+                        Spin
+                    </button>
+                </div>
+
             </div>
 
             <div class="flex-1 w-full sm:w-[200px]" id="ListContainer">
@@ -79,7 +87,7 @@
     </div>
 
     <script>
-        const segmentColors = ["#4ED7F1", "#03A791" ,'#FF6363' , '#C68EFD'];
+        const segmentColors = ["#b3a3d0", "#674fa3", "#9482be"];
         const names = [];
         const canvas = document.getElementById('wheel');
         const ctx = canvas.getContext('2d');
@@ -109,7 +117,7 @@
                 ctx.moveTo(radius, radius);
 
                 ctx.arc(radius, radius, radius, angle, angle + angleStep);
-                ctx.fillStyle = segmentColors[i % 4];
+                ctx.fillStyle = segmentColors[i % 3];
                 ctx.fill();
                 ctx.strokeStyle = "#eeeeee";
                 ctx.lineWidth = 0.5;
@@ -215,7 +223,7 @@
 
     <style>
         .spinning-wheel-container {
-            background: linear-gradient(to bottom, #9b7ebd, #321947);
+            background: #eeeeee;
             padding: 2rem;
             max-width: 100%;
             margin: 0 auto;
@@ -244,13 +252,14 @@
         }
 
         #ListContainer {
-            background-color: #eeeeee;
-            color: #321947;
+            background-color: #9b7ebd;
+            color: #eeeeee;
             border-radius: 8px;
+            padding: 0px 10px 0 10px;
         }
 
         #ListContainer li {
-            color: #321947;
+            color: #eeeeee;
         }
 
         @media (max-width: 640px) {
@@ -264,8 +273,8 @@
             }
 
             #ListContainer li {
-            font-size: 16px
-        }
+                font-size: 16px
+            }
         }
     </style>
 </x-app-layout>

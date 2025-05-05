@@ -54,6 +54,7 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         (function() {
             if (!window.chatbase || window.chatbase("getState") !== "initialized") {
