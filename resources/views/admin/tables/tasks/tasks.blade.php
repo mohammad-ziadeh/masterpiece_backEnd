@@ -223,9 +223,12 @@
 
                                                                 <div class="form-group">
                                                                     <label for="assigned_to">Assign to Students</label>
-                                                                    <div class="checkbox-list" id="checkboxList_{{ $task->id }}"
+                                                                    <div class="checkbox-list"
+                                                                        id="checkboxList_{{ $task->id }}"
                                                                         style="max-height: 200px; overflow-y: auto; padding-right: 10px;">
-                                                                        <button type="button" class="btn btn-primary" id="selectAllBtn_{{ $task->id }}">Select All</button>
+                                                                        <button type="button" class="btn btn-primary"
+                                                                            id="selectAllBtn_{{ $task->id }}">Select
+                                                                            All</button>
 
                                                                         @foreach ($students as $student)
                                                                             <div class="form-check">
@@ -276,7 +279,6 @@
         </div>
     </div>
 
-    <!-- Create Task Modal -->
     <div class="modal fade" id="createTaskModal" tabindex="-1" role="dialog"
         aria-labelledby="createTaskModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -312,26 +314,32 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="assigned_to">Assign to Students</label>
+                            <div style="display: flex; justify-content: space-between;">
+                                <label for="assigned_to">Assign to Students:</label>
+                                <button type="button" class="btn btn-primary" style="margin-bottom: 10px"
+                                    id="selectAllBtn2">Select
+                                    All</button>
+                            </div>
+
                             <div class="checkbox-list2"
                                 style="max-height: 200px; overflow-y: auto; padding-right: 10px;">
-                                <button type="button" class="btn btn-primary" id="selectAllBtn2">Select All</button>
+
 
                                 @foreach ($students as $student)
-                                @if ($tasks->isNotEmpty())
-                                <div class="form-check">
-                                        
-                                    <input type="checkbox" name="assigned_to[]"
-                                        id="assigned_to_{{ $student->id }}" value="{{ $student->id }}"
-                                        class="form-check-input" @if ($task->students->contains('id', $student->id)) checked @endif>
-                                    <label for="assigned_to_{{ $student->id }}" class="form-check-label">
-                                        {{ $student->name }}
-                                    </label>
-                                </div>
-                                @else
-                                <h3>no data</h3>
-                                @endif
-                                  
+                                    @if ($tasks->isNotEmpty())
+                                        <div class="form-check">
+
+                                            <input type="checkbox" name="assigned_to[]"
+                                                id="assigned_to_{{ $student->id }}" value="{{ $student->id }}"
+                                                class="form-check-input"
+                                                @if ($task->students->contains('id', $student->id)) checked @endif>
+                                            <label for="assigned_to_{{ $student->id }}" class="form-check-label">
+                                                {{ $student->name }}
+                                            </label>
+                                        </div>
+                                    @else
+                                        <h3>no data</h3>
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
@@ -430,42 +438,42 @@
         document.addEventListener('DOMContentLoaded', function() {
             // edit select all
             const selectAllButtons = document.querySelectorAll('button[id^="selectAllBtn_"]');
-        
+
             selectAllButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    const taskId = button.id.split('_')[1]; 
+                    const taskId = button.id.split('_')[1];
                     const checkboxContainer = document.getElementById('checkboxList_' + taskId);
                     const checkboxes = checkboxContainer.querySelectorAll('input[type="checkbox"]');
-        
+
                     let allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-        
+
                     checkboxes.forEach(checkbox => {
                         checkbox.checked = !allChecked;
                     });
-        
+
                     button.textContent = allChecked ? 'Select All' : 'Deselect All';
                 });
             });
-        
+
             // Create page select all
             const selectAllBtnCreate = document.getElementById('selectAllBtn2');
             const checkboxesCreate = document.querySelectorAll('.checkbox-list2 input[type="checkbox"]');
-        
+
             if (selectAllBtnCreate) {
                 selectAllBtnCreate.addEventListener('click', function() {
                     let allChecked = Array.from(checkboxesCreate).every(checkbox => checkbox.checked);
-        
+
                     checkboxesCreate.forEach(checkbox => {
                         checkbox.checked = !allChecked;
                     });
-        
+
                     selectAllBtnCreate.textContent = allChecked ? 'Select All' : 'Deselect All';
                 });
             }
         });
-        </script>
-        
-    {{-- end select all checkboxes--}}
+    </script>
+
+    {{-- end select all checkboxes --}}
 
 
     <script>

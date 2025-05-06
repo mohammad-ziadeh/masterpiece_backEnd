@@ -22,6 +22,9 @@ return new class extends Migration
             $table->date('last_reset_at')->nullable();
             $table->softDeletes();
             $table->string('password');
+            $table->string('avatar')->default('default.png');
+            $table->string('phone')->nullable();
+            $table->string('gender')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -37,9 +37,9 @@ class UserController extends Controller
         }
 
         if ($request->has('sort') && $request->sort == 'desc') {
-            $query->orderBy('created_at', 'desc');
+            $query->orderBy('id', 'desc');
         } else {
-            $query->orderBy('created_at', 'asc');
+            $query->orderBy('id', 'asc');
         }
         // -------{{ End Filters }}------- //
 

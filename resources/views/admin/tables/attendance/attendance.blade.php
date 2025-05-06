@@ -6,13 +6,16 @@
         <h2 class="font-semibold text-xl" style="color: #3b1e54; margin-bottom: 20px;">Daily Attendance &nbsp;&nbsp;
             {{ $date->format('Y-m-d') }}
         </h2>
-        <ul class="breadcrumbs">
-            @foreach ($breadcrumbs as $breadcrumb)
-                <li>
-                    <a style="color: #3b1e54;" href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
-                </li>
-            @endforeach
-        </ul>
+        <div style="display: flex; justify-content: space-between;">
+            <ul class="breadcrumbs">
+                @foreach ($breadcrumbs as $breadcrumb)
+                    <li>
+                        <a style="color: #3b1e54;" href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
+                    </li>
+                @endforeach
+            </ul>
+            <button class="btn btn-success" onclick="startTour()">Start Tour</button>
+        </div>
     </x-slot>
 
     @if (session('success'))
@@ -23,27 +26,28 @@
             <div class="row">
                 <div class="col grid-margin stretch-card">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" data-intro="This is the Attendance management table" data-step="1">
 
                             <div style="display: flex; justify-content:space-around; font-size: x-large">
-                                <div>Today Absences: {{ $totalAbsent }}</div>
-                                <div>Today Tardiness: {{ $totalLate }}</div>
+                                <div data-intro="Here you can see the total of today Absences" data-step="2">Today
+                                    Absences: {{ $totalAbsent }}</div>
+                                <div data-intro="Here you can see the total of today Tardiness" data-step="3">Today
+                                    Tardiness: {{ $totalLate }}</div>
                             </div>
 
 
-                            <form method="GET" action="{{ route('attendance.index') }}" class="mb-3 mt-4">
+                            <form method="GET" action="{{ route('attendance.index') }}" class="mb-3 mt-4"
+                                data-intro="These are the filters, here u can filter the Attendance according users Name and Role"
+                                data-step="4">
                                 <div class="row">
-
                                     <div class="col-md-2">
                                         <input type="text" name="name" class="form-control"
                                             style="border-radius: 5px" placeholder="Search Name"
                                             value="{{ request('name') }}">
                                     </div>
-
                                     <div class="col-md-2">
                                         <select name="role" class="form-control">
                                             <option value="all">All Roles</option>
-
                                             <option value="student"
                                                 {{ request('role') == 'student' ? 'selected' : '' }}>Student</option>
                                             <option value="trainer"
@@ -52,27 +56,52 @@
                                                 Admin</option>
                                         </select>
                                     </div>
-
-
                                     <div class="col-md-3 ">
                                         <button type="submit" class="btn btn-primary">Filter</button>
                                         <a href="{{ route('attendance.index') }}" class="btn btn-secondary">Reset</a>
                                     </div>
+                                    <a class="btn btn-primary" style="margin-left: auto; margin-right: 15px;"
+                                        href="{{ route('attendanceHistory.index') }}"
+                                        data-intro="Here you can see yesterday Attendance history of all users and change their attendance status (You can Only see one previous day)"
+                                        data-step="5">Attendance History</a>
                                 </div>
                             </form>
 
-                            <a href="{{ route('attendanceHistory.index') }}">Yesterday Attendance</a>
 
-                            <form method="POST" action="{{ route('attendance.store') }}" class="p-6">
+                            <form method="POST" action="{{ route('attendance.store') }}">
                                 @csrf
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Status</th>
-                                            <th>Tardiness Time</th>
-                                            <th>Note</th>
-                                            <th>Attending History</th>
+                                            <th>#</th>
+                                            @if (auth()->user()->role === 'admin')
+                                                <th data-intro="Here you can see the user name with his role"
+                                                    data-step="6">Name (Role)</th>
+                                            @else
+                                                <th data-intro="Here you can see the student name" data-step="6">Name
+                                                    (Role)
+                                                </th>
+                                            @endif
+
+                                            @if (auth()->user()->role === 'admin')
+                                                <th data-intro="Here you change the Attendance status of the user (click save after changing to save the change)"
+                                                    data-step="7">Status</th>
+                                            @else
+                                                <th data-intro="Here you change the Attendance status of the student (click save after changing to save the change)"
+                                                    data-step="7">Status</th>
+                                            @endif
+                                            <th data-intro="When the status is changed to late, here u will see a input that you put the amount of latency time. otherwise you will see the status"
+                                                data-step="8">Tardiness Time</th>
+                                            <th data-intro="If there is a note about the Attendance status change u can add it here, otherwise u can leave it empty"
+                                                data-step="9">Note</th>
+
+                                            @if (auth()->user()->role === 'admin')
+                                                <th data-intro="Here by clicking on the calender u will see the user attendance history from the first he joined"
+                                                    data-step="10">Attending History</th>
+                                            @else
+                                                <th data-intro="Here by clicking on the calender u will see the student attendance history from the first he joined"
+                                                    data-step="10">Attending History</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -84,12 +113,14 @@
                                                     $currentStatus = $attendance->status ?? 'present';
                                                 @endphp
                                                 <tr>
+                                                    <td>{{ $user->id }}</td>
                                                     @if ($user->role === 'trainer')
                                                         <td style="background-color: #D4BEE4">
                                                             {{ $user->name }} (Trainer)</td>
                                                     @elseif ($user->role === 'student')
                                                         <td style="background-color:#EEEEEE">
-                                                            {{ $user->name }} (Student)</td>                                                    @endif
+                                                            {{ $user->name }} (Student)</td>
+                                                    @endif
                                                     <td>
                                                         <select name="attendances[{{ $user->id }}]"
                                                             class="form-control" {{ $locked ? 'disabled' : '' }}>
@@ -165,7 +196,8 @@
                                                     </td>
                                                     @if ($currentStatus === 'late')
                                                         <td style="color: orange">
-                                                            <input type="number" name="tardiness[{{ $user->id }}]"
+                                                            <input type="number"
+                                                                name="tardiness[{{ $user->id }}]"
                                                                 class="form-control" style="border-radius: 5px;"
                                                                 placeholder="Minutes late" min="1"
                                                                 value="{{ $attendance->tardiness_minutes ?? '' }}"
@@ -211,7 +243,9 @@
                                     </div>
                                 @endif
                                 <div class="mt-4">
-                                    <button class="btn btn-primary" type="submit">Save Attendance</button>
+                                    <button class="btn btn-primary" type="submit"
+                                        data-intro="This is the save button, By clicking on it u will save the changes of (THIS PAGE ONLY)."
+                                        data-step="11">Save Attendance</button>
                                 </div>
                             </form>
 
@@ -221,22 +255,16 @@
 
             </div>
         </div>
-        {{-- @if (auth()->user()->role === 'admin')
-            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px;">
-                <form method="POST" action="{{ route('attendance.lock') }}">
-                    @csrf
-                    <button class="btn btn-danger" type="submit">Lock Today's Attendance</button>
-                </form>
-                <form method="POST" action="{{ route('attendance.unlock') }}">
-                    @csrf
-                    <button class="btn btn-warning" type="submit">Unlock Today's Attendance</button>
-                </form>
-            </div>
-        @endif --}}
+
         <script>
             function updateCounter(input) {
                 const counter = document.getElementById(input.id + '-counter');
                 counter.textContent = `${input.value.length} / ${input.maxLength}`;
+            }
+        </script>
+        <script>
+            function startTour() {
+                introJs().start();
             }
         </script>
 </x-app-layout>

@@ -30,7 +30,8 @@ class AttendanceController extends Controller
 
 
         if ($time->between($startTime, $endTime)) {
-            $users = $query->get();
+            $users = $query->whereIn('role', ['student', 'trainer'])->get();
+            $students = $query->whereIn('role', ['student', 'trainer'])->get();
         } else {
             $users = $query->whereIn('role', ['student', 'trainer'])
                 ->orderBy('role')

@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -65,4 +67,14 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
          'role' => \App\Http\Middleware\RoleMiddleware::class,
     ];
+
+    protected function schedule(Schedule $schedule)
+{
+    $schedule->call(function () {
+        \App\Models\User::query()->update([
+            'last_week_points' => DB::raw('weekly_points'),
+            'weekly_points' => 0,
+        ]);
+    })->weeklyOn(0, '23:59'); // Sunday at 23:59
+}
 }

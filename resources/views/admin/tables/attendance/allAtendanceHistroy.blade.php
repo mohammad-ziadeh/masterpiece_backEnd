@@ -6,13 +6,16 @@
         <h2 class="font-semibold text-xl" style="color: #3b1e54; margin-bottom: 20px;">Yesterday Attendance &nbsp;&nbsp;
             {{ $pastDate->format('Y-m-d') }}
         </h2>
-        <ul class="breadcrumbs">
-            @foreach ($breadcrumbs as $breadcrumb)
-                <li>
-                    <a style="color: #3b1e54;" href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
-                </li>
-            @endforeach
-        </ul>
+        <div style="display: flex; justify-content: space-between;">
+            <ul class="breadcrumbs">
+                @foreach ($breadcrumbs as $breadcrumb)
+                    <li>
+                        <a style="color: #3b1e54;" href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
+                    </li>
+                @endforeach
+            </ul>
+            <button class="btn btn-success" onclick="startTour()">Start Tour</button>
+        </div>
     </x-slot>
 
     @if (session('success'))
@@ -24,17 +27,19 @@
             <div class="row">
                 <div class="col grid-margin stretch-card">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" data-intro="This is the Yesterday Attendance table" data-step="1">
 
                             <div class="mb-4">
                                 @if (request('view') === 'all')
                                     <a href="{{ route('attendanceHistory.index', request()->except('view')) }}"
-                                        class="btn btn-primary">
+                                        data-intro="Here you can change between showing all the users at once or 10 per page"
+                                        data-step="2" class="btn btn-primary">
                                         Show Paginated
                                     </a>
                                 @else
                                     <a href="{{ route('attendanceHistory.index', array_merge(request()->all(), ['view' => 'all'])) }}"
-                                        class="btn btn-primary">
+                                        data-intro="Here you can change between showing all the users at once or 10 per page"
+                                        data-step="2" class="btn btn-primary">
                                         Show All
                                     </a>
                                 @endif
@@ -225,8 +230,10 @@
                                         {{ $users->links('pagination::bootstrap-4') }}
                                     </div>
                                 @endif
-                                <div class="mt-4">
-                                    <button class="btn btn-primary" type="submit">Save Attendance</button>
+                                <div class="mt-4" class="mt-4">
+                                    <button class="btn btn-primary" type="submit"
+                                        data-intro="This is the save button, By clicking on it u will save the changes of (THIS PAGE ONLY). If u want to save the changes of all the pages u have to click on (Show all) button and then save"
+                                        data-step="3">Save Attendance</button>
                                 </div>
                             </form>
 
@@ -236,22 +243,16 @@
 
             </div>
         </div>
-        {{-- @if (auth()->user()->role === 'admin')
-            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px;">
-                <form method="POST" action="{{ route('attendanceHistory.lockToday') }}">
-                    @csrf
-                    <button class="btn btn-danger" type="submit">Lock Today's Attendance</button>
-                </form>
-                <form method="POST" action="{{ route('attendanceHistory.unlockToday') }}">
-                    @csrf
-                    <button class="btn btn-warning" type="submit">Unlock Today's Attendance</button>
-                </form>
-            </div>
-        @endif --}}
+
         <script>
             function updateCounter(input) {
                 const counter = document.getElementById(input.id + '-counter');
                 counter.textContent = `${input.value.length} / ${input.maxLength}`;
+            }
+        </script>
+        <script>
+            function startTour() {
+                introJs().start();
             }
         </script>
 </x-app-layout>

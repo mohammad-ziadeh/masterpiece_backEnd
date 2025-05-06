@@ -46,6 +46,13 @@
                             <form method="GET" action="{{ route('submissions.index') }}" class="mb-3 mt-4">
                                 <div class="row">
 
+
+                                    <div class="col-md-3 mb-2">
+                                        <input type="text" name="user_name" class="form-control"
+                                            style="border-radius: 5px;" placeholder="Search Student Name"
+                                            value="{{ request('user_name') }}">
+                                    </div>
+
                                     <div class="col-md-3 mb-2">
                                         <select name="task_id" class="form-control" style="border-radius: 5px;">
                                             <option value="">-- Select Task --</option>
@@ -58,11 +65,6 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-3 mb-2">
-                                        <input type="text" name="user_name" class="form-control"
-                                            style="border-radius: 5px;" placeholder="Search Student Name"
-                                            value="{{ request('user_name') }}">
-                                    </div>
 
                                     <div class="col-md-2 mb-2">
                                         <select name="sort" class="form-control" style="border-radius: 5px;">
@@ -91,13 +93,13 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Task Name (ID)</th>
+                                                <th style="width: 14%">Task Name (ID)</th>
                                                 <th>Student Name (ID)</th>
                                                 <th style="width: 10%">Grade</th>
                                                 <th>Feedback</th>
                                                 <th>Graded By</th>
                                                 <th>Submitted At</th>
-                                                <th>Actions</th>
+                                                <th>Details</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -150,7 +152,7 @@
                                                             </td>
                                                         @endif
                                                     @else
-                                                    <td>N/A</td>
+                                                        <td>N/A</td>
                                                     @endif
 
 

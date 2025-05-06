@@ -53,6 +53,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Task::class, 'task_student', 'user_id', 'task_id');
     }
 
+    public function badges()
+    {
+        return $this->belongsToMany(Badge::class)->withTimestamps();
+    }
+
+    public function badgeAwards()
+    {
+        return $this->hasMany(BadgeAward::class);
+    }
 
     public function hasRole(string $role)
     {

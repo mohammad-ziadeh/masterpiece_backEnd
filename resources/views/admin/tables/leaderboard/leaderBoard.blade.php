@@ -27,13 +27,23 @@
                         <div class="card-body">
                             <div class="body">
                                 <div class="main">
-                                    <h1 style="text-align: center; font-size: xx-large; font-family: 'Rubik', sans-serif;  color: #141a39;" id="weeklyCountdown"></h1>
+                                    <a href="{{ route('leaderboard.lastWeek') }}" class="btn btn-warning"
+                                        data-intro="By clicking here u can see the last week leaderboard"
+                                        data-step="2">
+                                        Last Week Leaderboard
+                                    </a>
+                                    <div style="text-align: center; margin-top: 20px;">
+
+                                    </div>
+                                    <h1 style="text-align: center; font-size: xx-large; font-family: 'Rubik', sans-serif;  color: #141a39;"
+                                        data-intro="This is the countdown timer that shows the time left till the leaderboard resets"
+                                        data-step="3" id="weeklyCountdown"></h1>
                                     <div id="header">
                                         <h1 class="h1">Ranking</h1>
                                         <img class="gold-medal" src="{{ asset('images/allBadges.png') }}"
                                             alt="gold medal" />
                                     </div>
-                                    <div id="leaderboard">
+                                    <div id="leaderboard" data-intro="This is the leaderboard that shows the top 5 students with the highest points" data-step="4">
                                         <div class="ribbon"></div>
                                         <table class="table">
                                             @foreach ($topUsers as $index => $user)
@@ -45,8 +55,14 @@
                                                     </td>
                                                 </tr>
                                             @endforeach
+
                                         </table>
                                     </div>
+                                </div>
+                                <div style="text-align: center; margin-top: 20px;" >
+                                    <a href="{{ route('leaderboard.full') }}" class="btn btn-primary" data-intro="By clicking here u can see the full leaderboard for this week" data-step="5">
+                                        View Full Leaderboard
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -64,26 +80,26 @@
             introJs().start();
         }
     </script>
-<script>
-    function updateWeeklyCountdown() {
-        const now = new Date();
-        const endOfWeek = new Date();
-        const day = endOfWeek.getDay();
-        const distanceToSunday = 7 - day;
-        endOfWeek.setDate(endOfWeek.getDate() + distanceToSunday);
-        endOfWeek.setHours(23, 59, 59, 999);
+    <script>
+        function updateWeeklyCountdown() {
+            const now = new Date();
+            const endOfWeek = new Date();
+            const day = endOfWeek.getDay();
+            const distanceToSunday = 7 - day;
+            endOfWeek.setDate(endOfWeek.getDate() + distanceToSunday);
+            endOfWeek.setHours(23, 59, 59, 999);
 
-        const diff = endOfWeek - now;
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((diff / 1000 / 60) % 60);
-        const seconds = Math.floor((diff / 1000) % 60);
+            const diff = endOfWeek - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
 
-        document.getElementById("weeklyCountdown").innerText =
-            `Time left till reset: ${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }
+            document.getElementById("weeklyCountdown").innerText =
+                `Time left till reset: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
 
-    setInterval(updateWeeklyCountdown, 1000);
-</script>
+        setInterval(updateWeeklyCountdown, 1000);
+    </script>
 
 </x-app-layout>

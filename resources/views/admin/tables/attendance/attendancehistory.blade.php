@@ -99,8 +99,7 @@
                                 </table>
 
                                 <div class="mt-4">
-                                    <a href="{{ route('attendance.index') }}" class="btn btn-primary">Back to
-                                        Attendance</a>
+                                    <a href="{{ route('attendance.index') }}" class="btn btn-secondary">Back</a>
                                 </div>
                             </div>
                         </div>

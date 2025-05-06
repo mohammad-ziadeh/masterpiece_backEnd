@@ -109,7 +109,7 @@
                                             <th>Email</th>
                                             <th>Role</th>
                                             <th>Joining Date</th>
-                                            <th>Points</th>
+                                            <th>Points and Badges</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -127,14 +127,18 @@
                                                         <td style="background-color: #EEEEEE;">{{ ucfirst($user->role) }}</td>
                                                 @endif
                                                 <td>{{ $user->created_at->format('Y-m-d') }}</td>
-                                                <td data-intro="Here u can see the students points that they have earned for the last week"
+                                                <td data-intro="Here u can see the students points that they have earned for the last week and all the badges that they have earned"
                                                     data-step="6">
                                                     @if ($user->role == 'student')
                                                         <a href="{{ route('points', $user->id) }}"
-                                                            class="btn btn-info">View Points</a>
+                                                            class="btn btn-info">Points</a>
+                                                            <a href="{{ route('users.badges', $user->id) }}" class="btn btn-info">
+                                                                Badges
+                                                            </a>
                                                     @else
                                                     Excluded from points
                                                     @endif
+                                                    
                                                 </td>
                                                 <td>
                                                     {{-- Soft del And edit --}}
