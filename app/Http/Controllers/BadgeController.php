@@ -16,7 +16,7 @@ class BadgeController extends Controller
      */
     public function assignForm()
     {
-        $students = User::where('role', 'student')->get();
+        $students = User::where('role', 'student')->orderByDesc('weekly_points')->get();
         $badges = Badge::all();
         return view('admin.tables.badges.assign', compact('students', 'badges'));
     }

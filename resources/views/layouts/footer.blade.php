@@ -33,10 +33,18 @@
             <div class="footer-section">
                 <h4 style="font-size: x-large; font-style: normal;">Links</h4>
                 <ul>
-                    <li><a href="#">Link 1</a></li>
-                    <li><a href="#">Link 2</a></li>
-                    <li><a href="#">Link 3</a></li>
-                    <li><a href="#">Link 4</a></li>
+                    @if (auth()->user()->role === 'admin' || auth()->user()->role === 'trainer')
+                    <li><a href="{{ route('users.index') }}">Users table</a></li>
+                    <li><a href="{{ route('tasks.index') }}">Tasks table</a></li>
+                    <li><a href="{{ route('attendance.index') }}">Attendance Table</a></li>
+                    <li><a href="{{route('submissions.index')}}">Submissions Table</a></li>
+                    @else
+                    <li><a href="#">xxxxxx</a></li>
+                    <li><a href="#">xxxxxx</a></li>
+                    <li><a href="#">xxxxxxx</a></li>
+                    <li><a href="#">xxxxxxx</a></li>
+                    @endif
+                  
                 </ul>
             </div>
 

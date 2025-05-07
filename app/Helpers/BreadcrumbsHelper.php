@@ -44,6 +44,15 @@ class BreadcrumbsHelper
             $breadcrumbs[] = ['label' => 'Dashboard', 'url' => route('dashboard')];
             $breadcrumbs[] = ['label'=> 'Tables','url'=> route('tables')];
             $breadcrumbs[] = ['label'=> 'Submissions','url'=> route('submissions.index')];
+        }elseif ($routeName === 'badges.assign.form') {
+            $breadcrumbs[] = ['label' => 'Dashboard', 'url' => route('dashboard')];
+            $breadcrumbs[] = ['label' => 'Tables', 'url' => route('tables')];
+            $breadcrumbs[] = ['label' => 'Badges', 'url' => route('badges.assign.form')];
+        }elseif ($routeName === 'badges.create') {
+            $breadcrumbs[] = ['label' => 'Dashboard', 'url' => route('dashboard')];
+            $breadcrumbs[] = ['label' => 'Tables', 'url' => route('tables')];
+            $breadcrumbs[] = ['label' => 'Badges', 'url' => route('badges.assign.form')];
+            $breadcrumbs[] = ['label' => 'Create Badge', 'url' => route('badges.create')];
         }
 
         return $breadcrumbs;

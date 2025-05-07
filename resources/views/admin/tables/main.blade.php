@@ -81,7 +81,8 @@
             </div>
 
 
-            <div class="ag-courses_item">
+            <div class="ag-courses_item" data-intro="This is the Leader Board, here u can see the top preforming students this week"
+            data-step="5">
                 <a href="{{ route('leaderBoard.index') }}" class="ag-courses-item_link">
                     <div class="ag-courses-item_bg"></div>
 
@@ -99,7 +100,8 @@
             </div>
 
 
-            <div class="ag-courses_item">
+            <div class="ag-courses_item" data-intro="This is the Submissions table, here u can all the Submissions from the students and change the status of the submission."
+            data-step="6">
                 <a href="{{route('submissions.index')}}" class="ag-courses-item_link">
                     <div class="ag-courses-item_bg"></div>
 
@@ -117,7 +119,8 @@
             </div>
 
 
-            <div class="ag-courses_item">
+            <div class="ag-courses_item" data-intro="Here you can assign badges to the students and create new one or delete an existing one."
+            data-step="7">
                 <a href="{{route('badges.assign')}}" class="ag-courses-item_link">
                     <div class="ag-courses-item_bg"></div>
 
@@ -134,59 +137,6 @@
                 </a>
             </div>
 
-
-            <div class="ag-courses_item">
-                <a href="#" class="ag-courses-item_link">
-                    <div class="ag-courses-item_bg"></div>
-
-                    <div class="ag-courses-item_title">
-                        Motion Design
-                    </div>
-
-                    <div class="ag-courses-item_date-box">
-                        Start:
-                        <span class="ag-courses-item_date">
-                            30.11.2022
-                        </span>
-                    </div>
-                </a>
-            </div>
-
-
-            <div class="ag-courses_item">
-                <a href="#" class="ag-courses-item_link">
-                    <div class="ag-courses-item_bg"></div>
-
-                    <div class="ag-courses-item_title">
-                        Motion Design
-                    </div>
-
-                    <div class="ag-courses-item_date-box">
-                        Start:
-                        <span class="ag-courses-item_date">
-                            30.11.2022
-                        </span>
-                    </div>
-                </a>
-            </div>
-
-
-            <div class="ag-courses_item">
-                <a href="#" class="ag-courses-item_link">
-                    <div class="ag-courses-item_bg"></div>
-
-                    <div class="ag-courses-item_title">
-                        Motion Design
-                    </div>
-
-                    <div class="ag-courses-item_date-box">
-                        Start:
-                        <span class="ag-courses-item_date">
-                            30.11.2022
-                        </span>
-                    </div>
-                </a>
-            </div>
 
         </div>
     </div>
