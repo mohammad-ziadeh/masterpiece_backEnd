@@ -20,7 +20,6 @@
         </div>
     </x-slot>
 
-    <!-- Success Message -->
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert" id="successMessage">
             {{ session('success') }}
@@ -30,7 +29,6 @@
         </div>
     @endif
 
-    <!-- Error Message -->
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert" id="errorMessage">
             {{ session('error') }}
@@ -40,7 +38,6 @@
         </div>
     @endif
 
-    <!-- Main Content -->
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6" style="overflow: hidden;">
         <div class="p-4 sm:p-8 bg-white" style="margin-top: 20px; border-radius: 8px;">
 
@@ -49,7 +46,6 @@
             <form action="{{ route('badges.assign') }}" method="POST">
                 @csrf
 
-                <!-- Select Student -->
                 <div class="mb-3">
                     <label for="user_id" class="form-label">Select Student:</label>
                     <select name="user_id" id="user_id" class="form-select w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" required>
@@ -62,7 +58,6 @@
                     </select>
                 </div>
 
-                <!-- Select Badge -->
                 <div class="mb-3">
                     <label for="badge_id" class="form-label">Select Badge:</label>
                     <select name="badge_id" id="badge_id" class="form-select w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" required>
@@ -75,7 +70,6 @@
                     </select>
                 </div>
 
-                <!-- Submit Button -->
                 <div class="mt-4">
                     <button type="submit" class="btn btn-primary" style="background-color: #3b1e54; color: white;">
                         Assign Badge

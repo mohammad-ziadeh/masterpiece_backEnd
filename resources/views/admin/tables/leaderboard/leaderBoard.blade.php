@@ -76,11 +76,6 @@
 
 
     <script>
-        function startTour() {
-            introJs().start();
-        }
-    </script>
-    <script>
         function updateWeeklyCountdown() {
             const now = new Date();
             const endOfWeek = new Date();
@@ -101,5 +96,9 @@
 
         setInterval(updateWeeklyCountdown, 1000);
     </script>
-
+  <script>
+    function startTour() {
+        introJs().start();
+    }
+</script>
 </x-app-layout>

@@ -88,7 +88,7 @@
                         @foreach ($badges as $badge)
                             <tr>
                                 <td><img src="{{ asset('storage/' . $badge->image_url) }}" alt="{{ $badge->title }}"
-                                        width="70"></td>
+                                        width="90"></td>
                                 <td>{{ $badge->title }}</td>
                                 <td>{{ $badge->description ?? '—' }}</td>
                                 <td>
@@ -96,7 +96,7 @@
                                         onsubmit="return confirm('Are you sure you want to delete this badge?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
                                 </td>
                             </tr>

@@ -21,7 +21,7 @@
                             @foreach($awards as $award)
                                 <tr>
                                     <td class="border px-4 py-2">
-                                        <img src="{{ asset('storage/' . $award->badge->image_url) }}" width="50" alt="{{ $award->badge->title }}">
+                                        <img src="{{ asset('storage/' . $award->badge->image_url) }}" width="80" alt="{{ $award->badge->title }}">
                                     </td>
                                     <td class="border px-4 py-2">{{ $award->badge->title }}</td>
                                     <td class="border px-4 py-2">{{ $award->created_at->format('Y-m-d H:i') }}</td>

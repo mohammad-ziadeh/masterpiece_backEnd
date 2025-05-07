@@ -18,7 +18,6 @@ class BadgeController extends Controller
     {
         $students = User::where('role', 'student')->get();
         $badges = Badge::all();
-       // $weeklyPoints
         return view('admin.tables.badges.assign', compact('students', 'badges'));
     }
 
@@ -64,7 +63,7 @@ class BadgeController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048', // max 2MB
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048', 
         ]);
 
         $path = null;

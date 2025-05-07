@@ -39,11 +39,14 @@
 
             <div class="row">
                 <div class="col grid-margin stretch-card">
-                    <div class="card" data-intro="This is the Tasks management table" data-step="1">
-                        <div class="card-body">
+                    <div>
+                        <div class="card-body" class="card" data-intro="This is the Submissions management table" data-step="1">
 
                             {{-- Start Filters --}}
-                            <form method="GET" action="{{ route('submissions.index') }}" class="mb-3 mt-4">
+                            <form method="GET" action="{{ route('submissions.index') }}" class="mb-3 mt-4"
+                                class="card"
+                                data-intro="These are the filters, here u can filter the Submissions according to the Student name, Select the task you want or change the order of the ID's that are shown in the table (They will start DESC)"
+                                data-step="2">
                                 <div class="row">
 
 
@@ -86,20 +89,20 @@
                             </form>
 
                             {{-- End Filters --}}
-                            <form action="{{ route('submissions.update.grade') }}" method="POST">
+                            <form action="{{ route('submissions.update.grade') }}" method="POST" >
                                 @csrf
                                 <div class="table-responsive">
                                     <table class="table table-bordered border-primary">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th style="width: 14%">Task Name (ID)</th>
-                                                <th>Student Name (ID)</th>
-                                                <th style="width: 10%">Grade</th>
-                                                <th>Feedback</th>
-                                                <th>Graded By</th>
-                                                <th>Submitted At</th>
-                                                <th>Details</th>
+                                                <th style="width: 14%" data-intro="Here when you first open the table u will see all the tasks names so u need to filter the one u want" data-step="3">Task Name (ID)</th>
+                                                <th data-intro="Here u will see the Student who submitted the task and his ID" data-step="4">Student Name (ID)</th>
+                                                <th style="width: 10%" data-intro="Here u can change the status of the Submission from pending (the default) to passed or failed" data-step="5">Grade</th>
+                                                <th data-intro="Here u can add the feedback if needed." data-step="6">Feedback</th>
+                                                <th data-intro="Here u will see who graded the tasks" data-step="7">Graded By</th>
+                                                <th data-intro="Here u will se when the task was submitted (Red mean the task was overdue, Green mean the task was submitted at time or even before)." data-step="8">Submitted At</th>
+                                                <th data-intro="Here u can see more detail about the submission like the answer if it does have, or viewing the pdf that got submitted" data-step="9">Details</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -112,22 +115,27 @@
                                                     <td>
                                                         {{ $submission->user?->name }}
                                                         ({{ $submission->user?->id ?? 'N/A' }}) </td>
-                                                    @if ($submission->grade === 'pending')
-                                                        <td style="background-color: rgb(236, 236, 0)">
-                                                        @elseif ($submission->grade === 'passed')
-                                                        <td style="background-color: green">
-                                                        @else
-                                                        <td style="background-color: red">
-                                                    @endif
-                                                    <select name="grades[{{ $submission->id }}]"
-                                                        class="form-control form-control-sm">
+                                                    <td>
+                                                        @if ($submission->grade === 'pending')
+                                                            <select style="border-color:orange"
+                                                                name="grades[{{ $submission->id }}]"
+                                                                class="form-control form-control-sm">
+                                                            @elseif ($submission->grade === 'passed')
+                                                                <select style="border-color:green"
+                                                                    name="grades[{{ $submission->id }}]"
+                                                                    class="form-control form-control-sm">
+                                                                @else
+                                                                    <select style="border-color:red"
+                                                                        name="grades[{{ $submission->id }}]"
+                                                                        class="form-control form-control-sm">
+                                                        @endif
                                                         @foreach (['pending', 'passed', 'failed'] as $status)
                                                             <option value="{{ $status }}"
                                                                 {{ $submission->grade === $status ? 'selected' : '' }}>
                                                                 {{ ucfirst($status) }}
                                                             </option>
                                                         @endforeach
-                                                    </select>
+                                                        </select>
                                                     </td>
                                                     <td>
                                                         <textarea name="feedback[{{ $submission->id }}]" class="form-control form-control-sm" rows="2"
