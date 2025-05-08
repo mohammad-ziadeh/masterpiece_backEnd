@@ -21,7 +21,7 @@ class RoleMiddleware
         $user = Auth::user();
 
         if (!in_array(strtolower($user->role), array_map('strtolower', $roles))) {
-            abort(403, 'Unauthorized role');
+            return redirect()->route('studentDashboard');
         }
 
         return $next($request);

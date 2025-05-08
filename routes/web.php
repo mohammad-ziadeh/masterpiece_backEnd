@@ -11,6 +11,7 @@ use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\LeaderBoardController;
 use App\Http\Controllers\AttendanceHistoryStatus;
 use App\Http\Controllers\AttendanceHistoryController;
+use App\Http\Controllers\StatisticsController;
 
 /*
 |--------------------------------------------------------------------------- 
@@ -23,10 +24,31 @@ use App\Http\Controllers\AttendanceHistoryController;
 */
 
 
-// ###############{{ All }}################ //
+// 
+// *****
+###############{{ All }}################ 
+// *****
+//
 Route::get('/spinner', function () {
   return view('home.spinner');
 })->name('spinner');
+
+Route::get('/', function () {
+  return redirect('http://localhost:3000/');
+})->name('landingPage');
+// 
+// *****
+###############{{ All }}################ 
+// *****
+//
+
+
+// ###############{{ Students }}################ //
+Route::middleware(['auth', 'role:student', 'verified'])->group(function () {
+  Route::get('/student-dashboard', function () {
+    return view('home.spinner');
+  })->name('studentDashboard');
+});
 
 
 
@@ -34,9 +56,8 @@ Route::get('/spinner', function () {
 // ###############{{ Admin,Trainer }}################ //
 Route::middleware(['auth', 'role:admin,trainer', 'verified'])->group(function () {
   // -------{Main}---------- //
-  Route::get('/', function () {
-    return view('dashboard');
-  })->name('dashboard');
+
+  Route::get('/dashboard', [StatisticsController::class, 'taskProgress'])->name('dashboard');
   // SUBS //
   Route::view('/tables', 'admin.tables.main')->name('tables');
   // -------{Main}---------- //
