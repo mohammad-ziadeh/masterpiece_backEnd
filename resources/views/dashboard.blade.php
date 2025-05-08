@@ -73,7 +73,7 @@
                                 <div class="icon-circle bg-danger text-white mx-auto">
                                     <i class="bi bi-exclamation-circle-fill"></i>
                                 </div>
-                                <h5 class="mb-1" style="color:white">Today Lateness's</h5>
+                                <h5 class="mb-1" style="color:white">Today Tardiness</h5>
                                 <h3 style="color:white">{{ $totalLate }}</h3>
                             </div>
                         </div>

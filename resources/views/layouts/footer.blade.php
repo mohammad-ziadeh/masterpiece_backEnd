@@ -34,10 +34,10 @@
                 <h4 style="font-size: x-large; font-style: normal;">Links</h4>
                 <ul>
                     @if (auth()->user()->role === 'admin' || auth()->user()->role === 'trainer')
-                    <li><a href="{{ route('users.index') }}">Users table</a></li>
-                    <li><a href="{{ route('tasks.index') }}">Tasks table</a></li>
-                    <li><a href="{{ route('attendance.index') }}">Attendance Table</a></li>
-                    <li><a href="{{route('submissions.index')}}">Submissions Table</a></li>
+                    <li><a href="{{ route('users.index') }}">Users</a></li>
+                    <li><a href="{{ route('tasks.index') }}">Tasks</a></li>
+                    <li><a href="{{ route('attendance.index') }}">Attendance</a></li>
+                    <li><a href="{{route('submissions.index')}}">Submissions</a></li>
                     @else
                     <li><a href="#">xxxxxx</a></li>
                     <li><a href="#">xxxxxx</a></li>
