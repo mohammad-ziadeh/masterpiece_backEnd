@@ -19,154 +19,163 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 ">
-                    {{ __("You're logged in!") }}
-                </div>
 
-                {{-- <div class="container">
-                    <div class="row g-3">
 
-                        <div class="col-md-4">
-                            <div class="card card-custom text-center p-4" style="background-color: #3b1e54">
-                                <div class="icon-circle bg-primary text-white mx-auto">
-                                    <i class="bi bi-people-fill"></i>
-                                </div>
-                                <h5 class="mb-1" style="color:white">Students</h5>
-                                <h3 style="color:white">{{ $students }}</h3>
-                            </div>
+                <section class="section9">
+        
+                    <div class="sb">
+                        <h2 style="font-weight:bold; font-size: x-large; text-align: center; color: #3b1e54;">Student Information</h2>
+                        <h3 style="font-size: x-large; text-align: center; margin-top: 20px; ">
+                            {{ Auth::user()->name }}</h3>
+                        <div style="display: flex; justify-content: space-between;">
+                            <h3 style=" font-size: large; margin-top: 30px;">ID:</h3>
+                            <h3 style=" font-size: large; margin-top: 30px; font-weight: bold;">{{ Auth::user()->id }}
+                            </h3>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="card card-custom text-center p-4" style="background-color: #3b1e54">
-                                <div class="icon-circle bg-warning text-white mx-auto">
-                                    <i class="bi bi-person-badge-fill"></i>
-                                </div>
-                                <h5 class="mb-1" style="color:white">Trainers</h5>
-                                <h3 style="color:white">{{ $trainers }}</h3>
-                            </div>
+                        <div class="hr-container">
+                            <span>★★★</span>
                         </div>
-
-                        <div class="col-md-4">
-                            <div class="card card-custom text-center p-4" style="background-color: #3b1e54">
-                                <div class="icon-circle bg-success text-white mx-auto">
-                                    <i class="bi bi-person-gear"></i>
-                                </div>
-                                <h5 class="mb-1" style="color:white">Admins</h5>
-                                <h3 style="color:white">{{ $admins }}</h3>
-                            </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <h3 style=" font-size: large;">Email: </h3>
+                            <h3 style=" font-size: large; font-weight: bold;">{{ Auth::user()->email }}</h3>
                         </div>
-                    </div>
-                </div>
-                <div class="container" style="margin-bottom: 40px">
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="card card-custom text-center p-4" style="background-color: #3b1e54">
-                                <div class="icon-circle bg-danger text-white mx-auto">
-                                    <i class="bi bi-exclamation-circle-fill"></i>
-                                </div>
-                                <h5 class="mb-1" style="color:white">Today Absences</h5>
-                                <h3 style="color:white">{{ $totalAbsent }}</h3>
-                            </div>
+                        <div class="hr-container">
+                            <span>★★★</span>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card card-custom text-center p-4" style="background-color: #3b1e54">
-                                <div class="icon-circle bg-danger text-white mx-auto">
-                                    <i class="bi bi-exclamation-circle-fill"></i>
-                                </div>
-                                <h5 class="mb-1" style="color:white">Today Tardiness</h5>
-                                <h3 style="color:white">{{ $totalLate }}</h3>
-                            </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <h3 style=" font-size: large;">Phone:</h3>
+                            <h3 style=" font-size: large;">0791318735</h3>
+                        </div>
+                        <div class="hr-container">
+                            <span>★★★</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <h3 style="font-size: large;">Joining Date:</h3>
+                            <h3 style="font-size: large; font-weight: bold;">
+                                {{ Auth::user()->created_at->format('d F Y') }}</h3>
                         </div>
 
                     </div>
-                </div> --}}
+                    <div class="sd">
+                        <h2 style="font-weight:bold; font-size: x-large; text-align: center; margin-bottom: 60px; color: #3b1e54;">Student Attendance:</h2>
+                        <div style="display: flex; justify-content: space-between;">
+                            <h3 style=" font-size: large;">Justified Absence:</h3>
+                            <h3 style=" font-size: large;">{{$userJustifyAbsent}}</h3>
+                        </div>
+                        <div class="hr-container">
+                            <span>★★★</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <h3 style=" font-size: large;">Non-Justified Absence::</h3>
+                            <h3 style=" font-size: large;">{{$userAbsent}}</h3>
+                        </div>
+                        <div class="hr-container">
+                            <span>★★★</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <h3 style=" font-size: large;">Tardy:</h3>
+                            <h3 style=" font-size: large;">{{$userLate}}</h3>
+                        </div>
+
+                    </div>
+                    <div class="hd"></div>
+                    <div class="mb"></div>
+                    <div class="ft"></div>
+                </section>
+
             </div>
         </div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" style="margin-top: 40px">
             <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg">
-                {{-- // table progress // --}}
-                <div class="col-lg-12 grid-margin stretch-card" style="margin-bottom: 40px; margin-top: 40px; ">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Task Completion Progress</h4>
-                            <div class="table-responsive pt-3">
-                                {{-- <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Task Name</th>
-                                            <th style="width: 25%">Progress</th>
-                                            <th>Students Submissions</th>
-                                            <th>Deadline</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($tasks as $index => $task)
-                                            @php
-                                                $percentage =
-                                                    $task->students_count > 0
-                                                        ? ($task->completed_by_students / $task->students_count) * 100
-                                                        : 0;
-                                            @endphp
-                                            <tr>
-                                                <td>{{ $task->id }}</td>
-                                                <td>{{ $task->name }}</td>
-                                                <td>
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-success" role="progressbar"
-                                                            style="width: {{ $percentage }}%;"
-                                                            aria-valuenow="{{ $percentage }}" aria-valuemin="0"
-                                                            aria-valuemax="100">
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>{{ $task->completed_by_students }} / {{ $task->students_count }}
-                                                </td>
-                                                @if ($task->due_date < $date)
-                                                <td style="color: red;">
-                                                        {{ \Carbon\Carbon::parse($task->due_date)->format('Y-m-d H:i') }}
-                                                    </td>
-                                                @else
-                                                <td style="color: green;">
-                                                    {{ \Carbon\Carbon::parse($task->due_date)->format('Y-m-d H:i') }}
-                                                </td>
-                                                @endif
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table> --}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {{-- // End table progress // --}}
+
 
             </div>
 
         </div>
     </div>
     <style>
-        .card-custom {
-            border-radius: 1rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            transition: 0.3s;
+        .section9 {
+            width: 100%;
+            height: 900px;
+            gap: 15px;
+            padding: 15px;
+
+
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(12, 1fr);
+            grid-template-areas:
+                "sb sb sb sb ft ft ft hd hd hd"
+                "sb sb sb sb ft ft ft hd hd hd"
+                "sb sb sb sb ft ft ft hd hd hd"
+                "sb sb sb sb ft ft ft hd hd hd"
+                "sb sb sb sb mb mb mb mb mb mb"
+                "sb sb sb sb mb mb mb mb mb mb"
+                "sb sb sb sb mb mb mb mb mb mb"
+                "sd sd sd sd mb mb mb mb mb mb"
+                "sd sd sd sd mb mb mb mb mb mb"
+                "sd sd sd sd mb mb mb mb mb mb"
+                "sd sd sd sd mb mb mb mb mb mb"
+                "sd sd sd sd mb mb mb mb mb mb"
         }
 
-        .card-custom:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+        .hd {
+            grid-area: hd;
+
+            border-radius: 5px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
         }
 
-        .icon-circle {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #f0f0f0;
+        .sb {
+            grid-area: sb;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .sd {
+            grid-area: sd;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .mb {
+            grid-area: mb;
+
+            border-radius: 5px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .ft {
+            grid-area: ft;
+
+            border-radius: 5px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hr-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .hr-container::before,
+        .hr-container::after {
+            content: "";
+            flex: 1;
+            border-bottom: 2px solid var(--light-color);
+            margin: 0 10px;
+        }
+
+        .hr-container span {
+            font-size: 18px;
+            /* Adjust size of the word */
+            color: var(--primary-color);
         }
     </style>
 </x-app-layout>
