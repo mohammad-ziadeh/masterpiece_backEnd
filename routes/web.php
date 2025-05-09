@@ -52,8 +52,6 @@ Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.
 
 // ###############{{ Students }}################ //
 Route::middleware(['auth', 'role:student', 'verified'])->group(function () {
-
-
   Route::get('/student-dashboard', [StudentStatisticsController::class, 'index'])->name('studentDashboard');
 });
 

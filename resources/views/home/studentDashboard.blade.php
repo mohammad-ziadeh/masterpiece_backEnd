@@ -1,12 +1,30 @@
 @php
     $breadcrumbs = \App\Helpers\BreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
+    $isWinter = $isWinter ?? false;
 @endphp
 <x-app-layout>
 
     <x-slot name="header">
-        <h2 class="font-semibold text-xl " style="color: #3b1e54; margin-bottom: 20px;">
+        @if ($season == 'winter')
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+            <h2 class="font-semibold text-xl" style="color: #3b1e54; margin-bottom: 20px;">
+                {{ __('Dashboard') }}
+            </h2>
+            <div class="switch-container" style="display: flex; align-items: center; gap: 10px;">
+                <span>off</span>
+                <label class="snow-switch">
+                    <input type="checkbox" id="toggleSnowSwitch" {{ $isWinter ? 'checked' : '' }}>
+                    <span class="slider"></span>
+                </label>
+                <span>on</span>
+            </div>
+        </div>
+        @else
+        <h2 class="font-semibold text-xl" style="color: #3b1e54; margin-bottom: 20px;">
             {{ __('Dashboard') }}
         </h2>
+        @endif
+    
         <ul class="breadcrumbs">
             @foreach ($breadcrumbs as $breadcrumb)
                 <li>
@@ -22,9 +40,10 @@
 
 
                 <section class="section9">
-        
+
                     <div class="sb">
-                        <h2 style="font-weight:bold; font-size: x-large; text-align: center; color: #3b1e54;">Student Information</h2>
+                        <h2 style="font-weight:bold; font-size: x-large; text-align: center; color: #3b1e54;">Student
+                            Information</h2>
                         <h3 style="font-size: x-large; text-align: center; margin-top: 20px; ">
                             {{ Auth::user()->name }}</h3>
                         <div style="display: flex; justify-content: space-between;">
@@ -58,30 +77,56 @@
 
                     </div>
                     <div class="sd">
-                        <h2 style="font-weight:bold; font-size: x-large; text-align: center; margin-bottom: 60px; color: #3b1e54;">Student Attendance:</h2>
+                        <h2
+                            style="font-weight:bold; font-size: x-large; text-align: center; margin-bottom: 60px; color: #3b1e54;">
+                            Student Attendance:</h2>
                         <div style="display: flex; justify-content: space-between;">
                             <h3 style=" font-size: large;">Justified Absence:</h3>
-                            <h3 style=" font-size: large;">{{$userJustifyAbsent}}</h3>
+                            <h3 style=" font-size: large;">{{ $userJustifyAbsent }}</h3>
                         </div>
                         <div class="hr-container">
                             <span>★★★</span>
                         </div>
                         <div style="display: flex; justify-content: space-between;">
                             <h3 style=" font-size: large;">Non-Justified Absence::</h3>
-                            <h3 style=" font-size: large;">{{$userAbsent}}</h3>
+                            <h3 style=" font-size: large;">{{ $userAbsent }}</h3>
                         </div>
                         <div class="hr-container">
                             <span>★★★</span>
                         </div>
                         <div style="display: flex; justify-content: space-between;">
                             <h3 style=" font-size: large;">Tardy:</h3>
-                            <h3 style=" font-size: large;">{{$userLate}}</h3>
+                            <h3 style=" font-size: large;">{{ $userLate }}</h3>
                         </div>
 
                     </div>
-                    <div class="hd"></div>
+                    <div class="hd">
+                        @if ($time > '06:00:00' && $time < '18:00:00')
+                            <div class="background-day">
+                                <div class="sun"></div>
+                                <div id="clock">Loading...</div>
+                            </div>
+                        @else
+                            <div class="background-night">
+                                <div class="moon"></div>
+                                <div class="shooting-stars sh-star1">
+                                </div>
+                                <div class="shooting-stars sh-star2">
+                                </div>
+                                <div class="shooting-stars sh-star3">
+                                </div>
+
+                                <div id="clock">Loading...</div>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="ft">
+
+                    </div>
+
+
                     <div class="mb"></div>
-                    <div class="ft"></div>
+
                 </section>
 
             </div>
@@ -94,6 +139,9 @@
 
         </div>
     </div>
+
+
+
     <style>
         .section9 {
             width: 100%;
@@ -174,8 +222,73 @@
 
         .hr-container span {
             font-size: 18px;
-            /* Adjust size of the word */
+
             color: var(--primary-color);
         }
+
+        /*d dfgdfgdfgdf*/
     </style>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+
+
+    {{-- //---- Snow toggle ----// --}}
+    <div class="snowflakes" aria-hidden="true" style="{{ $isWinter ? '' : 'display: none;' }}">
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❅
+        </div>
+        <div class="snowflake">
+            ❆
+        </div>
+
+    </div>
+    <script>
+        const snowSwitch = document.getElementById('toggleSnowSwitch');
+        const snowflakes = document.querySelector('.snowflakes');
+
+        snowSwitch.addEventListener('change', () => {
+            if (snowSwitch.checked) {
+                snowflakes.style.display = 'block';
+            } else {
+                snowflakes.style.display = 'none';
+            }
+        });
+    </script>
+
 </x-app-layout>

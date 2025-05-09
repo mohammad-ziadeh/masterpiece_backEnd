@@ -16,6 +16,8 @@
         integrity="sha384-KyZXEJ6uS+YbU6jYd42e29+bT5YrD1orY73Sg/4bPv6c7l9FzvkcHYOoHkaM2s+V" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/breadcrumbs.css') }}">
     <link rel="stylesheet" href="{{ asset('css/mainTablesCards.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/snowSwitch.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dayNight.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
     <link rel="stylesheet" href="{{ asset('css/leadBoard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">

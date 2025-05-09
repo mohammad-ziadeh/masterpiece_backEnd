@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Tasks;
 use App\Models\Attendance;
@@ -16,6 +17,7 @@ class StudentStatisticsController extends Controller
      */
     public function index(Request $request)
     {
+        $time = now()->format('H:i:s');
         $user = Attendance::where('user_id', auth()->id());
 
         // ------ {{ Attendance }} ----- //
@@ -25,9 +27,24 @@ class StudentStatisticsController extends Controller
         // ------ {{ End Attendance }} ----- //
 
 
+        // {{---- showing the button when its winter ----}} //
+        $now = Carbon::now();
+        $month = $now->month;
+        $day = $now->day;
+
+        if (
+            ($month == 12 && $day >= 1) ||
+            ($month == 1) ||
+            ($month == 2) ||
+            ($month == 3 && $day < 20)
+        ) {
+            $season = 'winter';
+        } else {
+            $season = 'not winter';
+        }
 
 
-        return view('home.studentDashboard', compact('userAbsent', 'userLate', 'userJustifyAbsent'));
+        return view('home.studentDashboard', compact('userAbsent', 'userLate', 'userJustifyAbsent', 'time', 'season'));
     }
 
 }
