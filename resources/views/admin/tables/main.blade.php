@@ -34,9 +34,9 @@
                     </div>
 
                     <div class="ag-courses-item_date-box">
-                        Start:
+                        Your Role:
                         <span class="ag-courses-item_date">
-                            30.11.2022
+                            {{ Auth::user()->role }}
                         </span>
                     </div>
                 </a>
@@ -53,9 +53,9 @@
                     </div>
 
                     <div class="ag-courses-item_date-box">
-                        Start:
+                       Finished Tasks:
                         <span class="ag-courses-item_date">
-                            30.11.2022
+                            {{$finishedTasks}}
                         </span>
                     </div>
                 </a>
@@ -72,9 +72,9 @@
                     </div>
 
                     <div class="ag-courses-item_date-box">
-                        Start:
+                        Today Absences:
                         <span class="ag-courses-item_date">
-                            30.11.2022
+                           {{$totalAbsent}}
                         </span>
                     </div>
                 </a>
@@ -91,9 +91,9 @@
                     </div>
 
                     <div class="ag-courses-item_date-box">
-                        Start:
+                        Top 1 Student:
                         <span class="ag-courses-item_date">
-                            30.11.2022
+                           {{$topUsers->name}}
                         </span>
                     </div>
                 </a>
@@ -110,9 +110,9 @@
                     </div>
 
                     <div class="ag-courses-item_date-box">
-                        Start:
+                        Last Task Completion:
                         <span class="ag-courses-item_date">
-                            30.11.2022
+                            {{ number_format($task->completion_percentage, 2) }}%
                         </span>
                     </div>
                 </a>
@@ -129,9 +129,9 @@
                     </div>
 
                     <div class="ag-courses-item_date-box">
-                        Start:
-                        <span class="ag-courses-item_date">
-                            30.11.2022
+                        Till Next Badge:
+                        <span id="weeklyCountdown" class="ag-courses-item_date">
+                           
                         </span>
                     </div>
                 </a>
@@ -141,6 +141,27 @@
         </div>
     </div>
 
+    <script>
+        function updateWeeklyCountdown() {
+            const now = new Date();
+            const endOfWeek = new Date();
+            const day = endOfWeek.getDay();
+            const distanceToSunday = 7 - day;
+            endOfWeek.setDate(endOfWeek.getDate() + distanceToSunday);
+            endOfWeek.setHours(23, 59, 59, 999);
+
+            const diff = endOfWeek - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById("weeklyCountdown").innerText =
+                `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        setInterval(updateWeeklyCountdown, 1000);
+    </script>
     <script>
         function startTour() {
             introJs().start();

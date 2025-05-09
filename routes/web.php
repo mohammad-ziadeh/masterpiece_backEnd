@@ -11,6 +11,7 @@ use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\LeaderBoardController;
 use App\Http\Controllers\AttendanceHistoryStatus;
 use App\Http\Controllers\AttendanceHistoryController;
+use App\Http\Controllers\MainTableController;
 use App\Http\Controllers\StatisticsController;
 
 /*
@@ -32,10 +33,16 @@ use App\Http\Controllers\StatisticsController;
 Route::get('/spinner', function () {
   return view('home.spinner');
 })->name('spinner');
-
+//-----------------------------
 Route::get('/', function () {
   return redirect('http://localhost:3000/');
 })->name('landingPage');
+//-----------------------------
+  // -------{Profile}---------- //
+  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+  Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+  // -------{Profile}---------- //
 // 
 // *****
 ###############{{ All }}################ 
@@ -46,7 +53,7 @@ Route::get('/', function () {
 // ###############{{ Students }}################ //
 Route::middleware(['auth', 'role:student', 'verified'])->group(function () {
   Route::get('/student-dashboard', function () {
-    return view('home.spinner');
+    return view('home.studentDashboard');
   })->name('studentDashboard');
 });
 
@@ -59,7 +66,7 @@ Route::middleware(['auth', 'role:admin,trainer', 'verified'])->group(function ()
 
   Route::get('/dashboard', [StatisticsController::class, 'taskProgress'])->name('dashboard');
   // SUBS //
-  Route::view('/tables', 'admin.tables.main')->name('tables');
+  Route::get('/tables', [MainTableController::class, 'index'])->name('tables');
   // -------{Main}---------- //
 
 
@@ -114,12 +121,6 @@ Route::middleware(['auth', 'role:admin,trainer', 'verified'])->group(function ()
 
   // -------{ Actions }---------- //
 
-
-  // -------{Profile}---------- //
-  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-  Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-  // -------{Profile}---------- //
 });
 
 

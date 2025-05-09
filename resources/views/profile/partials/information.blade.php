@@ -5,7 +5,7 @@
         </h1>
 
         <h3 class="mt-1 " style="color: #9b7ebd">
-            {{ __("Here is all your Information") }}
+            {{ __("Here are all your Information") }}
         </h3>
     </header>
 

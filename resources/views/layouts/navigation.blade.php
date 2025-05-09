@@ -15,21 +15,37 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                   
+
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link style="color: #eeeeee;" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link style="color: #eeeeee;" href="{{ route('tables') }}" :active="request()->routeIs('tables')">
-                        {{ __('Tables') }}
-                    </x-nav-link>
-                    <x-nav-link style="color: #eeeeee;" href="{{ route('spinner') }}" :active="request()->routeIs('spinner')">
-                        {{ __('Spinner') }}
-                    </x-nav-link>
-                    
-                </div>
+                @if (auth()->user()->role === 'admin' || auth()->user()->role === 'trainer')
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link style="color: #eeeeee;" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link style="color: #eeeeee;" href="{{ route('tables') }}" :active="request()->routeIs('tables')">
+                            {{ __('Tables') }}
+                        </x-nav-link>
+                        <x-nav-link style="color: #eeeeee;" href="{{ route('spinner') }}" :active="request()->routeIs('spinner')">
+                            {{ __('Spinner') }}
+                        </x-nav-link>
+
+                    </div>
+                @else
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link style="color: #eeeeee;" :href="route('studentDashboard')" :active="request()->routeIs('studentDashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link style="color: #eeeeee;" href="{{ route('tables') }}" :active="request()->routeIs('tables')">
+                            {{ __('****') }}
+                        </x-nav-link>
+                        <x-nav-link style="color: #eeeeee;" href="{{ route('spinner') }}" :active="request()->routeIs('spinner')">
+                            {{ __('Spinner') }}
+                        </x-nav-link>
+
+                    </div>
+                @endif
+
             </div>
 
             <!-- Settings Dropdown -->
@@ -87,19 +103,32 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div  :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1" >
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" style="color: #D4BEE4">
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
+        @if (auth()->user()->role === 'admin' || auth()->user()->role === 'trainer')
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" style="color: #D4BEE4">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('tables')" :active="request()->routeIs('tables')" style="color: #D4BEE4">
+                    {{ __('Tables') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('spinner')" :active="request()->routeIs('spinner')" style="color: #D4BEE4">
+                    {{ __('Spinner') }}
+                </x-responsive-nav-link>
+            </div>
+        @else
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('studentDashboard')" :active="request()->routeIs('studentDashboard')" style="color: #D4BEE4">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('tables')" :active="request()->routeIs('tables')" style="color: #D4BEE4" >
-                {{ __('Tables') }}
+            <x-responsive-nav-link :href="route('tables')" :active="request()->routeIs('tables')" style="color: #D4BEE4">
+                {{ __('****') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('spinner')" :active="request()->routeIs('spinner')" style="color: #D4BEE4" >
+            <x-responsive-nav-link :href="route('spinner')" :active="request()->routeIs('spinner')" style="color: #D4BEE4">
                 {{ __('Spinner') }}
             </x-responsive-nav-link>
         </div>
-
+        @endif
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 ">
             <div class="px-4">

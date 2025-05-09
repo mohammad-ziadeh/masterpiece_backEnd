@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div id="editSection" style="display: none;height: 220vh">
+    <div id="editSection" style="display: none;">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-white  shadow sm:rounded-lg" style="margin-top: 50px;">
                 <div class="max-w-xl mx-auto">
@@ -41,11 +41,13 @@
                 </div>
             </div>
 
+            @if (auth()->check() && auth()->user()->role === 'admin')
             <div class="p-4 sm:p-8 bg-white  shadow sm:rounded-lg">
                 <div class="max-w-xl mx-auto">
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>
+            @endif
         </div>
     </div>
 
