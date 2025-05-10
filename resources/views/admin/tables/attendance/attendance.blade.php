@@ -180,6 +180,7 @@
                                                     $currentStatus = $attendance->status ?? 'present';
                                                 @endphp
                                                 <tr>
+                                                    <td>{{ $user->id }}</td>
                                                     <td style="background-color:#EEEEEE">
                                                         {{ $user->name }} (Student)</td>
                                                     <td>

@@ -120,11 +120,14 @@
                                                 <td>{{ $user->name }}</td>
                                                 <td>{{ $user->email }}</td>
                                                 @if ($user->role == 'admin')
-                                                    <td style="background-color: #3b1e54; color: #EEEEEE;">{{ ucfirst($user->role) }}</td>
-                                                    @elseif ($user->role == 'trainer')
-                                                        <td style="background-color: #D4BEE4;">{{ ucfirst($user->role) }}</td>
-                                                        @else
-                                                        <td style="background-color: #EEEEEE;">{{ ucfirst($user->role) }}</td>
+                                                    <td style="background-color: #3b1e54; color: #EEEEEE;">
+                                                        {{ ucfirst($user->role) }}</td>
+                                                @elseif ($user->role == 'trainer')
+                                                    <td style="background-color: #D4BEE4;">{{ ucfirst($user->role) }}
+                                                    </td>
+                                                @else
+                                                    <td style="background-color: #EEEEEE;">{{ ucfirst($user->role) }}
+                                                    </td>
                                                 @endif
                                                 <td>{{ $user->created_at->format('Y-m-d') }}</td>
                                                 <td data-intro="Here u can see the students points that they have earned for the last week and all the badges that they have earned"
@@ -132,63 +135,106 @@
                                                     @if ($user->role == 'student')
                                                         <a href="{{ route('points', $user->id) }}"
                                                             class="btn btn-info">Points</a>
-                                                            <a href="{{ route('users.badges', $user->id) }}" class="btn btn-info">
-                                                                Badges
-                                                            </a>
+                                                        <a href="{{ route('users.badges', $user->id) }}"
+                                                            class="btn btn-info">
+                                                            Badges
+                                                        </a>
                                                     @else
-                                                    Excluded from points
+                                                        Excluded from points
                                                     @endif
-                                                    
-                                                </td>
-                                                <td>
-                                                    {{-- Soft del And edit --}}
-                                                    @if (!$user->trashed())
-                                                        <div data-intro="Here u can Edit the user information or Delete the user (Deleting here will not be permanent here)"
-                                                            data-step="7">
-                                                            <button type="button" class="btn btn-primary"
-                                                                data-toggle="modal"
-                                                                data-target="#editUserModal{{ $user->id }}">
-                                                                Edit
-                                                            </button>
-                                                            <form id="delete-form-{{ $user->id }}"
-                                                                action="{{ route('users.destroy', $user->id) }}"
-                                                                method="POST" style="display:inline;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="button" class="btn btn-danger"
-                                                                    onclick="confirmDelete({{ $user->id }})"
-                                                                    title="Temporarily Remove">
-                                                                    Delete
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    @endif
-                                                    {{-- End Soft del And edit --}}
 
-                                                    {{-- Restore and permanently del --}}
-                                                    @if ($user->trashed())
-                                                        <div data-intro="Here u can Restore deleted users or Deleting users permanently"
-                                                            data-step="1">
-                                                            <form action="{{ route('users.restore', $user->id) }}"
-                                                                method="POST" style="display:inline;">
-                                                                @csrf
-                                                                <button type="submit" class="btn btn-warning"
-                                                                    title="Restore the User">Restore</button>
-                                                            </form>
-                                                            <form
-                                                                action="{{ route('users.deletePermanently', $user->id) }}"
-                                                                method="POST" style="display:inline;"
-                                                                id="perDelete-form-{{ $user->id }}">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="button" class="btn btn-danger"
-                                                                    title="Delete Permanently"
-                                                                    onclick="confirmPerDelete({{ $user->id }})">Delete</button>
-                                                            </form>
-                                                        </div>
-                                                    @endif
-                                                    {{-- End Restore and permanently del --}}
                                                 </td>
+                                                @if ($user->role == 'trainer' && auth()->user()->role === 'trainer')
+                                                    <td>
+                                                        {{-- Soft del And edit --}}
+                                                        @if (!$user->trashed())
+                                                            <div data-intro="Here u can Edit the user information or Delete the user (Deleting here will not be permanent here)"
+                                                                data-step="7">
+                                                                <button type="button" class="btn btn-primary"
+                                                                    data-toggle="modal"
+                                                                    data-target="#editUserModal{{ $user->id }}">
+                                                                    Edit
+                                                                </button>
+                                                            </div>
+                                                        @endif
+                                                        {{-- End Soft del And edit --}}
+
+                                                        {{-- Restore and permanently del --}}
+                                                        @if ($user->trashed())
+                                                            <div data-intro="Here u can Restore deleted users or Deleting users permanently"
+                                                                data-step="1">
+                                                                <form action="{{ route('users.restore', $user->id) }}"
+                                                                    method="POST" style="display:inline;">
+                                                                    @csrf
+                                                                    <button type="submit" class="btn btn-warning"
+                                                                        title="Restore the User">Restore</button>
+                                                                </form>
+                                                                <form
+                                                                    action="{{ route('users.deletePermanently', $user->id) }}"
+                                                                    method="POST" style="display:inline;"
+                                                                    id="perDelete-form-{{ $user->id }}">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="button" class="btn btn-danger"
+                                                                        title="Delete Permanently"
+                                                                        onclick="confirmPerDelete({{ $user->id }})">Delete</button>
+                                                                </form>
+                                                            </div>
+                                                        @endif
+                                                        {{-- End Restore and permanently del --}}
+                                                    </td>
+                                                @else
+                                                <td>
+                                                        {{-- Soft del And edit --}}
+                                                        @if (!$user->trashed())
+                                                            <div data-intro="Here u can Edit the user information or Delete the user (Deleting here will not be permanent here)"
+                                                                data-step="7">
+                                                                <button type="button" class="btn btn-primary"
+                                                                    data-toggle="modal"
+                                                                    data-target="#editUserModal{{ $user->id }}">
+                                                                    Edit
+                                                                </button>
+                                                                <form id="delete-form-{{ $user->id }}"
+                                                                    action="{{ route('users.destroy', $user->id) }}"
+                                                                    method="POST" style="display:inline;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="button" class="btn btn-danger"
+                                                                        onclick="confirmDelete({{ $user->id }})"
+                                                                        title="Temporarily Remove">
+                                                                        Delete
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        @endif
+                                                        {{-- End Soft del And edit --}}
+
+                                                        {{-- Restore and permanently del --}}
+                                                        @if ($user->trashed())
+                                                            <div data-intro="Here u can Restore deleted users or Deleting users permanently"
+                                                                data-step="1">
+                                                                <form action="{{ route('users.restore', $user->id) }}"
+                                                                    method="POST" style="display:inline;">
+                                                                    @csrf
+                                                                    <button type="submit" class="btn btn-warning"
+                                                                        title="Restore the User">Restore</button>
+                                                                </form>
+                                                                <form
+                                                                    action="{{ route('users.deletePermanently', $user->id) }}"
+                                                                    method="POST" style="display:inline;"
+                                                                    id="perDelete-form-{{ $user->id }}">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="button" class="btn btn-danger"
+                                                                        title="Delete Permanently"
+                                                                        onclick="confirmPerDelete({{ $user->id }})">Delete</button>
+                                                                </form>
+                                                            </div>
+                                                        @endif
+                                                        {{-- End Restore and permanently del --}}
+                                                    </td>
+                                                @endif
+
                                             </tr>
 
                                             <div class="modal fade" id="editUserModal{{ $user->id }}"
@@ -220,12 +266,12 @@
                                                                     <select class="form-control" name="role"
                                                                         required>
                                                                         @if (auth()->check() && auth()->user()->role === 'admin')
-                                                                        <option value="admin"
-                                                                        {{ $user->role == 'admin' ? 'selected' : '' }}>
-                                                                        Admin</option>
-                                                                        <option value="trainer"
-                                                                        {{ $user->role == 'trainer' ? 'selected' : '' }}>
-                                                                        Trainer</option>
+                                                                            <option value="admin"
+                                                                                {{ $user->role == 'admin' ? 'selected' : '' }}>
+                                                                                Admin</option>
+                                                                            <option value="trainer"
+                                                                                {{ $user->role == 'trainer' ? 'selected' : '' }}>
+                                                                                Trainer</option>
                                                                         @endif
                                                                         <option value="student"
                                                                             {{ $user->role == 'student' ? 'selected' : '' }}>
@@ -274,18 +320,18 @@
                             <label for="email">Email</label>
                             <input type="email" class="form-control" name="email" required>
                         </div>
-                      
+
                         <div class="form-group">
                             <label for="role">Role</label>
                             <select class="form-control" name="role" required>
                                 <option value="student">Student</option>
                                 @if (auth()->check() && auth()->user()->role === 'admin')
-                                <option value="admin">Admin</option>
-                                <option value="trainer">Trainer</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="trainer">Trainer</option>
                                 @endif
                             </select>
                         </div>
-                    
+
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-success">Create</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

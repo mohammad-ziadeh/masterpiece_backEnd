@@ -127,4 +127,6 @@ class SubmissionController extends Controller
 
         return back()->with('success', 'Submissions updated successfully.');
     }
+
+
 }

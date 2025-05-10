@@ -8,6 +8,27 @@
 
     <title>LMC</title>
 
+    {{-- Meta Tags --}}
+    <meta name="description"
+        content="LMC is a centralized LMS that helps trainers, students, and admins manage education efficiently with integrated tools, automated scoring, and a gamified learning system.">
+    <meta name="keywords"
+        content="LMS, Learning Management System, Education Platform, Laravel, Flutter, Online Learning, Trainer Tools, Student Portal, Task Management, Orange Coding Academy">
+    <meta name="author" content="Mohammad Emad Ziadeh">
+    <meta name="theme-color" content="#321947">
+    {{-- Facebook --}}
+    <meta property="og:title" content="LMC - Learning Management Center">
+    <meta property="og:description"
+        content="All-in-one platform for trainers and students to manage learning efficiently. Features include task submission, point system, badges, and more.">
+    <meta property="og:type" content="website">
+    {{-- Twitter --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="LMC - Smart Learning Platform">
+    <meta name="twitter:description"
+        content="A gamified, automated LMS that empowers trainers and motivates students with badges, point systems, and more.">
+    {{-- End Meta Tags --}}
+
+
+
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -59,42 +80,41 @@
     <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     @if (auth()->user()->role === 'admin' || auth()->user()->role === 'trainer')
-    <script>
-        (function() {
-            if (!window.chatbase || window.chatbase("getState") !== "initialized") {
-                window.chatbase = (...arguments) => {
-                    if (!window.chatbase.q) {
-                        window.chatbase.q = []
-                    }
-                    window.chatbase.q.push(arguments)
-                };
-                window.chatbase = new Proxy(window.chatbase, {
-                    get(target, prop) {
-                        if (prop === "q") {
-                            return target.q
+        <script>
+            (function() {
+                if (!window.chatbase || window.chatbase("getState") !== "initialized") {
+                    window.chatbase = (...arguments) => {
+                        if (!window.chatbase.q) {
+                            window.chatbase.q = []
                         }
-                        return (...args) => target(prop, ...args)
-                    }
-                })
-            }
-            const onLoad = function() {
-                const script = document.createElement("script");
-                script.src = "https://www.chatbase.co/embed.min.js";
-                script.id = "XgSLUsnkc0eEO4QaZydRu";
-                script.domain = "www.chatbase.co";
-                document.body.appendChild(script)
-            };
-            if (document.readyState === "complete") {
-                onLoad()
-            } else {
-                window.addEventListener("load", onLoad)
-            }
-        })();
-    </script>
+                        window.chatbase.q.push(arguments)
+                    };
+                    window.chatbase = new Proxy(window.chatbase, {
+                        get(target, prop) {
+                            if (prop === "q") {
+                                return target.q
+                            }
+                            return (...args) => target(prop, ...args)
+                        }
+                    })
+                }
+                const onLoad = function() {
+                    const script = document.createElement("script");
+                    script.src = "https://www.chatbase.co/embed.min.js";
+                    script.id = "XgSLUsnkc0eEO4QaZydRu";
+                    script.domain = "www.chatbase.co";
+                    document.body.appendChild(script)
+                };
+                if (document.readyState === "complete") {
+                    onLoad()
+                } else {
+                    window.addEventListener("load", onLoad)
+                }
+            })();
+        </script>
     @else
-
     @endif
-    
+
 </body>
 
 </html>

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->enum('role', ['trainer', 'admin', 'student'])->default('student');
             $table->index('role');
+            $table->enum('city', ['Aqaba', 'Amman', 'Irbid', 'Balqa']);
             $table->integer('weekly_points')->default(1000);
             $table->date('last_reset_at')->nullable();
             $table->softDeletes();

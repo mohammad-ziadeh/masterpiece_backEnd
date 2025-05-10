@@ -1,5 +1,5 @@
 @php
-    $breadcrumbs = \App\Helpers\BreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
+    $breadcrumbs = \App\Helpers\StudentBreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
     $isWinter = $isWinter ?? false;
 @endphp
 <x-app-layout>
@@ -78,7 +78,7 @@
                     </div>
                     <div class="sd">
                         <h2
-                            style="font-weight:bold; font-size: x-large; text-align: center; margin-bottom: 60px; color: #3b1e54;">
+                            style="font-weight:bold; font-size: x-large; text-align: center; margin-bottom: 40px; color: #3b1e54;">
                             Student Attendance:</h2>
                         <div style="display: flex; justify-content: space-between;">
                             <h3 style=" font-size: large;">Justified Absence:</h3>
@@ -120,12 +120,45 @@
                             </div>
                         @endif
                     </div>
-                    <div class="ft">
+                    <div class="ft weather-wrapper" id="weatherBox" style="background-color: #3b1e54">
+                      {{-- <div id="temperature" class="temperature-text">Loading temperature...</div> --}}
 
+                        <div class="weather-card" >
+                            <div class="weather-icon" id="weatherIcon"></div>
+                            <h1 id="tempValue"></h1>
+                            <p id="cityName"></p>
+                        </div>
                     </div>
 
 
-                    <div class="mb"></div>
+                    <div class="mb">
+                        <h2 style="font-weight:bold; font-size: x-large; text-align: center; color: #3b1e54;">
+                            Undone Tasks
+                        </h2>
+
+                        @if ($undoneTasks->isEmpty())
+                            <p style="text-align: center; margin-top: 10px;">You have completed all your assigned tasks.
+                            </p>
+                        @else
+                            <ul style="list-style: none; padding-left: 0;">
+                                @foreach ($undoneTasks as $task)
+                                    <li
+                                        style="margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 8px; display: flex; justify-content: space-between;">
+                                        <strong>{{ $task->name }} (ID:{{ $task->id }})</strong>
+                                        @if ($task->due_date > $now)
+                                            <div style="color: gray; font-weight: bold;">Due by:
+                                                {{ \Carbon\Carbon::parse($task->due_date)->format('d M Y') }} at
+                                                {{ \Carbon\Carbon::parse($task->due_date)->format('h:i A') }}</div>
+                                        @else
+                                            <div style="color: red; font-weight: bold;">Overdue:
+                                                {{ \Carbon\Carbon::parse($task->due_date)->format('d M Y') }} at
+                                                {{ \Carbon\Carbon::parse($task->due_date)->format('h:i A') }}</div>
+                                        @endif
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
 
                 </section>
 
@@ -140,7 +173,41 @@
         </div>
     </div>
 
+    <style>
+        .sun {
+            background: #ffcd41;
+            border-radius: 50%;
+            box-shadow: rgba(255, 255, 0, 0.1) 0 0 0 4px;
+            animation: light 800ms ease-in-out infinite alternate,
+                weather-icon-move 5s ease-in-out infinite;
+            width: 60px;
+            height: 60px;
+        }
 
+        .weather-icon {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            top: 0;
+
+            float: right;
+            margin: 40px 40px 0 0;
+            animation: weather-icon-move 5s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        .cloud {
+            margin-right: 60px;
+            background: #bad0de;
+            border-radius: 20px;
+            width: 25px;
+            height: 25px;
+            box-shadow: #bad0de 24px -6px 0 2px, #bad0de 10px 5px 0 5px,
+                #bad0de 30px 5px 0 2px, #bad0de 11px -8px 0 -3px,
+                #bad0de 25px 11px 0 -1px;
+            position: relative;
+        }
+    </style>
 
     <style>
         .section9 {
@@ -192,6 +259,11 @@
 
         .ft {
             grid-area: ft;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+
         }
 
         .mb {
@@ -285,6 +357,54 @@
         }
     </style>
 
+
+    <script>
+    const apiKey = '24478300f38ab762c47cdfac8dd52290';
+    const city = "{{ Auth::user()->city ?? 'Madrid' }}";
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`)
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                const temp = Math.round(data.main.temp);
+                const weather = data.weather[0].main.toLowerCase();
+
+                // Update DOM
+                const temperatureEl = document.getElementById('temperature');
+                const tempValEl = document.getElementById('tempValue');
+                const cityNameEl = document.getElementById('cityName');
+                const icon = document.getElementById('weatherIcon');
+                const weatherBox = document.getElementById('weatherBox');
+
+                if (temperatureEl) temperatureEl.textContent = `${temp}°C in ${city}`;
+                if (tempValEl) tempValEl.textContent = `${temp}º`;
+                if (cityNameEl) cityNameEl.textContent = city;
+
+                // Reset weather classes
+                if (weatherBox) weatherBox.classList.remove('sunny', 'rainy');
+                if (icon) icon.className = 'weather-icon'; // clear previous
+
+                // Add new weather styles
+                if (weather.includes('rain') || weather.includes('drizzle') || weather.includes('thunderstorm')) {
+                    weatherBox?.classList.add('rainy');
+                    icon?.classList.add('cloud');
+                } else {
+                    weatherBox?.classList.add('sunny');
+                    icon?.classList.add('sun');
+                }
+            })
+            .catch(error => {
+                console.error('Weather fetch error:', error);
+                const tempEl = document.getElementById('temperature');
+                if (tempEl) tempEl.textContent = 'Weather unavailable';
+            });
+    });
+</script>
+
+
     <script>
         function updateClock() {
             const now = new Date();
@@ -335,18 +455,18 @@
 
     </div>
     <script>
-    const snowSwitch = document.getElementById('toggleSnowSwitch');
-    const snowflakes = document.querySelector('.snowflakes');
+        const snowSwitch = document.getElementById('toggleSnowSwitch');
+        const snowflakes = document.querySelector('.snowflakes');
 
-    if (snowSwitch) {
-        snowSwitch.addEventListener('change', () => {
-            if (snowSwitch.checked) {
-                snowflakes.style.display = 'block';
-            } else {
-                snowflakes.style.display = 'none';
-            }
-        });
-    }
-</script>
+        if (snowSwitch) {
+            snowSwitch.addEventListener('change', () => {
+                if (snowSwitch.checked) {
+                    snowflakes.style.display = 'block';
+                } else {
+                    snowflakes.style.display = 'none';
+                }
+            });
+        }
+    </script>
 
 </x-app-layout>

@@ -9,6 +9,7 @@ use App\Models\Attendance;
 use App\Models\Submission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class StudentStatisticsController extends Controller
 {
@@ -17,6 +18,7 @@ class StudentStatisticsController extends Controller
      */
     public function index(Request $request)
     {
+        
         $time = now()->format('H:i:s');
         $user = Attendance::where('user_id', auth()->id());
 
@@ -44,7 +46,20 @@ class StudentStatisticsController extends Controller
         }
 
 
-        return view('home.studentDashboard', compact('userAbsent', 'userLate', 'userJustifyAbsent', 'time', 'season'));
-    }
+        //-- Undone tasks --//
+        $userId = Auth::id();
 
+        $submittedTaskIds = Submission::where('submitted_by', $userId)->pluck('task_id');
+
+        $undoneTasks = Tasks::whereHas('students', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })
+            ->whereNotIn('id', $submittedTaskIds)
+            ->latest()
+            ->take(5)
+            ->get();
+
+
+        return view('home.studentDashboard', compact('userAbsent', 'userLate', 'userJustifyAbsent', 'time', 'season', 'undoneTasks', 'now'));
+    }
 }

@@ -1,5 +1,5 @@
 @php
-    $breadcrumbs = \App\Helpers\BreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
+    $breadcrumbs = \App\Helpers\StudentBreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
 @endphp
 
 <x-app-layout>
@@ -19,70 +19,71 @@
     </x-slot>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6" style="overflow: hidden;">
+        <div class="p-4 sm:p-8 bg-white" style="margin-top: 20px; border-radius: 8px;">
+            <div class="spinning-wheel-container">
 
-    <div class="spinning-wheel-container">
+                <div class="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center mb-6 px-20">
+                    <input id="nameInput" type="text" placeholder="Enter participant name"
+                        class="flex-1 p-3 rounded-lg text-black border-2 focus:ring-2 outline-none w-full sm:w-auto">
+                    <button onclick="addName()"
+                        class="btn font-bold px-4 py-2 rounded-lg transition w-full sm:w-auto text-white"
+                        style="background-color: #3b1e54">
+                        Add
+                    </button>
 
-        <div class="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center mb-6 px-20">
-            <input id="nameInput" type="text" placeholder="Enter participant name"
-                class="flex-1 p-3 rounded-lg text-black border focus:ring-2 focus:ring-indigo-400 outline-none w-full sm:w-auto">
-            <button onclick="addName()"
-                class="btn font-bold px-4 py-2 rounded-lg transition w-full sm:w-auto text-white"
-                style="background-color: #3b1e54">
-                Add
-            </button>
+                </div>
 
-        </div>
+                <div class="flex flex-col sm:flex-row gap-8 sm:gap-16 items-center justify-center px-4">
 
-        <div class="flex flex-col sm:flex-row gap-8 sm:gap-16 items-center justify-center px-4">
-
-            <div class="relative w-full sm:w-[465px] mx-auto mb-8 sm:mb-0">
-                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
-                    <div style="border-top-color: #3b1e54"
-                        class="w-0 h-0 
+                    <div class="relative w-full sm:w-[465px] mx-auto mb-8 sm:mb-0">
+                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
+                            <div style="border-top-color: #3b1e54"
+                                class="w-0 h-0 
                            border-l-[30px] border-r-[30px] border-t-[40px] 
                            border-l-transparent border-r-transparent 
                            drop-shadow-xl">
+                            </div>
+                        </div>
+                        <canvas id="wheel" width="450" height="450"
+                            class=" rounded-full mx-auto"></canvas>
+                        <div style="display: flex; justify-content: center; margin-top: 30px;">
+                            <button onclick="spinWheel()" style="background-color: #9b7ebd; "
+                                class="btn font-bold text-white px-4 py-2 rounded-lg transition w-full sm:w-auto">
+                                Spin
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex-1 w-full sm:w-[200px]" id="ListContainer">
+                        <h2 class="text-lg font-semibold mb-2 ml-3">Participants</h2>
+                        <ul id="nameList" class="space-y-2 max-h-72 overflow-y-auto pr-2"></ul>
                     </div>
                 </div>
-                <canvas id="wheel" width="450" height="450"
-                    class="shadow-lg shadow-black border-8 border-indigo-500 rounded-full mx-auto"></canvas>
-                <div style="display: flex; justify-content: center; margin-top: 30px;">
-                    <button onclick="spinWheel()" style="background-color: #9b7ebd; "
-                        class="btn font-bold text-white px-4 py-2 rounded-lg transition w-full sm:w-auto">
-                        Spin
+
+            </div>
+
+            <div id="winnerModal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50">
+                <div class="bg-white text-black rounded-xl p-8 max-w-md w-full text-center shadow-2xl">
+                    <h2 class="text-3xl font-bold mb-4">🎉 Has been selected!!</h2>
+                    <p id="winnerName" class="text-xl font-semibold mb-6"></p>
+                    <button onclick="closeModal()"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-bold transition">
+                        Close
                     </button>
                 </div>
-
             </div>
 
-            <div class="flex-1 w-full sm:w-[200px]" id="ListContainer">
-                <h2 class="text-lg font-semibold mb-2 ml-3">Participants</h2>
-                <ul id="nameList" class="space-y-2 max-h-72 overflow-y-auto pr-2"></ul>
+            <div id="validationModal"
+                class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50">
+                <div class="bg-white text-black rounded-xl p-8 max-w-md w-full text-center shadow-2xl">
+                    <h2 id="modalTitle" class="text-3xl font-bold mb-4">Validation Error</h2>
+                    <p id="modalMessage" class="text-xl font-semibold mb-6">Please add at least 2 participants.</p>
+                    <button onclick="closeModal()"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-bold transition">
+                        Close
+                    </button>
+                </div>
             </div>
-        </div>
-
-        <audio id="spinSound" src="/spin.mp3" preload="auto"></audio>
-    </div>
-
-    <div id="winnerModal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50">
-        <div class="bg-white text-black rounded-xl p-8 max-w-md w-full text-center shadow-2xl">
-            <h2 class="text-3xl font-bold mb-4">🎉 Has been selected!!</h2>
-            <p id="winnerName" class="text-xl font-semibold mb-6"></p>
-            <button onclick="closeModal()"
-                class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-bold transition">
-                Close
-            </button>
-        </div>
-    </div>
-
-    <div id="validationModal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50">
-        <div class="bg-white text-black rounded-xl p-8 max-w-md w-full text-center shadow-2xl">
-            <h2 id="modalTitle" class="text-3xl font-bold mb-4">Validation Error</h2>
-            <p id="modalMessage" class="text-xl font-semibold mb-6">Please add at least 2 participants.</p>
-            <button onclick="closeModal()"
-                class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-bold transition">
-                Close
-            </button>
         </div>
     </div>
 
@@ -223,7 +224,6 @@
 
     <style>
         .spinning-wheel-container {
-            background: #eeeeee;
             padding: 2rem;
             max-width: 100%;
             margin: 0 auto;
