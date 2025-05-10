@@ -1,77 +1,55 @@
-.background-day {
+.background-day,
+.background-night {
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(#FF680D, #FCF40C);
     position: relative;
     border-radius: 5px;
+    background-size: cover;
+}
+
+.background-day {
+    background-image: linear-gradient(45deg, #a5dcff ,#ffe96f);
+}
+
+.background-night {
+    background-image: linear-gradient(#3b1e54, #7c42ae);
+}
+
+.sun, .moon {
+    width: 4vw;
+    height: 4vw;
+    max-width: 64px;
+    max-height: 64px;
+    min-width: 40px;
+    min-height: 40px;
+    position: absolute;
+    top: 3rem;
+    right: 4rem;
+    border-radius: 50%;
 }
 
 .sun {
-    width: 4rem;
-    height: 4rem;
     background-color: #FFFFFFDE;
-    box-shadow: 0rem 0rem 2rem 2rem #FFFFFF80;
-    position: absolute;
-    top: 3rem;
-    right: 0rem;
-    transform: translateX(-4rem);
-    border-radius: 50%;
+    box-shadow: 0 0 2rem 1.5rem #FFFFFF80;
     animation: spinSun 8s linear infinite;
+    transform: translateX(0);
 }
 
 @keyframes spinSun {
     0% {
-        transform: translateX(-4rem) rotate(0deg);
-    }
-
-    100% {
-        transform: translateX(-4rem) rotate(360deg);
-    }
-}
-
-
-
-
-.background-night {
-    width: 100%;
-    border-radius: 5px;
-    height: 100%;
-    background-image: linear-gradient(#3b1e54, #7c42ae);
-    position: relative;
-}
-
-.background-night::before {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -5rem);
-    font-size: 3rem;
-    text-align: center;
-    text-shadow: 2px 2px 2px #8B8C98;
-}
-
-.moon {
-    width: 4rem;
-    height: 4rem;
-    background-color: #C4C4C473;
-    box-shadow: 0rem 0rem 2rem 0.6rem #C4C4C49C;
-    position: absolute;
-    top: 7rem;
-    right: 0rem;
-    transform: translateX(-4rem) rotate(30deg);
-    border-radius: 50%;
-    border-right: .5rem solid #EBEBEB;
-}
-
-
-
-@keyframes rotate {
-    0% {
         transform: rotate(0deg);
     }
-
     100% {
         transform: rotate(360deg);
     }
+}
+
+.moon {
+    background-color: #C4C4C473;
+    box-shadow: 0 0 2rem 0.6rem #C4C4C49C;
+    border-right: 0.5rem solid #EBEBEB;
+    transform: rotate(30deg);
+    top: 4rem;
 }
 
 .shooting-stars {
@@ -82,75 +60,43 @@
     clip-path: polygon(28% 60%, 49% 43%, 100% 0,
             57% 54%, 41% 72%, 25% 89%,
             14% 100%, 0 100%, 0 85%, 13% 73%);
+    opacity: 0;
 }
 
 .sh-star1 {
     right: 6rem;
     top: 2rem;
-    animation: shoot1 3s ease-in infinite;
+    animation: shoot1 2.6s ease-in infinite;
 }
 
 .sh-star2 {
     right: 8rem;
     top: 1rem;
-    animation: shoot2 3s ease-in infinite;
-    animation-delay: 0.8s;
+    animation: shoot2 3.8s ease-in infinite;
+    animation-delay: 8s;
 }
 
 .sh-star3 {
     right: 2rem;
     top: 3rem;
     animation: shoot3 3s ease-in infinite;
-    animation-delay: 1.2s;
+    animation-delay: 5s;
 }
 
-/* Shorten the movement distance so stars stay inside */
 @keyframes shoot1 {
-    0% {
-        transform: translateX(0);
-        opacity: 0.2;
-    }
-
-    10% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateX(-10rem) translateY(10rem);
-        opacity: 0;
-    }
+    0% { transform: translate(0, 0); opacity: 0.2; }
+    10% { opacity: 1; }
+    100% { transform: translate(-10rem, 10rem); opacity: 0; }
 }
-
 @keyframes shoot2 {
-    0% {
-        transform: translateX(0);
-        opacity: 0.2;
-    }
-
-    10% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateX(-8rem) translateY(8rem);
-        opacity: 0;
-    }
+    0% { transform: translate(0, 0); opacity: 0.2; }
+    10% { opacity: 1; }
+    100% { transform: translate(-8rem, 8rem); opacity: 0; }
 }
-
 @keyframes shoot3 {
-    0% {
-        transform: translateX(0);
-        opacity: 0.2;
-    }
-
-    10% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateX(-12rem) translateY(12rem);
-        opacity: 0;
-    }
+    0% { transform: translate(0, 0); opacity: 0.2; }
+    10% { opacity: 1; }
+    100% { transform: translate(-12rem, 12rem); opacity: 0; }
 }
 
 #clock {
@@ -161,4 +107,28 @@
     font-size: 2.2rem;
     color: white;
     font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .sun, .moon {
+        width: 3rem;
+        height: 3rem;
+        top: 2rem;
+        right: 0.5rem;
+    }
+
+    .shooting-stars {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    #clock {
+        font-size: 1.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #clock {
+        font-size: 1.7rem;
+    }
 }

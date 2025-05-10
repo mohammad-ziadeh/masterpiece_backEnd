@@ -6,25 +6,25 @@
 
     <x-slot name="header">
         @if ($season == 'winter')
-        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                <h2 class="font-semibold text-xl" style="color: #3b1e54; margin-bottom: 20px;">
+                    {{ __('Dashboard') }}
+                </h2>
+                <div class="switch-container" style="display: flex; align-items: center; gap: 10px;">
+                    <span>off</span>
+                    <label class="snow-switch">
+                        <input type="checkbox" id="toggleSnowSwitch" {{ $isWinter ? 'checked' : '' }}>
+                        <span class="slider"></span>
+                    </label>
+                    <span>on</span>
+                </div>
+            </div>
+        @else
             <h2 class="font-semibold text-xl" style="color: #3b1e54; margin-bottom: 20px;">
                 {{ __('Dashboard') }}
             </h2>
-            <div class="switch-container" style="display: flex; align-items: center; gap: 10px;">
-                <span>off</span>
-                <label class="snow-switch">
-                    <input type="checkbox" id="toggleSnowSwitch" {{ $isWinter ? 'checked' : '' }}>
-                    <span class="slider"></span>
-                </label>
-                <span>on</span>
-            </div>
-        </div>
-        @else
-        <h2 class="font-semibold text-xl" style="color: #3b1e54; margin-bottom: 20px;">
-            {{ __('Dashboard') }}
-        </h2>
         @endif
-    
+
         <ul class="breadcrumbs">
             @foreach ($breadcrumbs as $breadcrumb)
                 <li>
@@ -144,13 +144,9 @@
 
     <style>
         .section9 {
-            width: 100%;
-            height: 900px;
+            display: grid;
             gap: 15px;
             padding: 15px;
-
-
-            display: grid;
             grid-template-columns: repeat(10, 1fr);
             grid-template-rows: repeat(12, 1fr);
             grid-template-areas:
@@ -165,50 +161,47 @@
                 "sd sd sd sd mb mb mb mb mb mb"
                 "sd sd sd sd mb mb mb mb mb mb"
                 "sd sd sd sd mb mb mb mb mb mb"
-                "sd sd sd sd mb mb mb mb mb mb"
+                "sd sd sd sd mb mb mb mb mb mb";
+        }
+
+        .sb,
+        .sd,
+        .ft,
+        .mb {
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
         }
 
         .hd {
-            grid-area: hd;
-
             border-radius: 5px;
             box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
         }
 
         .sb {
             grid-area: sb;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
         }
 
         .sd {
             grid-area: sd;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hd {
+            grid-area: hd;
+        }
+
+        .ft {
+            grid-area: ft;
         }
 
         .mb {
             grid-area: mb;
-
-            border-radius: 5px;
-            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
-        }
-
-
-        .ft {
-            grid-area: ft;
-
-            border-radius: 5px;
-            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
         }
 
         .hr-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
             margin: 20px 0;
         }
 
@@ -216,17 +209,80 @@
         .hr-container::after {
             content: "";
             flex: 1;
-            border-bottom: 2px solid var(--light-color);
+            border-bottom: 2px solid #ccc;
             margin: 0 10px;
         }
 
         .hr-container span {
             font-size: 18px;
-
-            color: var(--primary-color);
+            color: #3b1e54;
         }
 
-        /*d dfgdfgdfgdf*/
+        @media (max-width: 1024px) {
+            .section9 {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                grid-template-areas:
+                    "sb"
+                    "ft"
+                    "hd"
+                    "sd"
+                    "mb";
+            }
+        }
+
+        @media (max-width: 640px) {
+            .switch-container {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .section9 {
+                display: grid;
+                gap: 15px;
+                padding: 15px;
+                grid-template-columns: repeat(5, 1fr);
+                grid-template-rows: repeat(20, 1fr);
+                grid-template-areas:
+                    "hd hd hd hd hd"
+                    "hd hd hd hd hd"
+                    "ft ft ft ft ft"
+                    "ft ft ft ft ft"
+                    "sb sb sb sb sb"
+                    "sb sb sb sb sb"
+                    "sb sb sb sb sb"
+                    "sb sb sb sb sb"
+                    "sb sb sb sb sb"
+                    "sb sb sb sb sb"
+                    "sb sb sb sb sb"
+                    "sd sd sd sd sd"
+                    "sd sd sd sd sd"
+                    "sd sd sd sd sd"
+                    "sd sd sd sd sd"
+                    "sd sd sd sd sd"
+                    "mb mb mb mb mb"
+                    "mb mb mb mb mb"
+                    "mb mb mb mb mb"
+                    "mb mb mb mb mb";
+            }
+
+            .sb,
+            .sd,
+            .ft,
+            .mb,
+            .hd {
+                font-size: medium
+            }
+
+            .sb,
+            .sd,
+            .hd,
+            .ft,
+            .mb {
+                padding: 8px;
+            }
+
+        }
     </style>
 
     <script>
@@ -279,9 +335,10 @@
 
     </div>
     <script>
-        const snowSwitch = document.getElementById('toggleSnowSwitch');
-        const snowflakes = document.querySelector('.snowflakes');
+    const snowSwitch = document.getElementById('toggleSnowSwitch');
+    const snowflakes = document.querySelector('.snowflakes');
 
+    if (snowSwitch) {
         snowSwitch.addEventListener('change', () => {
             if (snowSwitch.checked) {
                 snowflakes.style.display = 'block';
@@ -289,6 +346,7 @@
                 snowflakes.style.display = 'none';
             }
         });
-    </script>
+    }
+</script>
 
 </x-app-layout>
