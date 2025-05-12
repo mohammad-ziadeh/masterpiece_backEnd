@@ -436,7 +436,6 @@
     {{-- select all checkboxes --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // edit select all
             const selectAllButtons = document.querySelectorAll('button[id^="selectAllBtn_"]');
 
             selectAllButtons.forEach(button => {
@@ -455,7 +454,6 @@
                 });
             });
 
-            // Create page select all
             const selectAllBtnCreate = document.getElementById('selectAllBtn2');
             const checkboxesCreate = document.querySelectorAll('.checkbox-list2 input[type="checkbox"]');
 

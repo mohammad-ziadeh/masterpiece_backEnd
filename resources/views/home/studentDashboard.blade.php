@@ -145,7 +145,7 @@
                                     <li
                                         style="margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 8px; display: flex; justify-content: space-between;">
                                         <strong>{{ $task->name }}</strong>
-                                        @if ($task->due_date > $now)
+                                        @if ($task->due_date >= $now)
                                             <div style="color: gray; font-weight: bold;">Due by:
                                                 {{ \Carbon\Carbon::parse($task->due_date)->format('d M Y') }} at
                                                 {{ \Carbon\Carbon::parse($task->due_date)->format('h:i A') }}</div>
@@ -318,6 +318,7 @@
                 grid-template-areas:
                     "hd hd hd hd hd"
                     "hd hd hd hd hd"
+                    "ft ft ft ft ft"
                     "ft ft ft ft ft"
                     "ft ft ft ft ft"
                     "sb sb sb sb sb"

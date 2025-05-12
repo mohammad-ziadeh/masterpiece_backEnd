@@ -51,18 +51,26 @@
                     @foreach ($submissions as $submission)
                         <ul style="list-style: none; padding-left: 0;">
                             @if ($submission->pdf_path)
-                                <p>
+                                <li
+                                    style="margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 8px; display: flex; justify-content: space-between;">
                                     <strong style="margin-right: 10px">Assignment file:</strong>
                                     <a href="{{ asset('storage/' . $submission->pdf_path) }}" target="_blank"
                                         class="text-blue-600 hover:underline">
                                         {{ basename($submission->pdf_path) }}
                                     </a>
-                                </p>
+                                </li>
                             @endif
                             <li
                                 style="margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 8px; display: flex; justify-content: space-between;">
-                                <strong>{{ $submission->answer ?? 'No answer provided' }}</strong>
-                                @if ($submission->created_at > $now)
+                                <strong>
+                                    @if (Str::contains($submission->answer, 'https://'))
+                                        <a href="{{ $submission->answer }}"
+                                            target="_blank">{{ $submission->answer }}</a>
+                                    @else
+                                        {{ $submission->answer }}
+                                    @endif
+                                </strong>
+                                @if ($submission->created_at <= $task->due_date)
                                     <div style="color: gray; font-weight: bold;">Due by:
                                         {{ \Carbon\Carbon::parse($submission->created_at)->format('d M Y h:i A') }}
                                     </div>
@@ -103,8 +111,7 @@
                                       hover:file:bg-[#2f1642]" />
                     </div>
 
-                    <button type="submit"
-                        class="bg-[#3b1e54] hover:bg-[#2f1642] text-white font-bold py-2 px-6 rounded transition duration-200">
+                    <button type="submit" class="btn btn-primary">
                         Submit Answer
                     </button>
                 </form>

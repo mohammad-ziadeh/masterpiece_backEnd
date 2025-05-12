@@ -63,6 +63,12 @@ class User extends Authenticatable
         return $this->hasMany(BadgeAward::class);
     }
 
+public function announcements()
+{
+    return $this->belongsToMany(Announcement::class);
+}
+
+
     public function hasRole(string $role)
     {
         return strtolower($this->role) === strtolower($role);

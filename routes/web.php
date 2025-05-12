@@ -11,6 +11,7 @@ use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\LeaderBoardController;
 use App\Http\Controllers\StudentTaskController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AttendanceHistoryStatus;
 use App\Http\Controllers\AttendanceHistoryController;
 use App\Http\Controllers\StudentStatisticsController;
@@ -93,6 +94,11 @@ Route::middleware(['auth', 'role:admin,trainer', 'verified'])->group(function ()
   Route::resource('leaderBoard', LeaderBoardController::class);
   Route::get('/leaderboard/all', [LeaderboardController::class, 'full'])->name('leaderboard.full');
   Route::get('/leaderboard/lastWeek', [LeaderboardController::class, 'lastWeek'])->name('leaderboard.lastWeek');
+  //-------------------------------
+
+
+  //------------ {{ Announcement }} --------------
+Route::resource('announcements', AnnouncementController::class)->except(['show']);
   //-------------------------------
 
 

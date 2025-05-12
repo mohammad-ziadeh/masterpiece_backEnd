@@ -56,7 +56,7 @@ class StudentStatisticsController extends Controller
         })
             ->whereNotIn('id', $submittedTaskIds)
             ->latest()
-            ->take(5)
+            ->take(7)
             ->get();
 
 

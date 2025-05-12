@@ -26,6 +26,9 @@
                         <x-nav-link style="color: #eeeeee;" href="{{ route('tables') }}" :active="request()->routeIs('tables')">
                             {{ __('Tables') }}
                         </x-nav-link>
+                        <x-nav-link style="color: #eeeeee;" href="{{ route('announcements.index') }}" :active="request()->routeIs('announcements.index')">
+                            {{ __('announcement') }}
+                        </x-nav-link>
                         <x-nav-link style="color: #eeeeee;" href="{{ route('spinner') }}" :active="request()->routeIs('spinner')">
                             {{ __('Spinner') }}
                         </x-nav-link>
