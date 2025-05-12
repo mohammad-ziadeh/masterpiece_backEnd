@@ -144,7 +144,7 @@
                                 @foreach ($undoneTasks as $task)
                                     <li
                                         style="margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 8px; display: flex; justify-content: space-between;">
-                                        <strong>{{ $task->name }} (ID:{{ $task->id }})</strong>
+                                        <strong>{{ $task->name }}</strong>
                                         @if ($task->due_date > $now)
                                             <div style="color: gray; font-weight: bold;">Due by:
                                                 {{ \Carbon\Carbon::parse($task->due_date)->format('d M Y') }} at

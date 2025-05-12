@@ -36,8 +36,8 @@
                         <x-nav-link style="color: #eeeeee;" :href="route('studentDashboard')" :active="request()->routeIs('studentDashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
-                        <x-nav-link style="color: #eeeeee;" href="{{ route('tables') }}" :active="request()->routeIs('tables')">
-                            {{ __('****') }}
+                        <x-nav-link style="color: #eeeeee;" href="{{ route('studentSubmissions') }}" :active="request()->routeIs('studentSubmissions')">
+                            {{ __('Tasks') }}
                         </x-nav-link>
                         <x-nav-link style="color: #eeeeee;" href="{{ route('spinner') }}" :active="request()->routeIs('spinner')">
                             {{ __('Spinner') }}

@@ -5,13 +5,14 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\MainTableController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\LeaderBoardController;
+use App\Http\Controllers\StudentTaskController;
 use App\Http\Controllers\AttendanceHistoryStatus;
 use App\Http\Controllers\AttendanceHistoryController;
-use App\Http\Controllers\MainTableController;
-use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\StudentStatisticsController;
 
 /*
@@ -53,6 +54,15 @@ Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.
 // ###############{{ Students }}################ //
 Route::middleware(['auth', 'role:student', 'verified'])->group(function () {
   Route::get('/student-dashboard', [StudentStatisticsController::class, 'index'])->name('studentDashboard');
+
+
+ Route::get('/student/tasks', [StudentTaskController::class, 'index'])->name('studentSubmissions');
+
+// Route to show a specific task
+Route::get('/student/tasks/{taskId}', [StudentTaskController::class, 'show'])->name('studentSubmissions.show');
+
+// Route to submit an answer to a task
+Route::post('/student/tasks/{taskId}/submit', [StudentTaskController::class, 'submitAnswer'])->name('studentSubmissions.submitAnswer');
 });
 
 
@@ -72,7 +82,6 @@ Route::middleware(['auth', 'role:admin,trainer', 'verified'])->group(function ()
   Route::resource('users', UserController::class);
   Route::get('/users/{user}/badges', [BadgeController::class, 'viewUserBadges'])->name('users.badges');
   Route::get('/users/{userId}/points', [UserController::class, 'showUserPoints'])->name('points');
-
 
 
   //------------ {{ Tasks }} --------------
@@ -105,7 +114,6 @@ Route::middleware(['auth', 'role:admin,trainer', 'verified'])->group(function ()
   Route::get('attendance/{userId}/history', [AttendanceController::class, 'showHistory'])->name('attendance.history');
   // -------{{ All Attendance History }}------- //
   Route::resource('attendanceHistory', AttendanceHistoryController::class);
-  Route::get('attendanceHistory/{userId}/history', [AttendanceController::class, 'showHistory'])->name('attendance.history');
 
   // -------{ Actions }---------- //
   Route::post('/users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');

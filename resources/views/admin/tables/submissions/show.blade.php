@@ -51,7 +51,7 @@
                             <tr>
                                 <th>Grade</th>
                                 @if ($submission->grade === 'pending')
-                                    <td style="background-color: orange;"> {{ ucfirst($submission->grade) }}</td>
+                                    <td style="color: grey;"> {{ ucfirst($submission->grade) }}</td>
                                 @elseif ($submission->grade === 'passed')
                                     <td style="color: green;"">
                                         {{ ucfirst($submission->grade) }}</td>
@@ -113,7 +113,7 @@
                         <tr>
                             <th>Grade</th>
                             @if ($submission->grade === 'pending')
-                                <td style="background-color: orange;"> {{ ucfirst($submission->grade) }}</td>
+                                <td style="color: grey;"> {{ ucfirst($submission->grade) }}</td>
                             @elseif ($submission->grade === 'passed')
                                 <td style="color: green;"">
                                     {{ ucfirst($submission->grade) }}</td>
