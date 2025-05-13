@@ -15,6 +15,7 @@ use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AttendanceHistoryStatus;
 use App\Http\Controllers\AttendanceHistoryController;
 use App\Http\Controllers\StudentStatisticsController;
+use App\Http\Controllers\StudentAnnouncementController;
 
 /*
 |--------------------------------------------------------------------------- 
@@ -56,14 +57,16 @@ Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.
 Route::middleware(['auth', 'role:student', 'verified'])->group(function () {
   Route::get('/student-dashboard', [StudentStatisticsController::class, 'index'])->name('studentDashboard');
 
-
+// --{Student Tasks}-- //
  Route::get('/student/tasks', [StudentTaskController::class, 'index'])->name('studentSubmissions');
-
-// Route to show a specific task
 Route::get('/student/tasks/{taskId}', [StudentTaskController::class, 'show'])->name('studentSubmissions.show');
-
-// Route to submit an answer to a task
 Route::post('/student/tasks/{taskId}/submit', [StudentTaskController::class, 'submitAnswer'])->name('studentSubmissions.submitAnswer');
+// --{End Student Tasks}-- //
+
+
+// --{Student Announcements}-- //
+  Route::get('/student-announcements', [StudentAnnouncementController::class, 'index'])->name('announcements');
+// --{End Student Announcements}-- //
 });
 
 

@@ -27,7 +27,7 @@
                             {{ __('Tables') }}
                         </x-nav-link>
                         <x-nav-link style="color: #eeeeee;" href="{{ route('announcements.index') }}" :active="request()->routeIs('announcements.index')">
-                            {{ __('announcement') }}
+                            {{ __('Announcement') }}
                         </x-nav-link>
                         <x-nav-link style="color: #eeeeee;" href="{{ route('spinner') }}" :active="request()->routeIs('spinner')">
                             {{ __('Spinner') }}
@@ -41,6 +41,9 @@
                         </x-nav-link>
                         <x-nav-link style="color: #eeeeee;" href="{{ route('studentSubmissions') }}" :active="request()->routeIs('studentSubmissions')">
                             {{ __('Tasks') }}
+                        </x-nav-link>
+                        <x-nav-link style="color: #eeeeee;" href="{{ route('announcements') }}" :active="request()->routeIs('announcements')">
+                            {{ __('Announcement') }}
                         </x-nav-link>
                         <x-nav-link style="color: #eeeeee;" href="{{ route('spinner') }}" :active="request()->routeIs('spinner')">
                             {{ __('Spinner') }}

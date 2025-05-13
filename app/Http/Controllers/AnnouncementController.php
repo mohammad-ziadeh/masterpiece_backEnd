@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Announcement;
 use App\Models\User;
+use App\Models\Announcement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AnnouncementController extends Controller
 {
-    // Display the form and all announcements
     public function index()
     {
-        $announcements = Announcement::with('users')->get();  // Retrieve all announcements with their assigned users
-        $students = User::where('role', 'student')->get();    // Get all students to assign
+        $announcements = Announcement::with('users')->orderByDesc('id')->get();
+        $students = User::where('role', 'student')->get();
 
         return view('admin.announcement', compact('announcements', 'students'));
     }
 
-    // Create a new announcement (handle in the same page)
     public function store(Request $request)
     {
         $request->validate([
@@ -26,18 +25,21 @@ class AnnouncementController extends Controller
             'user_ids' => 'array|exists:users,id',
         ]);
 
-        $announcement = Announcement::create($request->only('title', 'body'));
+        $announcement = Announcement::create([
+            'title' => $request->input('title'),
+            'body' => $request->input('body'),
+            'created_by' => Auth::id(),
+        ]);
         $announcement->users()->sync($request->user_ids);
 
         return redirect()->route('announcements.index')->with('success', 'Announcement created.');
     }
 
-    // Update an announcement
     public function update(Request $request, Announcement $announcement)
     {
         $request->validate([
             'title' => 'required|string',
-            'body' => 'required|string',
+            'body' => 'required|string|max:15000',
             'user_ids' => 'array|exists:users,id',
         ]);
 
@@ -47,7 +49,6 @@ class AnnouncementController extends Controller
         return back()->with('success', 'Announcement updated.');
     }
 
-    // Delete an announcement
     public function destroy(Announcement $announcement)
     {
         $announcement->delete();

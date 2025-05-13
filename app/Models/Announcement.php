@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Announcement extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'body'];
+    protected $fillable = ['title', 'created_by', 'body'];
+
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
     public function users()
     {
         return $this->belongsToMany(User::class);

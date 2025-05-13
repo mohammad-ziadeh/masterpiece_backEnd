@@ -7,16 +7,19 @@
         <h2 class="font-semibold text-xl " style="color: #3b1e54; margin-bottom: 20px;">
             {{ __('Dashboard') }}
         </h2>
-        <ul class="breadcrumbs">
-            @foreach ($breadcrumbs as $breadcrumb)
-                <li>
-                    <a style="color: #3b1e54;" href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
-                </li>
-            @endforeach
-        </ul>
+        <div style="display: flex; justify-content: space-between;">
+            <ul class="breadcrumbs">
+                @foreach ($breadcrumbs as $breadcrumb)
+                    <li>
+                        <a style="color: #3b1e54;" href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
+                    </li>
+                @endforeach
+            </ul>
+            <button class="btn btn-success" onclick="startTour()">Start Tour</button>
+        </div>
     </x-slot>
 
-    <div class="py-12" style="height: 100%">
+    <div class="py-12" style="height: 100%"  data-intro="Here is the Dashboard. Here you can see all the general information and statistics about the LMC." data-step="1">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 ">
@@ -84,7 +87,7 @@
         </div>
         {{-- // table progress // --}}
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" style="margin-top: 40px">
-            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg" >
                 <div class="col-lg-12 grid-margin stretch-card" style="margin-bottom: 40px; margin-top: 40px; ">
                     <h4 class="card-title">Task Completion Progress</h4>
                     <div class="table-responsive pt-3">
