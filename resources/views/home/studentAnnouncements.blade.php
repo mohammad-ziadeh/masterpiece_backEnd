@@ -1,5 +1,5 @@
 @php
-    $breadcrumbs = \App\Helpers\BreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
+    $breadcrumbs = \App\Helpers\StudentBreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
 @endphp
 <x-app-layout>
     <x-slot name="header">
@@ -18,7 +18,7 @@
         </div>
     </x-slot>
     <div class="mx-auto sm:px-6 lg:px-8 space-y-6" style="overflow: hidden;">
-        <div class="p-4 sm:p-8 bg-white"
+        <div class="p-4 sm:p-8 bg-white"  data-intro="Here is where you see all of your trainer announcements, you will see when it was announced and by who. (don't worry you will get Email whenever there is new one ^_^ )" data-step="1"
             style="margin-top: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
             <h3 class="mb-4" style="color: #3b1e54; font-size: x-large; font-weight: bold;">Announcements:</h3>
             @forelse ($announcements as $announcement)
@@ -70,4 +70,9 @@
             color: #3b1e54;
         }
     </style>
+            <script>
+        function startTour() {
+            introJs().start();
+        }
+    </script>
 </x-app-layout>

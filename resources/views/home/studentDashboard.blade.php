@@ -1,6 +1,6 @@
 @php
     $breadcrumbs = \App\Helpers\StudentBreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
-  
+
 @endphp
 <x-app-layout>
 
@@ -8,18 +8,25 @@
         <h2 class="font-semibold text-xl" style="color: #3b1e54; margin-bottom: 20px;">
             {{ __('Dashboard') }}
         </h2>
-        <ul class="breadcrumbs">
-            @foreach ($breadcrumbs as $breadcrumb)
-                <li>
-                    <a style="color: #3b1e54;" href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
-                </li>
-            @endforeach
-        </ul>
+        <div style="display: flex; justify-content: space-between;">
+            <ul class="breadcrumbs">
+                @foreach ($breadcrumbs as $breadcrumb)
+                    <li>
+                        <a style="color: #3b1e54;" href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
+                    </li>
+                @endforeach
+            </ul>
+            <button class="btn btn-success" onclick="startTour()">Start Tour</button>
+        </div>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8"
+            data-intro="Welcome ({{ Auth::user()->name }}) nice to meet you, by clicking on start tour that you will see on each page I will guide you through the website step by step"
+            data-step="1">
+            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg"
+                data-intro="Lets start here, here is your dashboard main page, here you will see all the information that you need to access fast, like your attendance status, all new tasks that have been assigned to you recently, and some general information's about you."
+                data-step="2">
 
 
                 <section class="section9">
@@ -114,7 +121,9 @@
                     </div>
 
 
-                    <div class="mb">
+                    <div class="mb"
+                        data-intro="Here you will see all the recently assigned tasks to you (that you have not yet submitted an answer to) "
+                        data-step="3">
                         <h2 style="font-weight:bold; font-size: x-large; text-align: center; color: #3b1e54;">
                             Undone Tasks
                         </h2>
@@ -129,11 +138,15 @@
                                         style="margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 8px; display: flex; justify-content: space-between;">
                                         <strong>{{ $task->name }}</strong>
                                         @if ($task->due_date >= $now)
-                                            <div style="color: gray; font-weight: bold;">Due by:
+                                            <div style="color: gray; font-weight: bold;"
+                                                data-intro="That date you see here is (gray) which mean you still have time to do it."
+                                                data-step="4">Due by:
                                                 {{ \Carbon\Carbon::parse($task->due_date)->format('d M Y') }} at
                                                 {{ \Carbon\Carbon::parse($task->due_date)->format('h:i A') }}</div>
                                         @else
-                                            <div style="color: red; font-weight: bold;">Overdue:
+                                            <div style="color: red; font-weight: bold;"
+                                                data-intro="That date you see here is (red) which mean the task is overdue."
+                                                data-step="5">Overdue:
                                                 {{ \Carbon\Carbon::parse($task->due_date)->format('d M Y') }} at
                                                 {{ \Carbon\Carbon::parse($task->due_date)->format('h:i A') }}</div>
                                         @endif
@@ -146,13 +159,6 @@
                 </section>
 
             </div>
-        </div>
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" style="margin-top: 40px">
-            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg">
-
-
-            </div>
-
         </div>
     </div>
 
@@ -392,9 +398,8 @@
             const now = new Date();
             const hours = now.getHours().toString().padStart(2, '0');
             const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
 
-            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
         }
 
         setInterval(updateClock, 1000);
@@ -402,6 +407,11 @@
     </script>
 
 
-
+    </script>
+    <script>
+        function startTour() {
+            introJs().start();
+        }
+    </script>
 
 </x-app-layout>

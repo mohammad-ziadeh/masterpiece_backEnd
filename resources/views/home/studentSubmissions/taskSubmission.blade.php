@@ -7,30 +7,28 @@
             <h2 class="font-semibold text-xl" style="color: #3b1e54; margin-bottom: 20px;">
                 {{ $task->name }}
             </h2>
-
-
             <button class="btn btn-success" onclick="startTour()">Start Tour</button>
         </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="product-img">
+            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg"
+                data-intro="Here you will see all the needed information's that you need about the task" data-step="1">
+                <div class="product-img" data-intro="Here you will see the task pdf (if there is)" data-step="2">
                     @if ($task->pdf_path)
-                        <iframe src="{{ asset('storage/' . $task->pdf_path) }}" width="100%"
-                            data-intro="Here you can see the full pdf and you are able to download it or print it"
-                            data-step="5" height="100%" style="border-radius: 7px 0 0 7px;"></iframe>
+                        <iframe src="{{ asset('storage/' . $task->pdf_path) }}" width="100%" height="100%"
+                            style="border-radius: 7px 0 0 7px;"></iframe>
                     @else
                         <div class="flex items-center justify-center h-full text-gray-400">
                             No PDF Available
                         </div>
                     @endif
                 </div>
-                <div class="product-info" data-intro="Here are all the information's " data-step="4">
+                <div class="product-info" data-intro="Here are the information's" data-step="3">
                     <div class="product-text">
                         <h1><b>Task name:</b> {{ $task->name }}</h1>
-                        <h2 style="margin-top: 20px"><b>Submitted by:</b> {{ $task->submittedBy->name }}
+                        <h2 style="margin-top: 20px"><b>Submitted by:</b> {{ $task->submittedBy->name ?? 'unknown' }}
                         </h2>
                         <h2><b>The deadline:</b> <mark style="background-color: yellow">
                                 {{ $task->due_date }}</mark> </h2>
@@ -44,7 +42,8 @@
         </div>
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" style="margin-top: 40px">
-            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg" style="padding: 20px">
+            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg" style="padding: 20px"
+                data-intro="Here you will see all of your previous submissions to this task" data-step="4">
                 @if ($submissions->isEmpty())
                     <p class="text-gray-500">No submissions yet.</p>
                 @else
@@ -90,7 +89,9 @@
             </div>
         </div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" style="margin-top: 40px">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6"
+                data-intro="Here is where you upload your submission, if you submit something wrong or have another answer (just send new submission)"
+                data-step="5">
                 <h3 class="font-bold text-xl mb-4" style="color: #3b1e54;">Submit Your Answer</h3>
                 <form action="{{ route('studentSubmissions.submitAnswer', $task->id) }}" method="POST"
                     enctype="multipart/form-data">
@@ -219,4 +220,11 @@
             }
         }
     </style>
+
+
+    <script>
+        function startTour() {
+            introJs().start();
+        }
+    </script>
 </x-app-layout>

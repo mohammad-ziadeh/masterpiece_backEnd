@@ -1,6 +1,14 @@
-@php
-    $breadcrumbs = \App\Helpers\BreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
-@endphp
+@if (auth()->user()->role === 'admin' || auth()->user()->role === 'trainer')
+    @php
+        $breadcrumbs = \App\Helpers\BreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
+    @endphp
+@else
+    @php
+        $breadcrumbs = \App\Helpers\StudentBreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
+    @endphp
+@endif
+
+
 
 <x-app-layout>
     <x-slot name="header">
@@ -45,8 +53,7 @@
                            drop-shadow-xl">
                             </div>
                         </div>
-                        <canvas id="wheel" width="450" height="450"
-                            class=" rounded-full mx-auto"></canvas>
+                        <canvas id="wheel" width="450" height="450" class=" rounded-full mx-auto"></canvas>
                         <div style="display: flex; justify-content: center; margin-top: 30px;">
                             <button onclick="spinWheel()" style="background-color: #9b7ebd; "
                                 class="btn font-bold text-white px-4 py-2 rounded-lg transition w-full sm:w-auto">

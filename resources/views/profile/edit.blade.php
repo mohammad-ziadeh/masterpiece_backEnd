@@ -1,6 +1,12 @@
-@php
-    $breadcrumbs = \App\Helpers\BreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
-@endphp
+@if (auth()->user()->role === 'admin' || auth()->user()->role === 'trainer')
+    @php
+        $breadcrumbs = \App\Helpers\BreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
+    @endphp
+@else
+    @php
+        $breadcrumbs = \App\Helpers\StudentBreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
+    @endphp
+@endif
 
 <x-app-layout>
     <x-slot name="header">
@@ -17,60 +23,70 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-        <div class="p-4 sm:p-8 bg-white  " style="margin-top: 50px; height: 80vh;">
+        <div class="p-4 sm:p-8 bg-white  " style="margin-top: 50px;">
             <div class="max-w-5xl mx-auto">
                 @include('profile.partials.information')
             </div>
-            <button class="btn" id="editProfileBtn" style="margin-top: 50vh;background-color: #3b1e54;color:white">
-                Edit Profile
-            </button>
+            @if (auth()->check() && auth()->user()->role === 'admin')
+                <button class="btn" id="editProfileBtn"
+                    style="margin-top: 50vh;background-color: #3b1e54;color:white">
+                    Edit profile
+                </button>
+            @else
+                <button class="btn" id="editProfileBtn"
+                    style="margin-top: 50vh;background-color: #3b1e54;color:white">
+                    Change password
+                </button>
+            @endif
         </div>
     </div>
 
     <div id="editSection" style="display: none;">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white  shadow sm:rounded-lg" style="margin-top: 50px;">
-                <div class="max-w-xl mx-auto">
-                    @include('profile.partials.update-profile-information-form')
+            @if (auth()->check() && auth()->user()->role === 'admin')
+                <div class="p-4 sm:p-8 bg-white  shadow sm:rounded-lg" style="margin-top: 50px;">
+                    <div class="max-w-xl mx-auto">
+                        @include('profile.partials.update-profile-information-form')
+                    </div>
                 </div>
-            </div>
+            @endif
 
-            <div class="p-4 sm:p-8 bg-white  shadow sm:rounded-lg">
+            <div class="p-4 sm:p-8 bg-white  shadow sm:rounded-lg" style="margin-top: 50px;">
                 <div class="max-w-xl mx-auto">
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
 
             @if (auth()->check() && auth()->user()->role === 'admin')
-            <div class="p-4 sm:p-8 bg-white  shadow sm:rounded-lg">
-                <div class="max-w-xl mx-auto">
-                    @include('profile.partials.delete-user-form')
+                <div class="p-4 sm:p-8 bg-white  shadow sm:rounded-lg">
+                    <div class="max-w-xl mx-auto">
+                        @include('profile.partials.delete-user-form')
+                    </div>
                 </div>
-            </div>
             @endif
         </div>
     </div>
 
     <script>
-          document.addEventListener("DOMContentLoaded", function () {
-        let editSection = document.getElementById("editSection");
-        let editButton = document.getElementById("editProfileBtn");
+        document.addEventListener("DOMContentLoaded", function() {
+            let editSection = document.getElementById("editSection");
+            let editButton = document.getElementById("editProfileBtn");
 
-        if (localStorage.getItem("editSectionVisible") === "true") {
-            editSection.style.display = "grid";
-        } else {
-            editSection.style.display = "none";
-        }
-
-        editButton.addEventListener("click", function () {
-            if (editSection.style.display === "none") {
+            if (localStorage.getItem("editSectionVisible") === "true") {
                 editSection.style.display = "grid";
-                localStorage.setItem("editSectionVisible", "true"); 
             } else {
                 editSection.style.display = "none";
-                localStorage.setItem("editSectionVisible", "false"); 
             }
+
+            editButton.addEventListener("click", function() {
+                if (editSection.style.display === "none") {
+                    editSection.style.display = "grid";
+                    localStorage.setItem("editSectionVisible", "true");
+                } else {
+                    editSection.style.display = "none";
+                    localStorage.setItem("editSectionVisible", "false");
+                }
+            });
         });
-    });
     </script>
 </x-app-layout>
