@@ -29,22 +29,7 @@ class StudentStatisticsController extends Controller
         // ------ {{ End Attendance }} ----- //
 
 
-        // {{---- showing the button when its winter ----}} //
-        $now = Carbon::now();
-        $month = $now->month;
-        $day = $now->day;
-
-        if (
-            ($month == 12 && $day >= 1) ||
-            ($month == 1) ||
-            ($month == 2) ||
-            ($month == 3 && $day < 20)
-        ) {
-            $season = 'winter';
-        } else {
-            $season = 'not winter';
-        }
-
+ $now = Carbon::now();
 
         //-- Undone tasks --//
         $userId = Auth::id();
@@ -60,6 +45,6 @@ class StudentStatisticsController extends Controller
             ->get();
 
 
-        return view('home.studentDashboard', compact('userAbsent', 'userLate', 'userJustifyAbsent', 'time', 'season', 'undoneTasks', 'now'));
+        return view('home.studentDashboard', compact('userAbsent', 'userLate', 'userJustifyAbsent', 'time',  'undoneTasks', 'now'));
     }
 }

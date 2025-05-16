@@ -29,10 +29,10 @@
     @endif
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6" style="overflow: hidden;">
-        <div class="p-4 sm:p-8 bg-white"
+        <div class="p-4 sm:p-8 bg-white" data-intro="Here is where you create new Announcements" data-step="1"
             style="margin-top: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
             <h3 class="font-bold text-lg mb-4" style="color: #3b1e54;">Create New Announcement</h3>
-            <form action="{{ route('announcements.store') }}" method="POST">
+            <form action="{{ route('announcements.store') }}" method="POST" data-intro="Here you give the Announcements title and body, also you can assign the announcement to cretin students" data-step="2">
                 @csrf
                 <div class="row">
                     <div class="col-md-8">
@@ -58,7 +58,7 @@
                         <button type="button" class="btn" id="selectAllBtn2"
                             style="margin-bottom: 20px;margin-top: 20px;color:#eeeeee; background-color: #3b1e54;">Select
                             All</button>
-                        <div class="form-group checkbox-list2"
+                        <div class="form-group checkbox-list2" data-intro="By assign students here they will get email notification that you have published one." data-step="3"
                             style="max-height: 400px; overflow-y: auto; padding-right: 10px; scrollbar-width: none; -ms-overflow-style: none;">
                             @foreach ($students as $student)
                                 <div class="form-check">
@@ -78,7 +78,7 @@
         </div>
     </div>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6" style="overflow: hidden;">
-        <div class="p-4 sm:p-8 bg-white"
+        <div class="p-4 sm:p-8 bg-white" data-intro="Here is where you will see all the messages that you have announced, also you can edit and delete the announcement" data-step="4"
             style="margin-top: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
             <h3 class="font-bold text-lg mb-4" style="color: #3b1e54;">Existing
                 Announcements</h3>
@@ -91,34 +91,35 @@
                             {!! $announcement->body !!}
                             <div class="hr-container">
                                 <span>★★★</span>
+                                
                             </div>
-                            <div style="display: flex; justify-content: space-around;">
+                            <div style="display: flex; justify-content: space-around;" data-intro="Here you will see when it was created and by who" data-step="7">
                                 <div style="font-size: large; font-weight: bold; color: #3b1e54;">Published At:
-                                {{ $announcement->created_at }}</div>
-                            <div style="font-size: large; font-weight: bold; color: #3b1e54;">Published By:
-                                {{ $announcement->creator?->name }}</div>
+                                    {{ $announcement->created_at }}</div>
+                                <div style="font-size: large; font-weight: bold; color: #3b1e54;">Published By:
+                                    {{ $announcement->creator?->name }}</div>
                             </div>
-                            
+
                         </div>
                         <div class="position-absolute" style="top: 10px; right: 10px;">
                             <button class="btn btn-sm btn-warning" data-toggle="modal"
-                                data-target="#editAnnouncementModal{{ $announcement->id }}">
+                                data-target="#editAnnouncementModal{{ $announcement->id }}" data-intro="Here is the edit button" data-step="5"> 
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <form id="perDelete-form-{{ $announcement->id }}"
+                            <form id="perDelete-form-{{ $announcement->id }}" 
                                 action="{{ route('announcements.destroy', $announcement) }}" method="POST"
                                 style="display: none;">
                                 @csrf
                                 @method('DELETE')
                             </form>
-                            <button type="button" class="btn btn-sm btn-danger"
+                            <button type="button" class="btn btn-sm btn-danger" data-intro="And here is the delete button" data-step="6"
                                 onclick="confirmPerDelete({{ $announcement->id }})">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>
                     </div>
                     <div class="col-md-4 p-3"
-                        style="max-height: 250px; overflow-y: auto; border-left: 1px solid #ddd; margin-top: 10px;">
+                        style="max-height: 250px; overflow-y: auto; border-left: 1px solid #ddd; margin-top: 10px;" data-intro="Here you will see all the assigned students" data-step="7">
                         <strong>Assigned Students:</strong>
                         <ul class="list-unstyled mt-2 mb-0">
                             @foreach ($announcement->users as $user)
@@ -208,7 +209,6 @@
             toolbar: 'undo redo | blocks | bold italic underline strikethrough | link image media table | bullist numlist | emoticons charmap | removeformat',
             menubar: false,
             height: 400,
-            max_chars: 15000,
             setup: function(editor) {
                 editor.on('change', function() {
                     editor.save();
@@ -225,6 +225,46 @@
 
     {{-- //{{ End tinymce }}// --}}
 
+    <style>
+        @media (max-width: 768px) {
+
+            .row {
+                flex-direction: column;
+            }
+            li {
+                font-size: small
+            }
+            label {
+                font-size: small
+            }
+
+            .col-md-8,
+            .col-md-4 {
+                width: 100% !important;
+                max-width: 100%;
+            }
+
+            .col-md-4 {
+                margin-top: 20px;
+            }
+
+            .card.d-flex.flex-row {
+                flex-direction: column !important;
+            }
+
+            .card .col-md-8,
+            .card .col-md-4 {
+                width: 100% !important;
+                max-width: 100%;
+                border-left: none !important;
+                margin-top: 10px;
+            }
+
+            .modal-dialog {
+                margin: 1rem;
+            }
+        }
+    </style>
     <style>
         .hr-container {
             display: flex;
@@ -291,5 +331,10 @@
                 });
             }
         });
+    </script>
+        <script>
+        function startTour() {
+            introJs().start();
+        }
     </script>
 </x-app-layout>

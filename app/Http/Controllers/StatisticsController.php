@@ -33,7 +33,7 @@ class StatisticsController extends Controller
 
         $tasks = Tasks::withCount(['students'])
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(5);
         $submissionCounts = Submission::select('task_id')
             ->selectRaw('COUNT(DISTINCT submitted_by) as completed_count')
             ->groupBy('task_id')

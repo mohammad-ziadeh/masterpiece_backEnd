@@ -16,7 +16,10 @@ class BreadcrumbsHelper
         } elseif ($routeName === 'tables') {
             $breadcrumbs[] = ['label' => 'Dashboard', 'url' => route('dashboard')];
             $breadcrumbs[] = ['label'=> 'Tables','url'=> route('tables')];
-        } elseif ($routeName === 'spinner') {
+        } elseif ($routeName === 'announcements.index') {
+            $breadcrumbs[] = ['label' => 'Dashboard', 'url' => route('dashboard')];
+            $breadcrumbs[] = ['label'=> 'Announcements','url'=> route('announcements.index')];
+        }  elseif ($routeName === 'spinner') {
             $breadcrumbs[] = ['label' => 'Dashboard', 'url' => route('dashboard')];
             $breadcrumbs[] = ['label'=> 'Spinner','url'=> route('spinner')];
         } elseif ($routeName === 'users.index') {

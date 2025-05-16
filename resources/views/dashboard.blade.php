@@ -21,13 +21,13 @@
 
     <div class="py-12" style="height: 100%"  data-intro="Here is the Dashboard. Here you can see all the general information and statistics about the LMC." data-step="1">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg" data-intro="Here is User Summary Cards. Here you see can the number of students, trainers, admins, and general information like Absences and Tardiness." data-step="2">
                 <div class="p-6 text-gray-900 ">
                     {{ __("You're logged in!") }}
                 </div>
 
-                <div class="container">
-                    <div class="row g-3">
+                <div class="container" >
+                    <div class="row g-3" >
 
                         <div class="col-md-4">
                             <div class="card card-custom text-center p-4" style="background-color: #3b1e54">
@@ -87,7 +87,7 @@
         </div>
         {{-- // table progress // --}}
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" style="margin-top: 40px">
-            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg" >
+            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg" data-intro="Here Tasks Summary Table. Here you can see the tasks summary like if the deadline ended (red text) or the student still have time (green text), and u can see how many student should submit the task and how many already did." data-step="3">
                 <div class="col-lg-12 grid-margin stretch-card" style="margin-bottom: 40px; margin-top: 40px; ">
                     <h4 class="card-title">Task Completion Progress</h4>
                     <div class="table-responsive pt-3">
@@ -138,6 +138,9 @@
                             </tbody>
                         </table>
                         </div>
+                         <div class="d-flex justify-content-center mt-3">
+                                {{ $tasks->links('pagination::bootstrap-4') }}
+                            </div>
                     </div>
                 </div>
                 {{-- // End table progress // --}}
@@ -148,7 +151,7 @@
 
         {{-- // Attendance data // --}}
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" style="margin-top: 40px">
-            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg" data-intro="This is the Weekly Attendance Report. It shows the percentage of students marked present, late, or absent for each day of the week." data-step="4">
 
                 <canvas id="weekly-attendance-chart" style="padding: 40px;" class="mt-3"></canvas>
 
@@ -288,5 +291,10 @@
                 }
             }
         });
+    </script>
+        <script>
+        function startTour() {
+            introJs().start();
+        }
     </script>
 </x-app-layout>

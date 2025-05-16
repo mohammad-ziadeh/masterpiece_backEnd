@@ -22,7 +22,7 @@ class AnnouncementController extends Controller
     {
         $request->validate([
             'title' => 'required|string',
-            'body' => 'required|string',
+            'body' => 'required|string|max:15000',
             'user_ids' => 'array|exists:users,id',
         ]);
 

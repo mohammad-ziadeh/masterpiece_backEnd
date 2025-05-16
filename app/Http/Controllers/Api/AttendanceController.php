@@ -16,7 +16,6 @@ class AttendanceController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        // Get students only by default
         $users = User::where('role', 'student')->get();
 
         $date = today();

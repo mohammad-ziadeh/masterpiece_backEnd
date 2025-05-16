@@ -1,30 +1,13 @@
 @php
     $breadcrumbs = \App\Helpers\StudentBreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
-    $isWinter = $isWinter ?? false;
+  
 @endphp
 <x-app-layout>
 
     <x-slot name="header">
-        @if ($season == 'winter')
-            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                <h2 class="font-semibold text-xl" style="color: #3b1e54; margin-bottom: 20px;">
-                    {{ __('Dashboard') }}
-                </h2>
-                <div class="switch-container" style="display: flex; align-items: center; gap: 10px;">
-                    <span>off</span>
-                    <label class="snow-switch">
-                        <input type="checkbox" id="toggleSnowSwitch" {{ $isWinter ? 'checked' : '' }}>
-                        <span class="slider"></span>
-                    </label>
-                    <span>on</span>
-                </div>
-            </div>
-        @else
-            <h2 class="font-semibold text-xl" style="color: #3b1e54; margin-bottom: 20px;">
-                {{ __('Dashboard') }}
-            </h2>
-        @endif
-
+        <h2 class="font-semibold text-xl" style="color: #3b1e54; margin-bottom: 20px;">
+            {{ __('Dashboard') }}
+        </h2>
         <ul class="breadcrumbs">
             @foreach ($breadcrumbs as $breadcrumb)
                 <li>
@@ -121,9 +104,9 @@
                         @endif
                     </div>
                     <div class="ft weather-wrapper" id="weatherBox" style="background-color: #3b1e54">
-                      {{-- <div id="temperature" class="temperature-text">Loading temperature...</div> --}}
+                        {{-- <div id="temperature" class="temperature-text">Loading temperature...</div> --}}
 
-                        <div class="weather-card" >
+                        <div class="weather-card">
                             <div class="weather-icon" id="weatherIcon"></div>
                             <h1 id="tempValue"></h1>
                             <p id="cityName"></p>
@@ -360,50 +343,48 @@
 
 
     <script>
-    const apiKey = '24478300f38ab762c47cdfac8dd52290';
-    const city = "{{ Auth::user()->city ?? 'Madrid' }}";
+        const apiKey = '24478300f38ab762c47cdfac8dd52290';
+        const city = "{{ Auth::user()->city ?? 'Madrid' }}";
 
-    document.addEventListener('DOMContentLoaded', () => {
-        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`)
-            .then(response => {
-                if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-                return response.json();
-            })
-            .then(data => {
-                const temp = Math.round(data.main.temp);
-                const weather = data.weather[0].main.toLowerCase();
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`)
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    const temp = Math.round(data.main.temp);
+                    const weather = data.weather[0].main.toLowerCase();
 
-                // Update DOM
-                const temperatureEl = document.getElementById('temperature');
-                const tempValEl = document.getElementById('tempValue');
-                const cityNameEl = document.getElementById('cityName');
-                const icon = document.getElementById('weatherIcon');
-                const weatherBox = document.getElementById('weatherBox');
+                    const temperatureEl = document.getElementById('temperature');
+                    const tempValEl = document.getElementById('tempValue');
+                    const cityNameEl = document.getElementById('cityName');
+                    const icon = document.getElementById('weatherIcon');
+                    const weatherBox = document.getElementById('weatherBox');
 
-                if (temperatureEl) temperatureEl.textContent = `${temp}°C in ${city}`;
-                if (tempValEl) tempValEl.textContent = `${temp}º`;
-                if (cityNameEl) cityNameEl.textContent = city;
+                    if (temperatureEl) temperatureEl.textContent = `${temp}°C in ${city}`;
+                    if (tempValEl) tempValEl.textContent = `${temp}º`;
+                    if (cityNameEl) cityNameEl.textContent = city;
 
-                // Reset weather classes
-                if (weatherBox) weatherBox.classList.remove('sunny', 'rainy');
-                if (icon) icon.className = 'weather-icon'; // clear previous
+                    if (weatherBox) weatherBox.classList.remove('sunny', 'rainy');
+                    if (icon) icon.className = 'weather-icon';
 
-                // Add new weather styles
-                if (weather.includes('rain') || weather.includes('drizzle') || weather.includes('thunderstorm')) {
-                    weatherBox?.classList.add('rainy');
-                    icon?.classList.add('cloud');
-                } else {
-                    weatherBox?.classList.add('sunny');
-                    icon?.classList.add('sun');
-                }
-            })
-            .catch(error => {
-                console.error('Weather fetch error:', error);
-                const tempEl = document.getElementById('temperature');
-                if (tempEl) tempEl.textContent = 'Weather unavailable';
-            });
-    });
-</script>
+                    if (weather.includes('rain') || weather.includes('drizzle') || weather.includes(
+                            'thunderstorm')) {
+                        weatherBox?.classList.add('rainy');
+                        icon?.classList.add('cloud');
+                    } else {
+                        weatherBox?.classList.add('sunny');
+                        icon?.classList.add('sun');
+                    }
+                })
+                .catch(error => {
+                    console.error('Weather fetch error:', error);
+                    const tempEl = document.getElementById('temperature');
+                    if (tempEl) tempEl.textContent = 'Weather unavailable';
+                });
+        });
+    </script>
 
 
     <script>
@@ -421,53 +402,6 @@
     </script>
 
 
-    {{-- //---- Snow toggle ----// --}}
-    <div class="snowflakes" aria-hidden="true" style="{{ $isWinter ? '' : 'display: none;' }}">
-        <div class="snowflake">
-            ❅
-        </div>
-        <div class="snowflake">
-            ❅
-        </div>
-        <div class="snowflake">
-            ❅
-        </div>
-        <div class="snowflake">
-            ❅
-        </div>
-        <div class="snowflake">
-            ❅
-        </div>
-        <div class="snowflake">
-            ❅
-        </div>
-        <div class="snowflake">
-            ❅
-        </div>
-        <div class="snowflake">
-            ❅
-        </div>
-        <div class="snowflake">
-            ❅
-        </div>
-        <div class="snowflake">
-            ❆
-        </div>
 
-    </div>
-    <script>
-        const snowSwitch = document.getElementById('toggleSnowSwitch');
-        const snowflakes = document.querySelector('.snowflakes');
-
-        if (snowSwitch) {
-            snowSwitch.addEventListener('change', () => {
-                if (snowSwitch.checked) {
-                    snowflakes.style.display = 'block';
-                } else {
-                    snowflakes.style.display = 'none';
-                }
-            });
-        }
-    </script>
 
 </x-app-layout>
