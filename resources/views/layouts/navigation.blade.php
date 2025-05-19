@@ -57,6 +57,9 @@
                         <x-nav-link style="color: #eeeeee;" href="{{ route('announcements') }}" :active="request()->routeIs('announcements')">
                             {{ __('Announcement') }}
                         </x-nav-link>
+                        <x-nav-link style="color: #eeeeee;" href="{{ route('student-leaderBoard.index') }}" :active="request()->routeIs('student-leaderBoard.index')">
+                            {{ __('Leaderboard') }}
+                        </x-nav-link>
                         <x-nav-link style="color: #eeeeee;" href="{{ route('spinner') }}" :active="request()->routeIs('spinner')">
                             {{ __('Spinner') }}
                         </x-nav-link>
@@ -162,6 +165,9 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link href="{{ route('announcements') }}" :active="request()->routeIs('announcements')" style="color: #D4BEE4">
                     {{ __('Announcement') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('student-leaderBoard.index') }}" :active="request()->routeIs('student-leaderBoard.index')" style="color: #D4BEE4">
+                    {{ __('Leaderboard') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('spinner')" :active="request()->routeIs('spinner')" style="color: #D4BEE4">
                     {{ __('Spinner') }}

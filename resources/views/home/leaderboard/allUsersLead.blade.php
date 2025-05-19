@@ -15,20 +15,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $index => $user)
+                        @foreach ($users as $index => $user)
                             <tr>
-                                <td class="border px-4 py-2">{{ $index + 1 }}</td>
-                                <td class="border px-4 py-2">{{ $user->name }}</td>
-                                <td class="border px-4 py-2">{{ $user->weekly_points }}</td>
+                                <td class="border px-4 py-2">
+                                    <a
+                                        href="{{ route('student-leaderboard.badge', $user->id) }}">{{ $index + 1 }}</a>
+                                </td>
+                                <td class="border px-4 py-2">
+                                    <a href="{{ route('student-leaderboard.badge', $user->id) }}">
+                                        {{ $user->name }}</a>
+                                </td>
+                                <td class="border px-4 py-2">
+                                    <a
+                                        href="{{ route('student-leaderboard.badge', $user->id) }}">{{ $user->weekly_points }}</a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-                <a href="{{ route('leaderBoard.index') }}" class=" btn btn-secondary" style="margin-top: 20px">
+                <a href="{{ route('student-leaderBoard.index') }}" class=" btn btn-secondary" style="margin-top: 20px">
                     Back
-                 </a>
+                </a>
             </div>
-          
+
         </div>
     </div>
 </x-app-layout>

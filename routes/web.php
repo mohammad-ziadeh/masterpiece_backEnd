@@ -15,6 +15,7 @@ use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AttendanceHistoryStatus;
 use App\Http\Controllers\AttendanceHistoryController;
 use App\Http\Controllers\StudentStatisticsController;
+use App\Http\Controllers\StudentLeaderBoardController;
 use App\Http\Controllers\StudentAnnouncementController;
 
 /*
@@ -65,6 +66,13 @@ Route::get('/student/tasks/{taskId}', [StudentTaskController::class, 'show'])->n
 Route::post('/student/tasks/{taskId}/submit', [StudentTaskController::class, 'submitAnswer'])->name('studentSubmissions.submitAnswer');
 // --{End Student Tasks}-- //
 
+//------------ {{ Student Leaderboard }} --------------
+Route::resource('student-leaderBoard', StudentLeaderBoardController::class);
+Route::get('/this-week-leaderboard', [StudentLeaderboardController::class, 'full'])->name('studentLeaderboard.full');
+Route::get('/lastWeek-leaderboard', [StudentLeaderboardController::class, 'lastWeek'])->name('studentLeaderboard.lastWeek');
+Route::get('/leaderboard/badges/{user}', [StudentLeaderboardController::class, 'showBadges'])->name('student-leaderboard.badge');
+
+//------------ {{ Student Leaderboard }} ---------------
 
 // --{Student Announcements}-- //
   Route::get('/student-announcements', [StudentAnnouncementController::class, 'index'])->name('announcements');

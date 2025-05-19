@@ -81,4 +81,6 @@ class ProfileController extends Controller
 
         return back()->with('success', 'Avatar updated successfully!');
     }
+
+    
 }

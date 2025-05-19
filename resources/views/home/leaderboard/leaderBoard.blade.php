@@ -1,6 +1,7 @@
 @php
-    $breadcrumbs = \App\Helpers\BreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
+    $breadcrumbs = \App\Helpers\StudentBreadcrumbsHelper::generateBreadcrumbs(Route::currentRouteName());
 @endphp
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl " style="color: #3b1e54; margin-bottom: 20px;">
@@ -27,7 +28,7 @@
                         <div class="card-body">
                             <div class="body">
                                 <div class="main">
-                                    <a href="{{ route('leaderboard.lastWeek') }}" class="btn btn-warning"
+                                    <a href="{{ route('studentLeaderboard.lastWeek') }}" class="btn btn-warning"
                                         data-intro="By clicking here u can see the last week leaderboard"
                                         data-step="2">
                                         Last Week Leaderboard
@@ -43,15 +44,24 @@
                                         <img class="gold-medal" src="{{ asset('images/allBadges.png') }}"
                                             alt="gold medal" />
                                     </div>
-                                    <div id="leaderboard" data-intro="This is the leaderboard that shows the top 5 students with the highest points" data-step="4">
+                                    <div id="leaderboard"
+                                        data-intro="This is the leaderboard that shows the top 5 students with the highest points"
+                                        data-step="4">
                                         <div class="ribbon"></div>
                                         <table class="table">
                                             @foreach ($topUsers as $index => $user)
                                                 <tr class="tr">
-                                                    <td class="td number">{{ $index + 1 }}</td>
-                                                    <td class="td name">{{ $user->name }}</td>
+                                                    <td class="td number">
+                                                        <a
+                                                            href="{{ route('student-leaderboard.badge', $user->id) }}">{{ $index + 1 }}</a>
+                                                    </td>
+                                                    <td class="td name">
+                                                        <a
+                                                            href="{{ route('student-leaderboard.badge', $user->id) }}">{{ $user->name }}</a>
+                                                    </td>
                                                     <td class="td points">
-                                                        {{ $user->weekly_points }}
+                                                        <a
+                                                            href="{{ route('student-leaderboard.badge', $user->id) }}">{{ $user->weekly_points }}</a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -59,8 +69,10 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div style="text-align: center; margin-top: 20px;" >
-                                    <a href="{{ route('leaderboard.full') }}" class="btn btn-primary" data-intro="By clicking here u can see the full leaderboard for this week" data-step="5">
+                                <div style="text-align: center; margin-top: 20px;">
+                                    <a href="{{ route('studentLeaderboard.full') }}" class="btn btn-primary"
+                                        data-intro="By clicking here u can see the full leaderboard for this week"
+                                        data-step="5">
                                         View Full Leaderboard
                                     </a>
                                 </div>
@@ -96,9 +108,9 @@
 
         setInterval(updateWeeklyCountdown, 1000);
     </script>
-  <script>
-    function startTour() {
-        introJs().start();
-    }
-</script>
+    <script>
+        function startTour() {
+            introJs().start();
+        }
+    </script>
 </x-app-layout>

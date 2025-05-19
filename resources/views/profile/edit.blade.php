@@ -13,28 +13,31 @@
         <h2 class="font-semibold text-xl " style="color: #3b1e54; margin-bottom: 20px;">
             {{ __('Profile') }}
         </h2>
-        <ul class="breadcrumbs">
-            @foreach ($breadcrumbs as $breadcrumb)
-                <li>
-                    <a style="color: #3b1e54;" href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
-                </li>
-            @endforeach
-        </ul>
+         <div style="display: flex; justify-content: space-between;">
+            <ul class="breadcrumbs">
+                @foreach ($breadcrumbs as $breadcrumb)
+                    <li>
+                        <a style="color: #3b1e54;" href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['label'] }}</a>
+                    </li>
+                @endforeach
+            </ul>
+            <button class="btn btn-success" onclick="startTour()">Start Tour</button>
+        </div>
     </x-slot>
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-        <div class="p-4 sm:p-8 bg-white  " style="margin-top: 50px;">
+        <div class="p-4 sm:p-8 bg-white  " style="margin-top: 50px;" data-intro="Here are all of you information that we know about you ;) " data-step="1">
             <div class="max-w-5xl mx-auto">
                 @include('profile.partials.information')
             </div>
             @if (auth()->check() && auth()->user()->role === 'admin')
-                <button class="btn" id="editProfileBtn"
-                    style="margin-top: 50vh;background-color: #3b1e54;color:white">
+                <button class="btn" id="editProfileBtn" data-intro="Do you want to edit your email and password? Click here " data-step="4"
+                    style="margin-top: 50px;background-color: #3b1e54;color:white">
                     Edit profile
                 </button>
             @else
-                <button class="btn" id="editProfileBtn"
-                    style="margin-top: 50vh;background-color: #3b1e54;color:white">
+                <button class="btn" id="editProfileBtn" data-intro="Do you want to edit your password? Click here " data-step="4"
+                    style="margin-top: 50px;background-color: #3b1e54;color:white">
                     Change password
                 </button>
             @endif
@@ -88,5 +91,10 @@
                 }
             });
         });
+    </script>
+        <script>
+        function startTour() {
+            introJs().start();
+        }
     </script>
 </x-app-layout>
