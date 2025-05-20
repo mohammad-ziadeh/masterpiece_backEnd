@@ -20,6 +20,18 @@
     </x-slot>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6" style="overflow: hidden;">
         <div class="p-4 sm:p-8 bg-white" style="margin-top: 20px; ">
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;"
+                data-intro="Here you will see all the existing badges with there Image, Title and Description."
+                data-step="2">
+                @foreach ($badges as $badge)
+                    <div class="badgeCard">
+                        <img class="badgeImg" src="{{ asset('storage/' . $badge->image_url) }}"
+                            alt="{{ $badge->title }}" width="90">
+                        <strong>{{ $badge->title }}</strong>
+                        <p style="padding: 10px; text-align: center;">{{ $badge->description ?? '—' }}</p>
+                    </div>
+                @endforeach
+            </div>
             <div class="row">
                 <div class="col grid-margin stretch-card">
                     <div class="card"
@@ -110,7 +122,63 @@
 
 
 
+  <style>
+        .arrow-right {
+            position: relative;
+            margin-right: 85px
+        }
 
+        .arrow-right::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border: solid black;
+            border-width: 0 4px 4px 0;
+            padding: 10px;
+            transform: translateY(-50%) rotate(-45deg);
+        }
+
+        .badgeImg:hover {
+            transform: scale(1.2);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .badgeImg {
+            margin-bottom: 10px
+        }
+
+        .badgeCard {
+            flex: 0 0 calc(33.333% - 10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 768px) {
+            p {
+                font-size: 12px;
+            }
+
+            strong {
+                font-size: 14px;
+            }
+
+            .badgeCard {
+                flex: 0 0 100%;
+            }
+
+            .arrow-right {
+                position: relative;
+                margin-right: 20px
+            }
+        }
+    </style>
     <script>
         function updateWeeklyCountdown() {
             const now = new Date();

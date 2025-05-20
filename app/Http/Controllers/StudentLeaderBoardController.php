@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Badge;
 use App\Models\LeaderBoard;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -21,7 +22,8 @@ class StudentLeaderBoardController extends Controller
         $topUsers = $query->orderBy('weekly_points', 'desc')->where('role', 'student')->take(5)->get();
 
 
-        return view('home.leaderboard.leaderBoard', compact('topUsers'));
+        $badges = Badge::all();
+        return view('home.leaderboard.leaderBoard', compact('topUsers','badges'));
     }
 
     /**

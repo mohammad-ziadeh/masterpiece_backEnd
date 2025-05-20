@@ -15,7 +15,7 @@
                 <h4 style="font-size: x-large; font-style: normal;">Navigate</h4>
                 <ul>
                     @if (auth()->user()->role === 'admin' || auth()->user()->role === 'trainer')
-                        <li><a href="{{route('dashboard')}}">Dashboard</a></li>
+                        <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li><a href="{{ route('profile.edit') }}">Home</a></li>
                         <li><a href="/spinner">Spinner</a></li>
                         <form method="POST" action="{{ route('logout') }}">
@@ -54,9 +54,9 @@
                         <li><a href="{{ route('attendance.index') }}">Attendance</a></li>
                         <li><a href="{{ route('submissions.index') }}">Submissions</a></li>
                     @else
-                        <li><a href="{{route('studentSubmissions')}}">Tasks</a></li>
-                        <li><a href="{{route('student-leaderBoard.index')}}">Leaderboard</a></li>
-                        <li><a href="{{route('announcements')}}">Announcements</a></li>
+                        <li><a href="{{ route('studentSubmissions') }}">Tasks</a></li>
+                        <li><a href="{{ route('student-leaderBoard.index') }}">Leaderboard</a></li>
+                        <li><a href="{{ route('announcements') }}">Announcements</a></li>
                     @endif
 
                 </ul>
@@ -65,8 +65,8 @@
             <div class="footer-section">
                 <h4 style="font-size: x-large; font-style: normal;">Support</h4>
                 <ul>
-                    <li><a href="#">Terms and Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="https://orange.jo/en/corporate/about-us" target="_blank">Terms and Conditions</a></li>
+                    <li><a href="https://orange.jo/en/pages/legal" target="_blank">Privacy Policy</a></li>
                     <li>
                         <a href="https://wa.me/+962791318735" target="_blank" class="whatsapp-button">
                             Contact US &nbsp; <i class="fa-brands fa-whatsapp" style="font-size: large"></i>
@@ -77,12 +77,11 @@
         </div>
 
         <div class="social-media">
-            <a href="#" class="fac"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="X"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-google"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="https://www.facebook.com/OrangeJordan/" class="fac" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://x.com/OrangeJordan" class="X" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://orange.jo/en" target="_blank"><i class="fab fa-google"></i></a>
+            <a href="https://www.instagram.com/orangejo" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/company/orange-jordan" target="_blank"><i class="fab fa-linkedin-in"></i></a>
         </div>
     </footer>
 
