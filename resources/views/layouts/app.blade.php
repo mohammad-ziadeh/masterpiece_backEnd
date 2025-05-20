@@ -39,6 +39,7 @@
     <link rel="stylesheet" href="{{ asset('css/mainTablesCards.css') }}">
     <link rel="stylesheet" href="{{ asset('css/snowSwitch.css') }}">
     <link rel="stylesheet" href="{{ asset('css/tinymce.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/score.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dayNight.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
     <link rel="stylesheet" href="{{ asset('css/leadBoard.css') }}">

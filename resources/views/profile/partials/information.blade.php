@@ -10,7 +10,7 @@
         </h3>
     </header>
 
-    <div  >
+    <div>
         @if (auth()->user()->role === 'student')
             <div style="display: flex; justify-content: space-around;  margin-top: 40px; ">
                 <form action="{{ route('users.updateAvatar', $user->id) }}" method="POST" enctype="multipart/form-data">
@@ -18,26 +18,34 @@
                     @method('PUT')
 
 
-                    @if ($user->avatar)
-                        <label for="avatarInput" style="cursor: pointer;" data-intro="Here you can change you avatar to what ever you want. Be creative *_*" data-step="2">
+                    @if (!empty(Auth::user()->avatar) && file_exists(public_path('storage/' . $user->avatar)))
+                        <label for="avatarInput" style="cursor: pointer;"
+                            data-intro="Here you can change you avatar to what ever you want. Be creative *_*"
+                            data-step="2">
                             <img src="{{ asset('storage/' . $user->avatar) }}" alt="Avatar" class="rounded-circle"
                                 style="width: 155px; height: 155px; object-fit: cover;" title="Click to change avatar">
                         </label>
                     @else
                         @if (Auth::user()->gender == 'male')
-                            <label for="avatarInput" style="cursor: pointer;" data-intro="Here you can change you avatar to what ever you want. Be creative *_*" data-step="2">
+                            <label for="avatarInput" style="cursor: pointer;"
+                                data-intro="Here you can change you avatar to what ever you want. Be creative *_*"
+                                data-step="2">
                                 <img src="{{ asset('images/maleAvatar.png') }}" alt="Avatar" class="rounded-circle"
                                     style="width: 155px; height: 155px; object-fit: cover;"
                                     title="Click to change avatar">
                             </label>
                         @elseif (Auth::user()->gender == 'female')
-                            <label for="avatarInput" style="cursor: pointer;" data-intro="Here you can change you avatar to what ever you want. Be creative *_*" data-step="2">
+                            <label for="avatarInput" style="cursor: pointer;"
+                                data-intro="Here you can change you avatar to what ever you want. Be creative *_*"
+                                data-step="2">
                                 <img src="{{ asset('images/femalAvatar.png') }}" alt="Avatar" class="rounded-circle"
                                     style="width: 155px; height: 155px; object-fit: cover;"
                                     title="Click to change avatar">
                             </label>
                         @else
-                            <label for="avatarInput" style="cursor: pointer;" data-intro="Here you can change you avatar to what ever you want. Be creative *_*" data-step="2">
+                            <label for="avatarInput" style="cursor: pointer;"
+                                data-intro="Here you can change you avatar to what ever you want. Be creative *_*"
+                                data-step="2">
                                 <img src="{{ asset('images/maleAvatar.png') }}" alt="Avatar" class="rounded-circle"
                                     style="width: 155px; height: 155px; object-fit: cover;"
                                     title="Click to change avatar">
@@ -53,7 +61,8 @@
                     $groupedAwards = $awards->groupBy('badge_id');
                 @endphp
 
-                <div style="display: flex; gap: 30px; margin-top: 40px; justify-content: center; flex-wrap: wrap;" data-intro="Here are all of you achievements that you have managed to get till now" data-step="3">
+                <div style="display: flex; gap: 30px; margin-top: 40px; justify-content: center; flex-wrap: wrap;"
+                    data-intro="Here are all of you achievements that you have managed to get till now" data-step="3">
                     @foreach ($groupedAwards as $badgeId => $group)
                         @php
                             $badge = $group->first()->badge;
@@ -139,8 +148,8 @@
                             </label>
                         @else
                             <label for="avatarInput" style="cursor: pointer;">
-                                <img src="{{ asset('images/maleAvatar.png') }}" alt="Avatar" class="rounded-circle"
-                                    style="width: 155px; height: 155px; object-fit: cover;"
+                                <img src="{{ asset('images/maleAvatar.png') }}" alt="Avatar"
+                                    class="rounded-circle" style="width: 155px; height: 155px; object-fit: cover;"
                                     title="Click to change avatar">
                             </label>
                         @endif

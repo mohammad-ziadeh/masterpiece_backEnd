@@ -43,13 +43,25 @@
                                         <img class="gold-medal" src="{{ asset('images/allBadges.png') }}"
                                             alt="gold medal" />
                                     </div>
-                                    <div id="leaderboard" data-intro="This is the leaderboard that shows the top 5 students with the highest points" data-step="4">
+                                    <div id="leaderboard"
+                                        data-intro="This is the leaderboard that shows the top 5 students with the highest points"
+                                        data-step="4">
                                         <div class="ribbon"></div>
                                         <table class="table">
                                             @foreach ($topUsers as $index => $user)
                                                 <tr class="tr">
                                                     <td class="td number">{{ $index + 1 }}</td>
-                                                    <td class="td name">{{ $user->name }}</td>
+                                                    <td class="td name" style="display: flex; align-items: center;">
+                                                        @if (!empty($user->avatar) && file_exists(public_path('storage/' . $user->avatar)))
+                                                            <img src="{{ asset('storage/' . $user->avatar) }}"
+                                                                alt="{{ $user->name }}"
+                                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 20px;">
+                                                        @else
+                                                            <img src="{{ asset('images/' . ($user->gender === 'female' ? 'femalAvatar.png' : 'maleAvatar.png')) }}"
+                                                                alt="Default Avatar"
+                                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 20px;">
+                                                        @endif{{ $user->name }}
+                                                    </td>
                                                     <td class="td points">
                                                         {{ $user->weekly_points }}
                                                     </td>
@@ -59,8 +71,10 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div style="text-align: center; margin-top: 20px;" >
-                                    <a href="{{ route('leaderboard.full') }}" class="btn btn-primary" data-intro="By clicking here u can see the full leaderboard for this week" data-step="5">
+                                <div style="text-align: center; margin-top: 20px;">
+                                    <a href="{{ route('leaderboard.full') }}" class="btn btn-primary"
+                                        data-intro="By clicking here u can see the full leaderboard for this week"
+                                        data-step="5">
                                         View Full Leaderboard
                                     </a>
                                 </div>
@@ -96,9 +110,9 @@
 
         setInterval(updateWeeklyCountdown, 1000);
     </script>
-  <script>
-    function startTour() {
-        introJs().start();
-    }
-</script>
+    <script>
+        function startTour() {
+            introJs().start();
+        }
+    </script>
 </x-app-layout>

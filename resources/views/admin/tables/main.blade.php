@@ -24,8 +24,9 @@
         data-step="1">
         <div class="ag-courses_box">
 
-            <div class="ag-courses_item" data-intro="This is the Users table, here u can find all the needed information about your users and update them"
-            data-step="2">
+            <div class="ag-courses_item"
+                data-intro="This is the Users table, here u can find all the needed information about your users and update them"
+                data-step="2">
                 <a href="{{ route('users.index') }}" class="ag-courses-item_link">
                     <div class="ag-courses-item_bg"></div>
 
@@ -43,8 +44,9 @@
             </div>
 
 
-            <div class="ag-courses_item" class="ag-courses_item" data-intro="This is the Tasks table, here u can manage, create and assign tasks to the students"
-            data-step="3">
+            <div class="ag-courses_item" class="ag-courses_item"
+                data-intro="This is the Tasks table, here u can manage, create and assign tasks to the students"
+                data-step="3">
                 <a href="{{ route('tasks.index') }}" class="ag-courses-item_link">
                     <div class="ag-courses-item_bg"></div>
 
@@ -53,17 +55,18 @@
                     </div>
 
                     <div class="ag-courses-item_date-box">
-                       Finished Tasks:
+                        Finished Tasks:
                         <span class="ag-courses-item_date">
-                            {{$finishedTasks}}
+                            {{ $finishedTasks ?? 'no tasks' }}
                         </span>
                     </div>
                 </a>
             </div>
 
 
-            <div class="ag-courses_item" class="ag-courses_item" class="ag-courses_item" data-intro="This is the Attendance table, here u can manage, Attendance and see the Attendance history for each user"
-            data-step="4">
+            <div class="ag-courses_item" class="ag-courses_item" class="ag-courses_item"
+                data-intro="This is the Attendance table, here u can manage, Attendance and see the Attendance history for each user"
+                data-step="4">
                 <a href="{{ route('attendance.index') }}" class="ag-courses-item_link">
                     <div class="ag-courses-item_bg"></div>
 
@@ -74,15 +77,16 @@
                     <div class="ag-courses-item_date-box">
                         Today Absences:
                         <span class="ag-courses-item_date">
-                           {{$totalAbsent}}
+                            {{ $totalAbsent ?? 'no absences' }}
                         </span>
                     </div>
                 </a>
             </div>
 
 
-            <div class="ag-courses_item" data-intro="This is the Leader Board, here u can see the top preforming students this week"
-            data-step="5">
+            <div class="ag-courses_item"
+                data-intro="This is the Leader Board, here u can see the top preforming students this week"
+                data-step="5">
                 <a href="{{ route('leaderBoard.index') }}" class="ag-courses-item_link">
                     <div class="ag-courses-item_bg"></div>
 
@@ -93,16 +97,17 @@
                     <div class="ag-courses-item_date-box">
                         Top 1 Student:
                         <span class="ag-courses-item_date">
-                           {{$topUsers->name}}
+                            {{ $topUsers->name ?? 'no users' }}
                         </span>
                     </div>
                 </a>
             </div>
 
 
-            <div class="ag-courses_item" data-intro="This is the Submissions table, here u can all the Submissions from the students and change the status of the submission."
-            data-step="6">
-                <a href="{{route('submissions.index')}}" class="ag-courses-item_link">
+            <div class="ag-courses_item"
+                data-intro="This is the Submissions table, here u can all the Submissions from the students and change the status of the submission."
+                data-step="6">
+                <a href="{{ route('submissions.index') }}" class="ag-courses-item_link">
                     <div class="ag-courses-item_bg"></div>
 
                     <div class="ag-courses-item_title">
@@ -112,16 +117,17 @@
                     <div class="ag-courses-item_date-box">
                         Last Task Completion:
                         <span class="ag-courses-item_date">
-                            {{ number_format($task->completion_percentage, 2) }}%
+                            {{ number_format($task->completion_percentage ?? 0, 2) }}%
                         </span>
                     </div>
                 </a>
             </div>
 
 
-            <div class="ag-courses_item" data-intro="Here you can assign badges to the students and create new one or delete an existing one."
-            data-step="7">
-                <a href="{{route('badges.assign')}}" class="ag-courses-item_link">
+            <div class="ag-courses_item"
+                data-intro="Here you can assign badges to the students and create new one or delete an existing one."
+                data-step="7">
+                <a href="{{ route('badges.assign') }}" class="ag-courses-item_link">
                     <div class="ag-courses-item_bg"></div>
 
                     <div class="ag-courses-item_title">
@@ -131,7 +137,7 @@
                     <div class="ag-courses-item_date-box">
                         Till Next Badge:
                         <span id="weeklyCountdown" class="ag-courses-item_date">
-                           
+
                         </span>
                     </div>
                 </a>

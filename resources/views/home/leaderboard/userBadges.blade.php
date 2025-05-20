@@ -1,6 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $user->name }} ({{ $user->weekly_points }})
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight" style="display: flex; align-items: center;">
+            @if (!empty($user->avatar) && file_exists(public_path('storage/' . $user->avatar)))
+                <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}"
+                    style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 20px;">
+            @else
+                <img src="{{ asset('images/' . ($user->gender === 'female' ? 'femalAvatar.png' : 'maleAvatar.png')) }}"
+                    alt="Default Avatar"
+                    style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 20px;">
+            @endif
+
+            {{ $user->name }} ({{ $user->weekly_points }})
         </h2>
     </x-slot>
 
@@ -71,13 +81,13 @@
                     <h2 class="text-center text-lg font-semibold text-gray-600 mt-10">This student has no badges yet.
                     </h2>
                 @endif
-                                <a href="{{ route('student-leaderBoard.index') }}" class="btn btn-secondary mt-4">
+                <a href="{{ route('student-leaderBoard.index') }}" class="btn btn-secondary mt-4">
                     Back
                 </a>
 
             </div>
         </div>
     </div>
-        <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
 
 </x-app-layout>

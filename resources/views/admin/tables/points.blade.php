@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Points</title>
-</head>
-<body>
-    <h1>Points for {{ $user->name }}</h1>
-    
-    <p>Weekly Points: {{ $user->weekly_points }}</p>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl " style="color: #3b1e54; margin-bottom: 20px;">
+            {{ __('Users') }}
+        </h2>
+    </x-slot>
 
-    <a href="{{ route('users.index') }}">Back to Users List</a>
-</body>
-</html>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6" style="overflow: hidden;">
+        <div class="p-4 sm:p-8 bg-white" style="margin-top: 20px; ">
+            <h1>Points for {{ $user->name }}</h1>
+
+            <p>Weekly Points: {{ $user->weekly_points }}</p>
+
+            <a href="{{ route('users.index') }}">Back to Users List</a>
+
+        </div>
+    </div>
+    
+</x-app-layout>

@@ -15,10 +15,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $index => $user)
+                        @foreach ($users as $index => $user)
                             <tr>
                                 <td class="border px-4 py-2">{{ $index + 1 }}</td>
-                                <td class="border px-4 py-2">{{ $user->name }}</td>
+                                <td class="border px-4 py-2 flex items-center" style="display: flex; align-items: center;">
+                                    @if (!empty($user->avatar) && file_exists(public_path('storage/' . $user->avatar)))
+                                        <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}"
+                                            style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 20px;">
+                                    @else
+                                        <img src="{{ asset('images/' . ($user->gender === 'female' ? 'femalAvatar.png' : 'maleAvatar.png')) }}"
+                                            alt="Default Avatar"
+                                            style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 20px;">
+                                    @endif
+                                    {{ $user->name }}
+                                </td>
                                 <td class="border px-4 py-2">{{ $user->weekly_points }}</td>
                             </tr>
                         @endforeach
@@ -26,9 +36,9 @@
                 </table>
                 <a href="{{ route('leaderBoard.index') }}" class=" btn btn-secondary" style="margin-top: 20px">
                     Back
-                 </a>
+                </a>
             </div>
-          
+
         </div>
     </div>
 </x-app-layout>
