@@ -179,7 +179,8 @@
                                                     $locked = $attendance && $attendance->locked;
                                                     $currentStatus = $attendance->status ?? 'present';
                                                 @endphp
-                                                <tr>
+                                                @if ($user->role === 'student')
+                                                     <tr>
                                                     <td>{{ $user->id }}</td>
                                                     <td style="background-color:#EEEEEE">
                                                         {{ $user->name }} (Student)</td>
@@ -234,6 +235,8 @@
                                                                 style="font-size: xx-large"></i></a>
                                                     </td>
                                                 </tr>
+                                                @endif
+                                               
                                             @endforeach
                                         @endif
                                     </tbody>

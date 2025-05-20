@@ -19,6 +19,9 @@ class StudentBreadcrumbsHelper
     } elseif ($routeName === 'announcements') {
       $breadcrumbs[] = ['label' => 'Dashboard', 'url' => route('studentDashboard')];
       $breadcrumbs[] = ['label' => 'Announcements', 'url' => route('announcements')];
+    } elseif ($routeName === 'student-leaderBoard.index') {
+      $breadcrumbs[] = ['label' => 'Dashboard', 'url' => route('studentDashboard')];
+      $breadcrumbs[] = ['label' => 'Leaderboard', 'url' => route('student-leaderBoard.index')];
     } elseif ($routeName === 'spinner') {
       $breadcrumbs[] = ['label' => 'Dashboard', 'url' => route('studentDashboard')];
       $breadcrumbs[] = ['label' => 'Spinner', 'url' => route('spinner')];

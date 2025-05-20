@@ -71,8 +71,21 @@
                                                         </a>
                                                     </td>
                                                     <td class="td points">
-                                                        <a
-                                                            href="{{ route('student-leaderboard.badge', $user->id) }}">{{ $user->weekly_points }}</a>
+                                                        <a href="{{ route('student-leaderboard.badge', $user->id) }}">
+                                                            <div x-data="{ score: 0, target: {{ $user->weekly_points }} }" x-init="setTimeout(() => {
+                                                                let interval = setInterval(() => {
+                                                                    if (score < target) {
+                                                                        score = score + Math.ceil(target / 20);
+                                                                        if (score > target) score = target;
+                                                                    } else {
+                                                                        clearInterval(interval);
+                                                                    }
+                                                                }, 50);
+                                                            }, 1200);"
+                                                                x-text="score">
+                                                                0
+                                                            </div>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             @endforeach

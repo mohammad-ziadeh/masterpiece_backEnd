@@ -14,18 +14,33 @@
             <div class="footer-section">
                 <h4 style="font-size: x-large; font-style: normal;">Navigate</h4>
                 <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="{{ route('tables') }}">Tables</a></li>
-                    <li><a href="/spinner">Spinner</a></li>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
+                    @if (auth()->user()->role === 'admin' || auth()->user()->role === 'trainer')
+                        <li><a href="{{route('dashboard')}}">Dashboard</a></li>
+                        <li><a href="{{ route('profile.edit') }}">Home</a></li>
+                        <li><a href="/spinner">Spinner</a></li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
 
-                        <li><a :href="route('logout')"
-                                onclick="event.preventDefault();
+                            <li><a :href="route('logout')"
+                                    onclick="event.preventDefault();
                                             this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </a></li>
-                    </form>
+                                    {{ __('Log Out') }}
+                                </a></li>
+                        </form>
+                    @else
+                        <li><a href="{{ route('studentDashboard') }}">Dashboard</a></li>
+                        <li><a href="{{ route('profile.edit') }}">Profile</a></li>
+                        <li><a href="/spinner">Spinner</a></li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <li><a :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                </a></li>
+                        </form>
+                    @endif
 
                 </ul>
             </div>
@@ -34,17 +49,16 @@
                 <h4 style="font-size: x-large; font-style: normal;">Links</h4>
                 <ul>
                     @if (auth()->user()->role === 'admin' || auth()->user()->role === 'trainer')
-                    <li><a href="{{ route('users.index') }}">Users</a></li>
-                    <li><a href="{{ route('tasks.index') }}">Tasks</a></li>
-                    <li><a href="{{ route('attendance.index') }}">Attendance</a></li>
-                    <li><a href="{{route('submissions.index')}}">Submissions</a></li>
+                        <li><a href="{{ route('users.index') }}">Users</a></li>
+                        <li><a href="{{ route('tasks.index') }}">Tasks</a></li>
+                        <li><a href="{{ route('attendance.index') }}">Attendance</a></li>
+                        <li><a href="{{ route('submissions.index') }}">Submissions</a></li>
                     @else
-                    <li><a href="#">xxxxxx</a></li>
-                    <li><a href="#">xxxxxx</a></li>
-                    <li><a href="#">xxxxxxx</a></li>
-                    <li><a href="#">xxxxxxx</a></li>
+                        <li><a href="{{route('studentSubmissions')}}">Tasks</a></li>
+                        <li><a href="{{route('student-leaderBoard.index')}}">Leaderboard</a></li>
+                        <li><a href="{{route('announcements')}}">Announcements</a></li>
                     @endif
-                  
+
                 </ul>
             </div>
 
@@ -53,9 +67,9 @@
                 <ul>
                     <li><a href="#">Terms and Conditions</a></li>
                     <li><a href="#">Privacy Policy</a></li>
-                    <li> 
+                    <li>
                         <a href="https://wa.me/+962791318735" target="_blank" class="whatsapp-button">
-                            Contact US &nbsp;  <i class="fa-brands fa-whatsapp" style="font-size: large"></i>
+                            Contact US &nbsp; <i class="fa-brands fa-whatsapp" style="font-size: large"></i>
                         </a>
                     </li>
                 </ul>

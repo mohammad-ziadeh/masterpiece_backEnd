@@ -135,3 +135,16 @@
 .copyright a:hover {
     text-decoration: underline;
 }
+
+@media (max-width: 740px) {
+    
+.footer-section h5 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.footer-section p {
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+}

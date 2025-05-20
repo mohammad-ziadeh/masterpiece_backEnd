@@ -3,7 +3,7 @@
 @endphp
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl">Badges Earned by {{ $task->name }}</h2>
+        <h2 class="font-semibold text-xl">Task name: {{ $task->name }}</h2>
         <div style="display: flex; justify-content: space-between;">
             <ul class="breadcrumbs">
                 @foreach ($breadcrumbs as $breadcrumb)
@@ -45,7 +45,7 @@
                                         <h2><b>The deadline:</b> <mark style="background-color: yellow">
                                                 {{ $task->due_date }}</mark> </h2>
                                         <h2 style="margin: 0%; margin-left: 38px;"><b>Description:</b> </h2>
-                                        <p>{{ $task->description }}</p>
+                                        <p style="overflow: scroll">{{ $task->description }}</p>
                                     </div>
 
                                 </div>
@@ -81,7 +81,7 @@
             }
 
             .wrapper {
-                height: 470px;
+                height: 500px;
                 width: 800px;
                 margin: 50px auto;
                 border-radius: 7px 7px 7px 7px;

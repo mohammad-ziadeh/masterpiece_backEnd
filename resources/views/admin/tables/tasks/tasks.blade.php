@@ -45,7 +45,7 @@
                             {{-- Start Filters --}}
                             <form method="GET" action="{{ route('tasks.index') }}" class="mb-3">
                                 <div class="row"
-                                    data-intro="These are the filters, here u can filter the Tasks according to there Name and Activity"
+                                    data-intro="These are the filters, here u can filter the Tasks according to there Name, Trainers who created the tasks and Activity"
                                     data-step="2">
 
                                     <div class="col-md-2">
@@ -54,12 +54,28 @@
                                             value="{{ request('name') }}">
                                     </div>
 
+                                    <div class="col-md-3">
+                                        <select name="submitted_by" id="submitted_by"
+                                            class="form-control"
+                                            style="width:90%">
+                                            <option value="all">-- All Trainers --</option>
+                                            @foreach ($trainers as $trainer)
+                                                <option value="{{ $trainer->id }}"
+                                                    {{ request('submitted_by') == $trainer->id ? 'selected' : '' }}>
+                                                    {{ $trainer->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
                                     <div class="col-md-2">
                                         <select name="deleted" class="form-control">
                                             <option value="">Active Tasks</option>
-                                            <option value="only" {{ request('deleted') == 'only' ? 'selected' : '' }}>
+                                            <option value="only"
+                                                {{ request('deleted') == 'only' ? 'selected' : '' }}>
                                                 Deleted Tasks</option>
-                                            <option value="with" {{ request('deleted') == 'with' ? 'selected' : '' }}>
+                                            <option value="with"
+                                                {{ request('deleted') == 'with' ? 'selected' : '' }}>
                                                 All Tasks</option>
                                         </select>
                                     </div>
@@ -102,8 +118,7 @@
                                             <th>Task Name</th>
                                             <th>Due Date</th>
                                             <th>Created At</th>
-                                            <th data-intro="Here u can see the full description of the task from the file it self to all the assigned students"
-                                                data-step="5">Details</th>
+                                            <th>Details</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -114,8 +129,8 @@
                                                 <td>{{ $task->name }}</td>
                                                 <td>{{ $task->due_date }}</td>
                                                 <td>{{ $task->created_at->format('Y-m-d') }}</td>
-                                                <td>
-                                                    <a href="{{ route('tasks.show', $task->id) }}"
+                                                <td >
+                                                    <a href="{{ route('tasks.show', $task->id) }}" data-intro="Here u can see the full description of the task from the file it self to all the assigned students" data-step="5"
                                                         class="btn btn-secondary">
                                                         View
                                                     </a>

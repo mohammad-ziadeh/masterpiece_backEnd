@@ -44,7 +44,7 @@
 
                             <form method="GET" action="{{ route('users.index') }}" class="mb-3">
                                 <div class="row"
-                                    data-intro="These are the filters, here u can filter the users according to there Name, Role, and Activity"
+                                    data-intro="These are the filters, here u can filter the users according to there Name, Role, Gender, and Activity"
                                     data-step="2">
 
                                     <div class="col-md-2">
@@ -63,6 +63,16 @@
                                                 {{ request('role') == 'trainer' ? 'selected' : '' }}>Trainer</option>
                                             <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>
                                                 Admin</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select name="gender" class="form-control">
+                                            <option value="all">All Genders</option>
+
+                                            <option value="male"
+                                                {{ request('gender') == 'male' ? 'selected' : '' }}>Male</option>
+                                            <option value="female"
+                                                {{ request('gender') == 'female' ? 'selected' : '' }}>Female</option>
                                         </select>
                                     </div>
 
@@ -90,7 +100,7 @@
 
 
                             <button type="button" class="btn btn-success mb-3" data-toggle="modal"
-                                data-intro="Here u can add new user" data-step="4" data-target="#createUserModal">
+                                data-intro="Here u can add new user, some data you won't see it in the table so you need to click edit to view it." data-step="4" data-target="#createUserModal">
                                 Add New User
                             </button>
 
@@ -117,7 +127,9 @@
                                         @foreach ($users as $user)
                                             <tr>
                                                 <td>{{ $user->id }}</td>
-                                                <td>{{ $user->name }}</td>
+                                                <td>{!! $user->gender === 'male'
+                                                    ? '<i class="fa-solid fa-mars" style="font-size: large"></i>'
+                                                    : '<i class="fa-solid fa-venus" style="font-size: large"></i>' !!} &nbsp;{{ $user->name }}</td>
                                                 <td>{{ $user->email }}</td>
                                                 @if ($user->role == 'admin')
                                                     <td style="background-color: #3b1e54; color: #EEEEEE;">
@@ -136,7 +148,7 @@
                                                         <a href="{{ route('points', $user->id) }}"
                                                             class="btn btn-info">Points</a>
                                                         <a href="{{ route('users.badges', $user->id) }}"
-                                                            class="btn btn-info">
+                                                            class="btn btn-dark">
                                                             Badges
                                                         </a>
                                                     @else
@@ -184,7 +196,7 @@
                                                         {{-- End Restore and permanently del --}}
                                                     </td>
                                                 @else
-                                                <td>
+                                                    <td>
                                                         {{-- Soft del And edit --}}
                                                         @if (!$user->trashed())
                                                             <div data-intro="Here u can Edit the user information or Delete the user (Deleting here will not be permanent here)"
@@ -236,7 +248,7 @@
                                                 @endif
 
                                             </tr>
-
+                                            {{-- // {{Edit use model}} // --}}
                                             <div class="modal fade" id="editUserModal{{ $user->id }}"
                                                 tabindex="-1" role="dialog"
                                                 aria-labelledby="editUserModalLabel{{ $user->id }}"
@@ -250,16 +262,71 @@
                                                                 @method('PUT')
                                                                 <div class="form-group">
                                                                     <label for="name">Name</label>
-                                                                    <input type="text" class="form-control"
+                                                                    <input type="text" class="form-control" style="border-radius: 5px"
                                                                         name="name" value="{{ $user->name }}"
                                                                         required>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="email">Email</label>
-                                                                    <input type="email" class="form-control"
+                                                                    <input type="email" class="form-control" style="border-radius: 5px"
                                                                         name="email" value="{{ $user->email }}"
                                                                         required>
                                                                 </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="password">Password
+                                                                        <small class="text-muted">(leave blank to keep
+                                                                            current)</small>
+                                                                        <button type="button"
+                                                                            class="btn btn-sm btn-link p-0 ml-2"
+                                                                            onclick="togglePasswordField({{ $user->id }})">
+                                                                            <i id="password-lock-icon-{{ $user->id }}"
+                                                                                class="fa fa-lock"></i>
+                                                                        </button>
+                                                                    </label>
+                                                                    <input type="password" class="form-control" style="border-radius: 5px"
+                                                                        name="password"
+                                                                        id="password-field-{{ $user->id }}"
+                                                                        disabled>
+                                                                </div>
+
+
+                                                                <div class="form-group">
+                                                                    <label for="phone">Phone</label>
+                                                                    <input type="text" class="form-control" style="border-radius: 5px" required
+                                                                        name="phone" value="{{ $user->phone }}">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="city">City</label>
+                                                                    <select class="form-control" name="city">
+                                                                        <option value="Aqaba"
+                                                                            {{ $user->city == 'Aqaba' ? 'selected' : '' }}>
+                                                                            Aqaba</option>
+                                                                        <option value="Amman"
+                                                                            {{ $user->city == 'Amman' ? 'selected' : '' }}>
+                                                                            Amman</option>
+                                                                        <option value="Irbid"
+                                                                            {{ $user->city == 'Irbid' ? 'selected' : '' }}>
+                                                                            Irbid</option>
+                                                                        <option value="Balqa"
+                                                                            {{ $user->city == 'Balqa' ? 'selected' : '' }}>
+                                                                            Balqa</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="gender">Gender</label>
+                                                                    <select class="form-control" name="gender">
+                                                                        <option value="male"
+                                                                            {{ $user->gender == 'male' ? 'selected' : '' }}>
+                                                                            Male</option>
+                                                                        <option value="female"
+                                                                            {{ $user->gender == 'female' ? 'selected' : '' }}>
+                                                                            Female</option>
+                                                                    </select>
+                                                                </div>
+
 
                                                                 <div class="form-group">
                                                                     <label for="role">Role</label>
@@ -278,6 +345,9 @@
                                                                             Student</option>
                                                                     </select>
                                                                 </div>
+
+
+
                                                                 <div class="modal-footer">
                                                                     <button type="submit"
                                                                         class="btn btn-primary">Update</button>
@@ -314,11 +384,34 @@
                         @csrf
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" class="form-control" name="name" required>
+                            <input type="text" class="form-control" name="name" style="border-radius: 5px" required>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" name="email" required>
+                            <input type="email" class="form-control" name="email" style="border-radius: 5px" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="text" class="form-control" style="border-radius: 5px" name="phone" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <select class="form-control" name="city">
+                                <option value="Aqaba">Aqaba</option>
+                                <option value="Amman">Amman</option>
+                                <option value="Irbid">Irbid</option>
+                                <option value="Balqa">Balqa</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select class="form-control" name="gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -341,6 +434,7 @@
             </div>
         </div>
     </div>
+
 
     {{-- Style --}}
 
@@ -401,6 +495,23 @@
             $('#errorMessage').fadeOut('slow');
         }, 3000);
     </script>
+    <script>
+    function togglePasswordField(userId) {
+        const field = document.getElementById('password-field-' + userId);
+        const icon = document.getElementById('password-lock-icon-' + userId);
+
+        if (field.disabled) {
+            field.disabled = false;
+            icon.classList.remove('fa-lock');
+            icon.classList.add('fa-unlock');
+        } else {
+            field.disabled = true;
+            field.value = ''; 
+            icon.classList.remove('fa-unlock');
+            icon.classList.add('fa-lock');
+        }
+    }
+</script>
     <script>
         function startTour() {
             introJs().start();

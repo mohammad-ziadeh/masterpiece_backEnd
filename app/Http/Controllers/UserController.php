@@ -30,6 +30,10 @@ class UserController extends Controller
             $query->where('role', $request->role);
         }
 
+        if ($request->has('gender') && $request->gender != 'all') {
+            $query->where('gender', $request->gender);
+        }
+
         if ($request->has('deleted')) {
             if ($request->deleted == 'only') {
                 $query->onlyTrashed();
@@ -68,9 +72,13 @@ class UserController extends Controller
             'name' => $request->name,
             'role' => $request->role,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'phone' => $request->phone,
+            'password' => bcrypt('123456789'),
+            'city' => $request->city,
+            'gender' => $request->gender,
         ]);
-        return redirect('users')->with('success', 'user stored successfully.');
+
+        return redirect('users')->with('success', 'User stored successfully.');
     }
 
     /**
@@ -97,14 +105,24 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $users = User::findOrFail($id);
-        $users->update([
+        $user = User::findOrFail($id);
+
+        $data = [
             'name' => $request->name,
             'role' => $request->role,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-        return redirect('users')->with('success', 'user updated successfully.');
+            'phone' => $request->phone,
+            'city' => $request->city,
+            'gender' => $request->gender,
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = bcrypt($request->password);
+        }
+
+        $user->update($data);
+
+        return redirect('users')->with('success', 'User updated successfully.');
     }
 
     /**

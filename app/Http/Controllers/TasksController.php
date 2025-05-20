@@ -32,6 +32,10 @@ class TasksController extends Controller
             }
         }
 
+        if ($request->has('submitted_by') && $request->submitted_by != 'all') {
+            $query->where('submitted_by', $request->submitted_by);
+        }
+
         if ($request->has('sort') && $request->sort == 'desc') {
             $query->orderBy('id', 'desc');
         } else {
@@ -40,11 +44,11 @@ class TasksController extends Controller
         $date = today();
 
         // -------{{ End Filters }}------- //
-
+$trainers = User::where('role', 'trainer')->get();
         $tasks = $query->paginate(10);
         $students = User::where('role', 'student')->get(); 
 
-        return view('admin.tables.tasks.tasks', compact('tasks', 'date', 'students'));
+        return view('admin.tables.tasks.tasks', compact('tasks', 'date', 'students', 'trainers'));
     }
 
     /**

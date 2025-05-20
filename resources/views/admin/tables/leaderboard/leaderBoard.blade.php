@@ -63,7 +63,19 @@
                                                         @endif{{ $user->name }}
                                                     </td>
                                                     <td class="td points">
-                                                        {{ $user->weekly_points }}
+                                                        <div x-data="{ score: 0, target: {{ $user->weekly_points }} }" x-init="setTimeout(() => {
+                                                                let interval = setInterval(() => {
+                                                                    if (score < target) {
+                                                                        score = score + Math.ceil(target / 20);
+                                                                        if (score > target) score = target;
+                                                                    } else {
+                                                                        clearInterval(interval);
+                                                                    }
+                                                                }, 50);
+                                                            }, 1200);"
+                                                                x-text="score">
+                                                                0
+                                                            </div>
                                                     </td>
                                                 </tr>
                                             @endforeach

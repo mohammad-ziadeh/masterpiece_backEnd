@@ -27,6 +27,7 @@
         content="A gamified, automated LMS that empowers trainers and motivates students with badges, point systems, and more.">
     {{-- End Meta Tags --}}
 
+<link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/png">
 
 
     <!-- Fonts -->
